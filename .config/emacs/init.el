@@ -426,7 +426,61 @@
   (info-lookmore-elisp-gnus)
   (info-lookmore-apropos-elisp))
 
+;; Completion
 
+;;;; Orderless
+(use-package orderless
+  :disabled t
+  :demand t
+  :config
+  (defun prefixes-for-separators (pattern _index _total)
+    (when (string-match-p "^[^][^\\+*]*[./-][^][\\+*$]*$" pattern)
+      (cons 'orderless-prefixes pattern)))
+  (cl-pushnew '(?` . orderless-regexp) orderless-affix-dispatch-alist)
+  :custom
+  (orderless-style-dispatchers
+   '(orderless-affix-dispatch prefixes-for-separators)))
+
+;;;; Helm
+(use-package helm
+  :demand t
+  :requires orderless
+  :config
+  (helm-mode 1)
+  (global-set-key (kbd "M-x") #'helm-M-x)
+  (global-set-key (kbd "C-x m") #'helm-M-x)
+  (global-set-key (kbd "C-c m") #'helm-M-x)
+  (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
+  (global-set-key (kbd "C-x C-f") #'helm-find-files)
+  (global-set-key (kbd "C-c i n") #'helm-complete-file-name-at-point)
+  (global-set-key (kbd "C-x i") #'helm-imenu)
+  (setq helm-completion-style 'helm)
+  )
+
+;;;; ido
+(use-package ido
+  :demand t
+  :config (setq ido-enable-flex-matching t)
+  (ido-mode 1)
+  ;;(setq ido-everywhere t)
+  )
+
+;; Org-mode
+(use-package org
+     :bind
+     ("C-c l" . 'org-store-link)
+     ("C-c a" . 'org-agenda)
+     ("C-c c" . 'org-capture)
+     :custom     
+     (with-eval-after-load 'org
+       (setq org-directory "/Users/aziz/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/"))
+     (setq org-default-notes-file (concat org-directory "/notes.org"))
+     (setq org-capture-templates nil)
+     (add-to-list 'org-capture-templates
+                  '("u" "URL capture from Safari" entry
+                    (file+olp+datetree "/Users/aziz/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/links.org")
+                    "* %i    :safari:url:\n%U\n\n"))
+)
 
 ;; References
 ;;;; Disclaimars
