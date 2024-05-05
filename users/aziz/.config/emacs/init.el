@@ -52,8 +52,7 @@
 
 (use-package emacs
   :bind* (
-          ("<C-return>" . other-window)
-          ("<M-o>" . other-window)
+          ("<M-o>" . ace-window)
           ("C-x <C-m>" . execute-extended-command)
           ("C-c <C-m>" . execute-extended-command) ;; Sloppy version
           )
@@ -281,8 +280,7 @@
   (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
   (setq projectile-sort-order 'recentf)
   (setq projectile-git-use-fd t)
-  (setq projectile-enable-caching t)
-  )
+  (setq projectile-enable-caching t))
 
 
 
@@ -368,10 +366,9 @@
 		(nixpkgs :expr "import <nixpkgs> {}")
  	        (formatting 
 		 command ["nixpkgs-fmt"])
-                (options (
-                           nixos :expr "(builtins.getFlake \"/Users/aziz/.config/nix-darwin/\").darwinConfigurations.simple.options")
-                          ( home-manager :expr "import <home-manager> {}"
-                )))))))
+                (options (nixos :expr "(builtins.getFlake \"/Users/aziz/.config/nix-darwin/\").darwinConfigurations.simple.options")
+                         ( home-manager :expr "import <home-manager> {}")
+                ))))))
 
 
 ;; Manuals and Docs
@@ -454,8 +451,7 @@
   (global-set-key (kbd "C-x C-f") #'helm-find-files)
   (global-set-key (kbd "C-c i n") #'helm-complete-file-name-at-point)
   (global-set-key (kbd "C-x i") #'helm-imenu)
-  (setq helm-completion-style 'helm)
-  )
+  (setq helm-completion-style 'helm))
 
 ;;;; ido
 (use-package ido
@@ -480,7 +476,35 @@
                   '("u" "URL capture from Safari" entry
                     (file+olp+datetree "/Users/aziz/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/links.org")
                     "* %i    :safari:url:\n%U\n\n"))
-)
+     )
+
+
+;; Nix
+;; https://github.com/NixOS/nix-mode?tab=readme-ov-filelsp
+(use-package nix-mode
+  :mode ("\\.nix\\'" "\\.nix.in\\'"))
+
+(use-package nix-drv-mode
+  :ensure nix-mode
+  :mode "\\.drv\\'")
+
+(use-package nix-shell
+  :ensure nix-mode
+  :commands (nix-shell-unpack nix-shell-configure nix-shell-build))
+
+(use-package nix-repl
+  :ensure nix-mode
+  :commands (nix-repl))
+
+
+;; Tramp
+(use-package tramp
+  :config
+  (setq tramp-default-method "ssh")
+  (custom-set-variables  '(tramp-remote-path
+                           (quote
+                            (tramp-own-remote-path)))))
+
 
 ;; References
 ;;;; Disclaimars

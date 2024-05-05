@@ -17,65 +17,66 @@ let
     # ref = "nixos-unstable";
   });
   
-  emacs = pkgs.emacs29-macport.overrideAttrs (old: {
-        patches =
-          (old.patches or [])
-          ++ [
-            # Fix OS window role (needed for window managers like yabai)
-            (fetchpatch {
-              url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-28/fix-window-role.patch";
-              sha256 = "0c41rgpi19vr9ai740g09lka3nkjk48ppqyqdnncjrkfgvm2710z";
-            })
-            # Use poll instead of select to get file descriptors
-            (fetchpatch {
-              url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-29/poll.patch";
-              sha256 = "0j26n6yma4n5wh4klikza6bjnzrmz6zihgcsdx36pn3vbfnaqbh5";
-            })
-            # Enable rounded window with no decoration
-            (fetchpatch {
-              url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-29/round-undecorated-frame.patch";
-              sha256 = "111i0r3ahs0f52z15aaa3chlq7ardqnzpwp8r57kfsmnmg6c2nhf";
-            })
-            # Make Emacs aware of OS-level light/dark mode
-            (fetchpatch {
-              url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-28/system-appearance.patch";
-              sha256 = "14ndp2fqqc95s70fwhpxq58y8qqj4gzvvffp77snm2xk76c1bvnn";
-            })
-          ];
-      });
-    emacs-overlay = import (fetchTarball {
-      url = "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
-      sha256 = "1jppksrfvbk5ypiqdz4cddxdl8z6zyzdb2srq8fcffr327ld5jj2";
-    });
-    my-emacs = pkgs.emacs.override {
-       withNativeCompilation = true;
-       withSQLite3 = true;
-       withTreeSitter = true;
-       withWebP = true;
-       withNS = true;
-    };
+  # emacs = pkgs.emacs29-macport.overrideAttrs (old: {
+  #       patches =
+  #         (old.patches or [])
+  #         ++ [
+  #           # Fix OS window role (needed for window managers like yabai)
+  #           (fetchpatch {
+  #             url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-28/fix-window-role.patch";
+  #             sha256 = "0c41rgpi19vr9ai740g09lka3nkjk48ppqyqdnncjrkfgvm2710z";
+  #           })
+  #           # Use poll instead of select to get file descriptors
+  #           (fetchpatch {
+  #             url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-29/poll.patch";
+  #             sha256 = "0j26n6yma4n5wh4klikza6bjnzrmz6zihgcsdx36pn3vbfnaqbh5";
+  #           })
+  #           # Enable rounded window with no decoration
+  #           (fetchpatch {
+  #             url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-29/round-undecorated-frame.patch";
+  #             sha256 = "111i0r3ahs0f52z15aaa3chlq7ardqnzpwp8r57kfsmnmg6c2nhf";
+  #           })
+  #           # Make Emacs aware of OS-level light/dark mode
+  #           (fetchpatch {
+  #             url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-28/system-appearance.patch";
+  #             sha256 = "14ndp2fqqc95s70fwhpxq58y8qqj4gzvvffp77snm2xk76c1bvnn";
+  #           })
+  #         ];
+  #     });
+  #   emacs-overlay = import (fetchTarball {
+#       url = "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
+#       sha256 = "1jppksrfvbk5ypiqdz4cddxdl8z6zyzdb2srq8fcffr327ld5jj2";
+#     });
+#     my-emacs = pkgs.emacs.override {
+#        withNativeCompilation = true;
+#        withSQLite3 = true;
+#        withTreeSitter = true;
+#        withWebP = true;
+#        withNS = true;
+#     };
 
-     emacs-with-packages = (pkgs.emacsPackagesFor my-emacs).emacsWithPackages (epkgs: with epkgs; [
-       hyperbole
-       ace-window
-       vterm
-       pdf-tools
-       treesit-grammars.with-all-grammars
-       magit
-       helm
-       nix-ts-mode
-       elixir-ts-mode
-       projectile
-       s
+#      emacs-with-packages = (pkgs.emacsPackagesFor my-emacs).emacsWithPackages (epkgs: with epkgs; [
+#        hyperbole
+#        ace-window
+#        vterm
+#        pdf-tools
+#        treesit-grammars.with-all-grammars
+#        magit
+#        helm
+#        projectile
+#        nix-ts-mode
+#        elixir-ts-mode
+#        projectile
+#        s
 
-  #  emacs-all-the-icons-fonts
-  #  (aspellWithDicts (d: [d.en d.sv]))
-#    ghostscript
- #   tetex
- #   poppler
- #   mu
- #   wordnet
-]);
+#   #  emacs-all-the-icons-fonts
+#   #  (aspellWithDicts (d: [d.en d.sv]))
+# #    ghostscript
+#  #   tetex
+#  #   poppler
+#  #   mu
+#  #   wordnet
+# ]);
 
 in {
   nixpkgs.overlays = [
@@ -149,13 +150,39 @@ in {
   #     done
   #   '';
   # };
+  # programs.emacs = {
+  #   enable = true;
+  #   package = emacs-with-packages;
+  #   extraConfig = ''
+  #     (setq default-directory ".config/")
+  #   '';
+  # };
+
   programs.emacs = {
-    enable = true;
-    package = emacs-with-packages;
-    extraConfig = ''
-      (setq default-directory ".config/")
-    '';
-  };
+      enable = true;
+      package = pkgs.emacs29-macport;
+      extraConfig = '' '';
+      extraPackages = epkgs: (
+        with epkgs; [
+          magit
+          treesit-grammars.with-all-grammars
+	  hyperbole
+          ace-window
+          vterm
+          pdf-tools
+        ]) ++ (
+          with epkgs.melpaPackages; [
+            nix-ts-mode
+            elixir-ts-mode
+            projectile
+            helm
+            vterm
+            languagetool
+            s
+            ag
+          ]) ++ (with pkgs; []);
+    };
+
   services.emacs = {
     enable = false;
   };
@@ -384,9 +411,12 @@ in {
       '';
     };
   home.file = {
-    ".emacs.d" = {
-      source = ../emacs;
-      recursive = true;
+    ".emacs.d/init.el".source =
+        config.lib.file.mkOutOfStoreSymlink
+          "/Users/aziz/tree-3/users/aziz/.config/emacs/init.el";
+    
+    ".emacs.d/early-init.el".source =
+        config.lib.file.mkOutOfStoreSymlink
+          "/Users/aziz/tree-3/users/aziz/.config/emacs/early-init.el";
     };
-  };
 }
