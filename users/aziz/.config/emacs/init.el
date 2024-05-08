@@ -42,13 +42,14 @@
 ;; https://slumpy.org/blog/2016-01-11-proper-way-to-setup-fonts-in-emacs/
 (defun my/setup-fonts ()
   (interactive)
-  (set-face-font 'default "Berkeley Mono-16")
-  (set-fontset-font t 'hebrew (font-spec :name "Berkeley Mono-16"))
+  (set-face-font 'default "Berkeley Mono-15")
+  (set-fontset-font t 'hebrew (font-spec :name "Berkeley Mono-15"))
 )
 
 
 ;; Using `use-package` to configure emacs, here emacs is a pseudo
 ;; package
+
 
 (use-package emacs
   :bind* (
@@ -154,15 +155,12 @@
   ;; TODO: disable keybindings to  mouse-wheel-global-text-scale
   ;; and mouse-wheel-text-scale
 
-  ;; tool-bar.el
-  (tool-bar-mode -1)
-  
   :custom-face
 
-  
 
   :init
   (setq disabled-command-function nil) ;; enable all commands
+  
 
   :config
   ;; Setup theme
@@ -176,11 +174,23 @@
   (unless (daemonp) (my/setup-fonts))
 
   ;; Enable line numbers only with programing modes
-  (add-hook 'prog-mode-hook (lambda () (
-            display-line-numbers-mode
-            (setq-default display-line-numbers-type 'relative)))))
+  ;; (add-hook 'prog-mode-hook (lambda () (
+  ;;           display-line-numbers-mode
+  ;;           (setq-default display-line-numbers-type 'relative))))
 
- 
+  ;; This is an ugly hack the fix is upstream but hasn't been merge yet
+  ;; https://github.com/doomemacs/doomemacs/issues/7532
+  (add-hook 'after-init-hook (lambda () 
+                             (tool-bar-mode 1) 
+                             (tool-bar-mode 0)))
+  (defun my-toggle-toolbar (frame)
+    "Toggle tool-bar-mode on then off when a new frame is created."
+    (with-selected-frame frame
+      (tool-bar-mode 1)
+      (tool-bar-mode 0)))
+
+  (add-hook 'after-make-frame-functions 'my-toggle-toolbar)
+  )
 
 ;;;; ibuffer
 (use-package ibuffer
@@ -488,8 +498,8 @@
      (add-to-list 'org-capture-templates
                   '("u" "URL capture from Safari" entry
                     (file+olp+datetree "/Users/aziz/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/links.org")
-                    "* %i    :safari:url:\n%U\n\n"))
-     )
+                    "* %i    :safari:url:\n%U\n\n")))
+
 
 ;;;; Hyperbole
 
@@ -525,18 +535,31 @@
                             (tramp-own-remote-path)))))
 
 
+;; My packages
+(use-package capture-frame
+  :load-path "capture-frame.el"
+  :commands (my/make-capture-frame)) 
+
+  
 ;; References
 ;;;; Disclaimars
 ;; the current version borrows heavily from John Wiegley excellent
 ;; dot-emacs repo (https://github.com/jwiegley/dot-emacs)
+
+
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(org-fold-core-style 'overlays)
- '(package-selected-packages
-   '(vterm projectile pdf-tools nix-ts-mode magit languagetool hyperbole helm elixir-ts-mode ag ace-window nix-mode))
+ '(safe-local-variable-values
+   '((projectile-project-test-cmd . "nix flake check")
+     (projectile-project-run-cmd . "darwin-rebuild test --flake . --fast")
+     (projectile-project-compilation-cmd . "darwin-rebuild switch --flake .#m1 --impure")
+     (projectile-project-configure-cmd . "nix flake update")))
  '(tramp-remote-path '(tramp-own-remote-path)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

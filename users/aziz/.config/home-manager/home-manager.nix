@@ -222,7 +222,7 @@ in {
   programs.direnv.nix-direnv.enable = true;
   programs.bash.enable = false;
   programs.zsh.enable = false;
-  programs.starship.enable = true;
+  programs.starship.enable = false;
   programs.zellij = {
     enable = false;
     enableFishIntegration = true;
