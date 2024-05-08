@@ -1,5 +1,7 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 {
+   # NixOS configuration.
+  nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
   nix = {
     useDaemon = true;
     settings = {

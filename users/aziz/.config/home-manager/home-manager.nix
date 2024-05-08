@@ -404,9 +404,9 @@ in {
   # 30: what if this is defined in another file? Merge it!
   programs.fish = {
       enable = true;
-      shellAliases = {
-          emacs = "${pkgs.emacs}/Applications/Emacs.app/Contents/MacOS/Emacs";
-      };
+      # shellAliases = {
+      #     emacs = "${pkgs.emacs}/Applications/Emacs.app/Contents/MacOS/Emacs";
+      # };
       shellInit = ''
       '';
     };

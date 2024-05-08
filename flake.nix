@@ -29,8 +29,7 @@
     let
       home-state-version = "24.05";
     in
-    {
-
+      {
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#m1
       darwinConfigurations.m1 = darwin.lib.darwinSystem {
@@ -48,8 +47,8 @@
           inherit inputs self;
         };
       };
-
       # Expose the package set, including overlays, for convenience.
       darwinPackages = self.darwinConfigurations.m1.pkgs;
-    };
+      };
+  
 }

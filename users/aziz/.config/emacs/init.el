@@ -52,7 +52,7 @@
 
 (use-package emacs
   :bind* (
-          ("<M-o>" . ace-window)
+          ("M-o" . ace-window)
           ("C-x <C-m>" . execute-extended-command)
           ("C-c <C-m>" . execute-extended-command) ;; Sloppy version
           )
@@ -126,7 +126,6 @@
   ;; bytecomp.el
   (byte-compile-verbose nil)
 
-
   ;; scroll-bar.el
   (scroll-bar-mode nil)
 
@@ -150,9 +149,13 @@
   (window-divider-default-bottom-width 1)
   (window-divider-default-places 'bottom-only)
 
+
   ;; mwheel.el
   ;; TODO: disable keybindings to  mouse-wheel-global-text-scale
-  ;; and mouse-wheel-text-scale        
+  ;; and mouse-wheel-text-scale
+
+  ;; tool-bar.el
+  (tool-bar-mode -1)
   
   :custom-face
 
@@ -176,7 +179,8 @@
   (add-hook 'prog-mode-hook (lambda () (
             display-line-numbers-mode
             (setq-default display-line-numbers-type 'relative)))))
-  
+
+ 
 
 ;;;; ibuffer
 (use-package ibuffer
@@ -406,12 +410,20 @@
                "/run/current-system/sw/share/info/"
                ))))
   :config
-  (add-hook 'Info-mode-hook
-            #'(lambda ()
-                (setq buffer-face-mode-face '(:family "Bookerly"))
-                (buffer-face-mode)
-                (text-scale-adjust 1))))
+  ;; (add-hook 'Info-mode-hook
+  ;;           #'(lambda ()
+  ;;                (setq buffer-face-mode-face '(:family "Arial"))
+  ;;                (buffer-face-mode)
+  ;;                (text-scale-adjust 1)
+  ;; 		))
+  )
 
+
+(remove-hook 'Info-mode-hook '(lambda ()
+                 (setq buffer-face-mode-face '(:family "Arial"))
+                 (buffer-face-mode)
+                 (text-scale-adjust 2)
+		) t)
 (use-package info :autoload Info-goto-node)
 (use-package info-look :autoload info-lookup-add-help)
 
@@ -441,7 +453,6 @@
 ;;;; Helm
 (use-package helm
   :demand t
-  :requires orderless
   :config
   (helm-mode 1)
   (global-set-key (kbd "M-x") #'helm-M-x)
@@ -457,11 +468,13 @@
 (use-package ido
   :demand t
   :config (setq ido-enable-flex-matching t)
-  (ido-mode 1)
+  (ido-mode t)
   ;;(setq ido-everywhere t)
   )
 
-;; Org-mode
+
+;; Information management
+;;;; Org-mode
 (use-package org
      :bind
      ("C-c l" . 'org-store-link)
@@ -478,7 +491,13 @@
                     "* %i    :safari:url:\n%U\n\n"))
      )
 
+;;;; Hyperbole
 
+(use-package hyperbole
+	    :demand t
+	    :config
+	    (add-to-list 'Info-directory-list (concat hyperb:dir "man/"))
+	    (hyperbole-mode t))
 ;; Nix
 ;; https://github.com/NixOS/nix-mode?tab=readme-ov-filelsp
 (use-package nix-mode
@@ -510,3 +529,18 @@
 ;;;; Disclaimars
 ;; the current version borrows heavily from John Wiegley excellent
 ;; dot-emacs repo (https://github.com/jwiegley/dot-emacs)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-fold-core-style 'overlays)
+ '(package-selected-packages
+   '(vterm projectile pdf-tools nix-ts-mode magit languagetool hyperbole helm elixir-ts-mode ag ace-window nix-mode))
+ '(tramp-remote-path '(tramp-own-remote-path)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
