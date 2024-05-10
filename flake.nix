@@ -21,6 +21,10 @@
     }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       debug = true;
+      imports = [
+          inputs.mission-control.flakeModule
+          inputs.flake-root.flakeModule
+	];
       flake = {
 	 # Put your original flake attributes here.
       };
@@ -29,29 +33,29 @@
 	"x86_64-linux"
       ];
       perSystem = { config, self', inputs', pkgs, system, ... }: {
-        # mission-control = {
-        #   wrapperName = "run";
-        #   scripts = {
-        #     build = {
-        #       description = "cowsay";
-        #       exec = ''
-
-        #       '';
-        #       category = "Development";
-        #     };
-        #     test = {
-        #       description = "cowsay";
-        #       exec = ''
-        #         cowsay Howdy! .
-        #       '';
-        #       category = "Development";
-        #     };
-        #   };
-        # };
 	devShells.default = pkgs.mkShell {
-	  nativeBuildInputs = with pkgs; [ cowsay ];
-	  inputsFrom = [ config.mission-control.devShell config.flake-root.devShell ];
-	};
+          nativeBuildInputs = with pkgs; [ avro-tools ];
+          inputsFrom = [ config.mission-control.devShell config.flake-root.devShell ];
+        };
+        mission-control = {
+          wrapperName = "run";
+          scripts = {
+            build = {
+              description = "cowsay";
+              exec = ''
+
+              '';
+              category = "Development";
+            };
+            test = {
+              description = "cowsay";
+              exec = ''
+                cowsay Howdy! .
+              '';
+              category = "Development";
+            };
+          };
+        };
       };
       flake = {
 	darwinConfigurations = import ./nodes inputs;
