@@ -1,3 +1,4 @@
+
 ;; Garbage collect after startup
 (add-hook 'after-init-hook #'garbage-collect t)
 
@@ -191,6 +192,15 @@
 
   (add-hook 'after-make-frame-functions 'my-toggle-toolbar)
   )
+
+
+(use-package imenu
+  :config
+  (setq imenu-auto-rescan t)
+  (add-hook 'emacs-lisp-mode-hook
+            (lambda ()
+              (setq imenu-generic-expression
+                    '((nil "^\\s-*(use-package\\s-+\\(\\_<.+?\\_>\\)" 1))))))
 
 ;;;; ibuffer
 (use-package ibuffer
@@ -388,10 +398,11 @@
 ;; Manuals and Docs
 ;;;; info TODO: read and refactor
 (use-package info
-  :bind ("C-h C-i" . info-lookup-symbol)
+  :bind ("C-h C-i" . info-hlookup-symbol)
   :custom
   ;; (Info-default-directory-list (list (emacs-path "lisp/org-mode/doc")))
   (Info-fit-frame-flag nil)
+  :autoload Info-goto-node
   :preface
   (eval-when-compile
     (defvar buffer-face-mode-face))
@@ -426,15 +437,9 @@
   ;;                (buffer-face-mode)
   ;;                (text-scale-adjust 1)
   ;; 		))
-  )
+)
 
 
-(remove-hook 'Info-mode-hook '(lambda ()
-                 (setq buffer-face-mode-face '(:family "Arial"))
-                 (buffer-face-mode)
-                 (text-scale-adjust 2)
-		) t)
-(use-package info :autoload Info-goto-node)
 (use-package info-look :autoload info-lookup-add-help)
 
 (use-package info-lookmore
@@ -472,6 +477,8 @@
   (global-set-key (kbd "C-x C-f") #'helm-find-files)
   (global-set-key (kbd "C-c i n") #'helm-complete-file-name-at-point)
   (global-set-key (kbd "C-x i") #'helm-imenu)
+  (global-set-key (kbd "M-g i") #'helm-imenu)
+  
   (setq helm-completion-style 'helm))
 
 ;;;; ido
@@ -491,14 +498,20 @@
      ("C-c a" . 'org-agenda)
      ("C-c c" . 'org-capture)
      :custom     
-     (with-eval-after-load 'org
-       (setq org-directory "/Users/aziz/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/"))
-     (setq org-default-notes-file (concat org-directory "/notes.org"))
-     (setq org-capture-templates nil)
-     (add-to-list 'org-capture-templates
-                  '("u" "URL capture from Safari" entry
-                    (file+olp+datetree "/Users/aziz/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/links.org")
-                    "* %i    :safari:url:\n%U\n\n")))
+     (with-eval-after-load
+	 'org(
+	      (setq org-directory "/Users/aziz/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/"))
+	 (setq org-default-notes-file (concat org-directory "/notes.org"))
+	 (setq org-capture-templates nil)
+	 (setq org-capture-templates
+	       `(("i" "inbox" entry (file ,(concat org-directory "inbox.org"))
+		  "* TODO %?")
+		 ("l" "link" entry (file ,(concat org-directory "inbox.org"))
+		  "* TODO %(org-cliplink-capture)" :immediate-finish t)
+		 ("c" "org-protocol-capture" entry (file ,(concat org-directory "inbox.org"))
+		  "* TODO [[%:link][%:description]]\n\n %i" :immediate-finish t)))
+	 ("u" "URL capture from Safari" entry (file+olp+datetree ,(concat org-directory "links.org")
+								 "* %i    :safari:url:\n%U\n\n"))))
 
 
 ;;;; Hyperbole
@@ -555,11 +568,14 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(org-fold-core-style 'overlays)
+ '(package-selected-packages
+   '(framemove with-simulated-input el-mock vterm projectile pdf-tools nix-ts-mode magit languagetool hyperbole helm elixir-ts-mode ag ace-window nix-mode))
  '(safe-local-variable-values
    '((projectile-project-test-cmd . "nix flake check")
      (projectile-project-run-cmd . "darwin-rebuild test --flake . --fast")
      (projectile-project-compilation-cmd . "darwin-rebuild switch --flake .#m1 --impure")
      (projectile-project-configure-cmd . "nix flake update")))
+ '(send-mail-function 'mailclient-send-it)
  '(tramp-remote-path '(tramp-own-remote-path)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
