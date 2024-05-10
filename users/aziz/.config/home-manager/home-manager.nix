@@ -180,6 +180,7 @@ in {
             languagetool
             s
             ag
+	   # info-lookmore
           ]) ++ (with pkgs; []);
     };
 
@@ -216,7 +217,7 @@ in {
   #
   #  /etc/profiles/per-user/aziz/etc/profile.d/hm-session-vars.sh
   #
-  home.sessionVariables = { EDITOR = "nvim"; LC_ALL="en_US.UTF-8"; LANG="en_US.UTF-8"; };
+  home.sessionVariables = { EDITOR = "emcas"; LC_ALL="en_US.UTF-8"; LANG="en_US.UTF-8"; };
 
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
