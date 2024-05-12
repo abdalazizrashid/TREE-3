@@ -57,6 +57,7 @@
           ("M-o" . ace-window)
           ("C-x <C-m>" . execute-extended-command)
           ("C-c <C-m>" . execute-extended-command) ;; Sloppy version
+	  ("C-h h" . nil) ;; Disable the hello page
           )
   :custom
   (user-full-name "A.R.M")
@@ -150,6 +151,7 @@
   ;; frame.el
   (window-divider-default-bottom-width 1)
   (window-divider-default-places 'bottom-only)
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 
   ;; mwheel.el
@@ -190,8 +192,8 @@
       (tool-bar-mode 1)
       (tool-bar-mode 0)))
 
-  (add-hook 'after-make-frame-functions 'my-toggle-toolbar)
-  )
+  (add-hook 'after-make-frame-functions 'my-toggle-toolbar))
+
 
 
 (use-package imenu
@@ -294,6 +296,19 @@
             #'(lambda ()
                 (ibuffer-switch-to-saved-filter-groups "default"))))
 
+(use-package dired
+  :config
+  ;; (when (string= system-type "darwin")
+  ;;   (setq dired-use-ls-dired t
+  ;;         insert-directory-program "/usr/local/bin/gls"
+  ;;         dired-listing-switches "-aBhl --group-directories-first")))
+)  
+(use-package dired-x
+  :after dired
+  :config
+  (add-hook 'dired-mode-hook #'dired-omit-mode))
+
+  
 
 ;; Project management
 ;;;; projectile
@@ -492,26 +507,29 @@
 
 ;; Information management
 ;;;; Org-mode
-(use-package org
-     :bind
-     ("C-c l" . 'org-store-link)
-     ("C-c a" . 'org-agenda)
-     ("C-c c" . 'org-capture)
-     :custom     
-     (with-eval-after-load
-	 'org(
-	      (setq org-directory "/Users/aziz/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/"))
-	 (setq org-default-notes-file (concat org-directory "/notes.org"))
-	 (setq org-capture-templates nil)
-	 (setq org-capture-templates
-	       `(("i" "inbox" entry (file ,(concat org-directory "inbox.org"))
-		  "* TODO %?")
-		 ("l" "link" entry (file ,(concat org-directory "inbox.org"))
-		  "* TODO %(org-cliplink-capture)" :immediate-finish t)
-		 ("c" "org-protocol-capture" entry (file ,(concat org-directory "inbox.org"))
-		  "* TODO [[%:link][%:description]]\n\n %i" :immediate-finish t)))
-	 ("u" "URL capture from Safari" entry (file+olp+datetree ,(concat org-directory "links.org")
-								 "* %i    :safari:url:\n%U\n\n"))))
+ (use-package org
+      :bind
+      ("C-c l" . 'org-store-link)
+      ("C-c a" . 'org-agenda)
+      ("C-c c" . 'org-capture)
+      :custom
+      (setq org-directory
+	    "/Users/aziz/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/")
+      (setq org-log-done 'time
+            org-agenda-files (list org-directory)
+            org-refile-targets '((org-agenda-files :maxlevel . 5))
+            org-refile-use-outline-path 'file)
+      (setq org-default-notes-file (concat org-directory "/notes.org"))
+      (setq org-capture-templates nil)
+      (setq org-capture-templates
+            `(("i" "inbox" entry (file ,(concat org-directory "inbox.org"))
+               "* TODO %?")
+              ("l" "link" entry (file ,(concat org-directory "inbox.org"))
+               "* TODO %(org-cliplink-capture)" :immediate-finish t)
+              ("c" "org-protocol-capture" entry (file ,(concat org-directory "inbox.org"))
+               "* TODO [[%:link][%:description]]\n\n %i" :immediate-finish t)
+              ("u" "URL capture from Safari" entry (file+olp+datetree ,(concat org-directory "links.org"))
+               "* %i    :safari:url:\n%U\n\n"))))
 
 
 ;;;; Hyperbole
@@ -547,6 +565,16 @@
                            (quote
                             (tramp-own-remote-path)))))
 
+(use-package avy
+  :config
+  (avy-setup-default)
+  :bind
+  (("C-:" . avy-goto-char)
+   ("C-'" . avy-goto-char-2)
+   ("M-g f" . avy-goto-line)
+   ("M-g w" . avy-goto-word-1)
+   ("M-g e" . avy-goto-word-0)
+   ("C-c C-j" . avy-resume)))
 
 ;; My packages
 (use-package capture-frame
