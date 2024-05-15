@@ -132,6 +132,7 @@ in {
     #  diffoscope
     silver-searcher
     coreutils-full
+    gawk
   ];
   # home.activation = {
   #   copyApplications = let
@@ -295,13 +296,20 @@ in {
       }
     ];
   };
+  home.activation.fix-lsr =
+    let
+      lsr = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister";
+    in
+      ''
+      ${lsr} -dump | grep /nix/store | ${pkgs.gawk}/bin/awk '{ print $2 }' | xargs ${lsr} -f -u
+      ${lsr} -r $HOME/.local/state/nix/profiles/home-manager/home-path/Applications/
+      '';
 
-  # 30: what if this is defined in another file? Merge it!
   programs.fish = {
       enable = true;
-      # shellAliases = {
-      #     emacs = "${pkgs.emacs}/Applications/Emacs.app/Contents/MacOS/Emacs";
-      # };
+      shellAliases = {
+	lsr = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister";
+      };
       shellInit = ''
       '';
     };
