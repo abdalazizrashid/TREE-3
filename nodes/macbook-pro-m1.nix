@@ -1,7 +1,6 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, ... }:
 {
-   # NixOS configuration.
-  nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+  # NixOS configuration.
   nix = {
     useDaemon = true;
     settings = {
@@ -47,6 +46,10 @@
     bashInteractive
     zsh
     fish
+    coreutils
+    gnugrep
+    ripgrep-all
+    findutils
   ];
   # Apps
   # `home-manager` currently has issues adding them to `~/Applications`

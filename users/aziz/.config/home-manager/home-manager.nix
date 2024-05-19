@@ -1,91 +1,20 @@
-{ config, pkgs, fetchpatch, lib, ... }:
-
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
-  fromGitHub = ref: repo:
-    pkgs.vimUtils.buildVimPlugin {
-      pname = "${lib.strings.sanitizeDerivationName repo}";
-      version = ref;
-      src = builtins.fetchGit {
-        url = "https://github.com/${repo}.git";
-        ref = ref;
-      };
-    };
-    
-  nixvim = import (builtins.fetchGit {
-    url = "https://github.com/nix-community/nixvim";
-    # If you are not running an unstable channel of nixpkgs, select the corresponding branch of nixvim.
-    # ref = "nixos-unstable";
-  });
-  
-  # emacs = pkgs.emacs29-macport.overrideAttrs (old: {
-  #       patches =
-  #         (old.patches or [])
-  #         ++ [
-  #           # Fix OS window role (needed for window managers like yabai)
-  #           (fetchpatch {
-  #             url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-28/fix-window-role.patch";
-  #             sha256 = "0c41rgpi19vr9ai740g09lka3nkjk48ppqyqdnncjrkfgvm2710z";
-  #           })
-  #           # Use poll instead of select to get file descriptors
-  #           (fetchpatch {
-  #             url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-29/poll.patch";
-  #             sha256 = "0j26n6yma4n5wh4klikza6bjnzrmz6zihgcsdx36pn3vbfnaqbh5";
-  #           })
-  #           # Enable rounded window with no decoration
-  #           (fetchpatch {
-  #             url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-29/round-undecorated-frame.patch";
-  #             sha256 = "111i0r3ahs0f52z15aaa3chlq7ardqnzpwp8r57kfsmnmg6c2nhf";
-  #           })
-  #           # Make Emacs aware of OS-level light/dark mode
-  #           (fetchpatch {
-  #             url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-28/system-appearance.patch";
-  #             sha256 = "14ndp2fqqc95s70fwhpxq58y8qqj4gzvvffp77snm2xk76c1bvnn";
-  #           })
-  #         ];
-  #     });
-  #   emacs-overlay = import (fetchTarball {
-#       url = "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
-#       sha256 = "1jppksrfvbk5ypiqdz4cddxdl8z6zyzdb2srq8fcffr327ld5jj2";
-#     });
-#     my-emacs = pkgs.emacs.override {
-#        withNativeCompilation = true;
-#        withSQLite3 = true;
-#        withTreeSitter = true;
-#        withWebP = true;
-#        withNS = true;
-#     };
+  emacsOverlay = import (
+    builtins.fetchTarball {
+      url = "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
+    }
+  );
+  pkgsWithOverlay = pkgs.extend emacsOverlay;
+in
+{
 
-#      emacs-with-packages = (pkgs.emacsPackagesFor my-emacs).emacsWithPackages (epkgs: with epkgs; [
-#        hyperbole
-#        ace-window
-#        vterm
-#        pdf-tools
-#        treesit-grammars.with-all-grammars
-#        magit
-#        helm
-#        projectile
-#        nix-ts-mode
-#        elixir-ts-mode
-#        projectile
-#        s
-
-#   #  emacs-all-the-icons-fonts
-#   #  (aspellWithDicts (d: [d.en d.sv]))
-# #    ghostscript
-#  #   tetex
-#  #   poppler
-#  #   mu
-#  #   wordnet
-# ]);
-
-in {
-  nixpkgs.overlays = [
-    (import (builtins.fetchTarball {
-      url = "https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz";
-    }))
-  ];
   home.stateVersion = "23.11";
-
 
   home.packages = with pkgs; [
     # # Adds the 'hello' command to your environment. It prints a friendly
@@ -104,7 +33,7 @@ in {
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   gcc --version && echo "${config.home.username}"
     # '')
-  ###  awscli
+    ###  awscli
     python3
     ripgrep
     sd
@@ -113,7 +42,7 @@ in {
     fzf
     docker
     curl
-    bat 
+    bat
     man
     tmux
     tree-sitter
@@ -128,11 +57,15 @@ in {
     nixd
     nodePackages_latest.nodejs
     nodePackages_latest.pyright
-    nixfmt-rfc-style
+    #nixfmt-rfc-style
     #  diffoscope
     silver-searcher
     coreutils-full
     gawk
+    findutils
+    ripgrep-all
+    ripgrep
+    atuin
   ];
   # home.activation = {
   #   copyApplications = let
@@ -163,31 +96,33 @@ in {
   # };
 
   programs.emacs = {
-      enable = true;
-      package = pkgs.emacs29-macport;
-      extraConfig = '' '';
-      extraPackages = epkgs: (
-        with epkgs; [
-          magit
-          treesit-grammars.with-all-grammars
-	  hyperbole
-          ace-window
-	  avy
-          vterm
-        ]) ++ (
-          with epkgs.melpaPackages; [
-            nix-ts-mode
-            elixir-ts-mode
-            projectile
-            helm
-            vterm
-            languagetool
-            s
-            ag
-	    pdf-tools
-	   # info-lookmore
-          ]) ++ (with pkgs; []);
-    };
+    enable = true;
+    package = pkgsWithOverlay.emacs-pgtk;
+    extraConfig = '''';
+    extraPackages =
+      epkgs:
+      (with epkgs; [
+        magit
+        treesit-grammars.with-all-grammars
+        hyperbole
+        ace-window
+        avy
+        vterm
+      ])
+      ++ (with epkgs.melpaPackages; [
+        nix-ts-mode
+        elixir-ts-mode
+        projectile
+        helm
+        vterm
+        languagetool
+        s
+        ag
+        pdf-tools
+        # info-lookmore
+      ])
+      ++ (with pkgs; [ ]);
+  };
 
   services.emacs = {
     enable = false;
@@ -222,7 +157,11 @@ in {
   #
   #  /etc/profiles/per-user/aziz/etc/profile.d/hm-session-vars.sh
   #
-  home.sessionVariables = { EDITOR = "emcas"; LC_ALL="en_US.UTF-8"; LANG="en_US.UTF-8"; };
+  home.sessionVariables = {
+    EDITOR = "emcas";
+    LC_ALL = "en_US.UTF-8";
+    LANG = "en_US.UTF-8";
+  };
 
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
@@ -249,17 +188,17 @@ in {
 
   imports = [
     # For home-manager
-    nixvim.homeManagerModules.nixvim
+    # nixvim.homeManagerModules.nixvim
     # For NixOS
-    #nixvim.nixosModules.nixvim
+    #nixvim.nixosModules.nixvi
     # For nix-darwin
     #nixvim.nixDarwinModules.nixvim
     #    "${home.homeDirectory}/.config/tmux.nix"
   ];
   # Neovim settings
-  programs.nixvim = import ./nvim.nix { inherit pkgs; };
+  # programs.nixvim = import ./nvim.nix { inherit pkgs; };
   programs.tmux = {
-    enable = true;
+    enable = false;
     keyMode = "emacs";
 
     plugins = with pkgs.tmuxPlugins; [
@@ -270,22 +209,30 @@ in {
       fpp
       {
         plugin = resurrect;
-        extraConfig = let
-          resurrectPrograms' =
-            [ "vi" "~vim->vim" "~nvim->nvim" "less" "more" "man" ];
-          sep = " ";
-          hasWhiteSpaces = p:
-            (builtins.match ''
-              .*[ 
-              
-	].*'' p) != null;
-          escapeProg = p: if (hasWhiteSpaces p) then ''"${p}"'' else p;
-          resurrectPrograms =
-            lib.concatMapStringsSep sep escapeProg resurrectPrograms';
-        in ''
-          set -g @ressurect-processes '${resurrectPrograms}'
-          set -g @resurrect-strategy-vim 'session'
-        '';
+        extraConfig =
+          let
+            resurrectPrograms' = [
+              "vi"
+              "~vim->vim"
+              "~nvim->nvim"
+              "less"
+              "more"
+              "man"
+            ];
+            sep = " ";
+            hasWhiteSpaces =
+              p:
+              (builtins.match ''
+                              .*[ 
+                              
+                	].*'' p) != null;
+            escapeProg = p: if (hasWhiteSpaces p) then ''"${p}"'' else p;
+            resurrectPrograms = lib.concatMapStringsSep sep escapeProg resurrectPrograms';
+          in
+          ''
+            set -g @ressurect-processes '${resurrectPrograms}'
+            set -g @resurrect-strategy-vim 'session'
+          '';
       }
       {
         plugin = continuum;
@@ -299,27 +246,27 @@ in {
   home.activation.fix-lsr =
     let
       lsr = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister";
+      xargs = "${pkgs.findutils}/bin/xargs";
+      awk = "${pkgs.gawk}/bin/awk";
+      rg = "${pkgs.ripgrep}/bin/rg";
     in
-      ''
-      ${lsr} -dump | grep /nix/store | ${pkgs.gawk}/bin/awk '{ print $2 }' | xargs ${lsr} -f -u
+    ''
+      ${lsr} -dump | ${rg} /nix/store | ${awk} '{ print $2 }' | xargs ${lsr} -f -u
       ${lsr} -r $HOME/.local/state/nix/profiles/home-manager/home-path/Applications/
-      '';
+    '';
 
   programs.fish = {
-      enable = true;
-      shellAliases = {
-	lsr = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister";
-      };
-      shellInit = ''
-      '';
+    enable = true;
+    shellAliases = {
+      lsr = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister";
     };
+    shellInit = ''
+      atuin init fish | source
+    '';
+  };
   home.file = {
-    ".emacs.d/init.el".source =
-        config.lib.file.mkOutOfStoreSymlink
-          "/Users/aziz/tree-3/users/aziz/.config/emacs/init.el";
-    
-    ".emacs.d/early-init.el".source =
-        config.lib.file.mkOutOfStoreSymlink
-          "/Users/aziz/tree-3/users/aziz/.config/emacs/early-init.el";
-    };
+    ".emacs.d/init.el".source = config.lib.file.mkOutOfStoreSymlink "/Users/aziz/tree-3/users/aziz/.config/emacs/init.el";
+
+    ".emacs.d/early-init.el".source = config.lib.file.mkOutOfStoreSymlink "/Users/aziz/tree-3/users/aziz/.config/emacs/early-init.el";
+  };
 }

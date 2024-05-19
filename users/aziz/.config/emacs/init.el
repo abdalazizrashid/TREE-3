@@ -375,7 +375,7 @@
          (python-ts-mode . superword-mode)
          (python-ts-mode . hs-minor-mode)
          (python-ts-mode . (lambda () (set-fill-column 88)))
-         (nix-mode . eglot-ensure)
+         (nix-ts-mode . eglot-ensure)
          (prog-mode . (lambda ()
                         (add-hook 'before-save-hook 'eglot-format nil t))))
  
@@ -385,6 +385,12 @@
   (with-eval-after-load 'eglot
     (dolist (mode '((nix-mode . ("nixd"))))
       (add-to-list 'eglot-server-programs mode)))
+
+  (add-to-list
+   'eglot-server-programs `(elixir-ts-mode
+       . ,(eglot-alternatives
+      ;; look for flakes first
+	   '(("nix-shell" "-p" "elixir-ls" "elixir" "--run" "elixir-ls")))))
   
   (add-hook 'eglot-managed-mode-hook
           #'(lambda ()
@@ -407,8 +413,7 @@
 		 command ["nixpkgs-fmt"])
                 (options (nixos :expr "(builtins.getFlake \"/Users/aziz/.config/nix-darwin/\").darwinConfigurations.simple.options")
                          ( home-manager :expr "import <home-manager> {}")
-                ))))))
-
+			 ))))))
 
 ;; Manuals and Docs
 ;;;; info TODO: read and refactor
@@ -512,7 +517,7 @@
       ("C-c l" . 'org-store-link)
       ("C-c a" . 'org-agenda)
       ("C-c c" . 'org-capture)
-      :custom
+      :config
       (setq org-directory
 	    "/Users/aziz/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/")
       (setq org-log-done 'time
@@ -576,6 +581,10 @@
    ("M-g e" . avy-goto-word-0)
    ("C-c C-j" . avy-resume)))
 
+(use-package magit
+  :custom
+  (magit-define-global-key-bindings 'recommended))
+
 ;; My packages
 (use-package capture-frame
   :load-path "capture-frame.el"
@@ -599,7 +608,10 @@
  '(package-selected-packages
    '(framemove with-simulated-input el-mock vterm projectile pdf-tools nix-ts-mode magit languagetool hyperbole helm elixir-ts-mode ag ace-window nix-mode))
  '(safe-local-variable-values
-   '((projectile-project-test-cmd . "nix flake check")
+   '((projectile-project-test-cmd . "")
+     (projectile-project-run-cmd . "")
+     (projectile-project-compilation-cmd . "")
+     (projectile-project-test-cmd . "nix flake check")
      (projectile-project-run-cmd . "darwin-rebuild test --flake . --fast")
      (projectile-project-compilation-cmd . "darwin-rebuild switch --flake .#m1 --impure")
      (projectile-project-configure-cmd . "nix flake update")))
