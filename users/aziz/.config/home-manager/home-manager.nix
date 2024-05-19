@@ -11,11 +11,53 @@ let
     }
   );
   pkgsWithOverlay = pkgs.extend emacsOverlay;
+  emacsPgtkWithPatches = pkgsWithOverlay.emacs-pgtk.overrideAttrs (old: {
+    patches =
+      (old.patches or [])
+      ++ [
+          # Fix OS window role (needed for window managers like yabai)
+          (pkgs.fetchpatch {
+            url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-28/fix-window-role.patch";
+            sha256 = "sha256-+z/KfsBm1lvZTZNiMbxzXQGRTjkCFO4QPlEK35upjsE=";
+          })
+          # Use poll instead of select to get file descriptors
+          (pkgs.fetchpatch {
+            url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-30/poll.patch";
+            sha256 = "sha256-HPuHrsKq17ko8xP8My+IYcJV+PKio4jK41qID6QFXFs=";
+          })
+          # Enable rounded window with no decoration
+          (pkgs.fetchpatch {
+            url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/master/patches/emacs-30/round-undecorated-frame.patch";
+            sha256 = "sha256-uYIxNTyfbprx5mCqMNFVrBcLeo+8e21qmBE3lpcnd+4=";
+          })
+          # Make Emacs aware of OS-level light/dark mode
+          (pkgs.fetchpatch {
+            url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-30/system-appearance.patch";
+            sha256 = "sha256-3QLq91AQ6E921/W9nfDjdOUWR8YVsqBAT/W9c1woqAw=";
+          })
+        ];
+  });
+
+  infoPlist = builtins.toJSON [
+    {
+      CFBundleURLName = "org-protocol handler";
+      CFBundleURLSchemes = [ "org-protocol" ];
+    }
+  ];
+
+  emacs = config.programs.emacs.finalPackage;
+
+  launcher = pkgs.writeScript "emacsclient" ''
+    on open location this_URL
+      do shell script "${emacs}/bin/emacsclient -n -a ${emacs}/Applications/Emacs.app/Contents/MacOS/Emacs '" & this_URL & "'"
+      tell application "Emacs" to activate
+    end open location
+  '';
+  
 in
-{
+  {
 
   home.stateVersion = "23.11";
-
   home.packages = with pkgs; [
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
@@ -97,7 +139,7 @@ in
 
   programs.emacs = {
     enable = true;
-    package = pkgsWithOverlay.emacs-pgtk;
+    package = emacsPgtkWithPatches;
     extraConfig = '''';
     extraPackages =
       epkgs:
@@ -243,7 +285,7 @@ in
       }
     ];
   };
-  home.activation.fix-lsr =
+  home.activation.fixLsr =
     let
       lsr = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister";
       xargs = "${pkgs.findutils}/bin/xargs";
@@ -254,7 +296,14 @@ in
       ${lsr} -dump | ${rg} /nix/store | ${awk} '{ print $2 }' | xargs ${lsr} -f -u
       ${lsr} -r $HOME/.local/state/nix/profiles/home-manager/home-path/Applications/
     '';
-
+  home.activation.createEmacsClientApp = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    $VERBOSE_ECHO 'Creating EmacsClient.app'
+    pushd '${config.home.homeDirectory}/Applications'
+    $DRY_RUN_CMD rm -rf $VERBOSE_ARG EmacsClient.app || true
+    $DRY_RUN_CMD /usr/bin/osacompile -o EmacsClient.app ${launcher}
+    $DRY_RUN_CMD /usr/bin/plutil -insert CFBundleURLTypes -json ${lib.escapeShellArg infoPlist} EmacsClient.app/Contents/Info.plist
+    popd
+  '';
   programs.fish = {
     enable = true;
     shellAliases = {
