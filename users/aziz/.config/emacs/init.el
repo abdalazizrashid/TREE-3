@@ -517,6 +517,8 @@
       ("C-c l" . 'org-store-link)
       ("C-c a" . 'org-agenda)
       ("C-c c" . 'org-capture)
+      :after
+      (use-package org-protocol)
       :config
       (setq org-directory
 	    "/Users/aziz/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/")
