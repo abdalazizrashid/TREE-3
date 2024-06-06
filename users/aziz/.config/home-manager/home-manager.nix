@@ -108,6 +108,7 @@ in
     ripgrep-all
     ripgrep
     atuin
+    gh
   ];
   # home.activation = {
   #   copyApplications = let
@@ -150,9 +151,7 @@ in
         ace-window
         avy
         vterm
-      ])
-      ++ (with epkgs.melpaPackages; [
-        nix-ts-mode
+	nix-ts-mode
         elixir-ts-mode
         projectile
         helm
@@ -161,6 +160,13 @@ in
         s
         ag
         pdf-tools
+	terraform-mode
+	auctex
+	exec-path-from-shell
+	helm-org-rifle
+      ])
+      ++ (with epkgs.melpaPackages; [
+        
         # info-lookmore
       ])
       ++ (with pkgs; [ ]);

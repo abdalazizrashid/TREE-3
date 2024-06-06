@@ -48,8 +48,22 @@
 )
 
 
-;; Using `use-package` to configure emacs, here emacs is a pseudo
-;; package
+;; ;; Define the function to safely load a theme
+;; (defun my/load-theme (theme)
+;;   "Load THEME, disabling any previously enabled themes."
+;;   (mapc #'disable-theme custom-enabled-themes)
+;;   (load-theme theme t))
+
+
+;; ;; Example of integrating another theme
+;; (use-package modus-vivendi-theme
+;;   :ensure t
+;;   :config
+;;   ;; Load the theme if it is not already loaded
+;;   (unless (member 'modus-vivendi custom-enabled-themes)
+;;     (my/load-theme 'modus-vivendi)))
+;; ;; Using `use-package` to configure emacs, here emacs is a pseudo
+;; ;; package
 
 
 (use-package emacs
@@ -114,7 +128,7 @@
   (user-mail-address "abdalaziz.rashid@outlook.com")
 
   ;; files.el
-  (auto-save-file-name-transforms '(("\\`/[^/]*:.*" "/tmp" t)))
+  (auto-save-file-name-transforms '(("\\`/[^/]*:.*" "~/.emacs.d/auto-saves/" t)))
   (backup-directory-alist '(("." . "~/.local/share/emacs/backups")))
   (delete-old-versions t)
   (directory-abbrev-alist
@@ -157,6 +171,8 @@
   ;; mwheel.el
   ;; TODO: disable keybindings to  mouse-wheel-global-text-scale
   ;; and mouse-wheel-text-scale
+  (global-set-key (kbd "<C-wheel-up>") nil)
+  (global-set-key (kbd "<C-wheel-down>") nil)
 
   :custom-face
 
@@ -194,7 +210,14 @@
 
   (add-hook 'after-make-frame-functions 'my-toggle-toolbar))
 
-
+(use-package package
+  :custom
+  (add-to-list 'package-archives
+      '(("melpa" . "https://melpa.org/packages/")
+	("melpa-stable" . "https://stable.melpa.org/packages/")
+        ("gnu" . "https://elpa.gnu.org/packages/")
+        ("org" . "http://orgmode.org/elpa/")))
+  (package-initialize))
 
 (use-package imenu
   :config
@@ -314,6 +337,7 @@
 ;;;; projectile
 (use-package projectile
   :init
+  (require 'tramp)
   (projectile-mode t)
   :config
   (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
@@ -342,12 +366,13 @@
 ;;;; Structural editing
 (use-package treesit
   :mode (("\\.tsx\\'" . tsx-ts-mode))
-  :config
-  (use-package combobulate
+  :after combobulate)
+
+(use-package combobulate
     :preface
     (setq combobulate-key-prefix "C-c o")
     :hook
-      ((python-ts-mode . combobulate-mode)
+    ((python-ts-mode . combobulate-mode)
        (js-ts-mode . combobulate-mode)
        (html-ts-mode . combobulate-mode)
        (css-ts-mode . combobulate-mode)
@@ -355,8 +380,7 @@
        (typescript-ts-mode . combobulate-mode)
        (json-ts-mode . combobulate-mode)
        (tsx-ts-mode . combobulate-mode))
-    :load-path ("combobulate")))
-
+    :load-path ("combobulate/combobulate"))
 
 
 ;;;; eglot
@@ -366,16 +390,17 @@
   :custom
   (eglot-autoshutdown t)
   :bind (:map eglot-mode-map
-              ("C-c C-d" . eldoc)
-              ("C-c C-e" . eglot-rename)
-              ("C-c C-o" . python-sort-imports)
-              ("C-c C-f" . eglot-format-buffer))
+              ("C-c C-d" . eldoc))
+;;              ("C-c C-e" . eglot-rename)
+;;              ("C-c C-o" . python-sort-imports)
+;;              ("C-c C-f" . eglot-format-buffer))
   :hook ((python-ts-mode . eglot-ensure)
          (python-ts-mode . flyspell-prog-mode)
          (python-ts-mode . superword-mode)
          (python-ts-mode . hs-minor-mode)
          (python-ts-mode . (lambda () (set-fill-column 88)))
          (nix-ts-mode . eglot-ensure)
+	 (tex-mode . eglot-ensure)
          (prog-mode . (lambda ()
                         (add-hook 'before-save-hook 'eglot-format nil t))))
  
@@ -462,28 +487,29 @@
 
 (use-package info-look :autoload info-lookup-add-help)
 
-(use-package info-lookmore
-  :after info-look
-  :config
-  (info-lookmore-elisp-cl)
-  (info-lookmore-elisp-userlast)
-  (info-lookmore-elisp-gnus)
-  (info-lookmore-apropos-elisp))
+;; (use-package info-lookmore
+;;   :enable nil
+;;   :after info-look
+;;   :config
+;;   (info-lookmore-elisp-cl)
+;;   (info-lookmore-elisp-userlast)
+;;   (info-lookmore-elisp-gnus)
+;;   (info-lookmore-apropos-elisp))
 
 ;; Completion
 
 ;;;; Orderless
-(use-package orderless
-  :disabled t
-  :demand t
-  :config
-  (defun prefixes-for-separators (pattern _index _total)
-    (when (string-match-p "^[^][^\\+*]*[./-][^][\\+*$]*$" pattern)
-      (cons 'orderless-prefixes pattern)))
-  (cl-pushnew '(?` . orderless-regexp) orderless-affix-dispatch-alist)
-  :custom
-  (orderless-style-dispatchers
-   '(orderless-affix-dispatch prefixes-for-separators)))
+;; (use-package orderless
+;;   :disabled t
+;;   :demand t
+;;   :config
+;;   (defun prefixes-for-separators (pattern _index _total)
+;;     (when (string-match-p "^[^][^\\+*]*[./-][^][\\+*$]*$" pattern)
+;;       (cons 'orderless-prefixes pattern)))
+;;   (cl-pushnew '(?` . orderless-regexp) orderless-affix-dispatch-alist)
+;;   :custom
+;;   (orderless-style-dispatchers
+;;    '(orderless-affix-dispatch prefixes-for-separators)))
 
 ;;;; Helm
 (use-package helm
@@ -501,43 +527,52 @@
   
   (setq helm-completion-style 'helm))
 
-;;;; ido
-(use-package ido
-  :demand t
-  :config (setq ido-enable-flex-matching t)
-  (ido-mode t)
-  ;;(setq ido-everywhere t)
-  )
+;; ;;;; ido
+;; (use-package ido
+;;   :demand t
+;;   :config (setq ido-enable-flex-matching t)
+;;   (ido-mode t)
+;;   ;;(setq ido-everywhere t)
+;;   )
 
 
 ;; Information management
 ;;;; Org-mode
- (use-package org
+(use-package org
       :bind
       ("C-c l" . 'org-store-link)
       ("C-c a" . 'org-agenda)
       ("C-c c" . 'org-capture)
-      :after
-      (use-package org-protocol)
+      :hook (org-mode . auto-revert-mode)
       :config
+      (setq auto-revert-verbose nil)
       (setq org-directory
-	    "/Users/aziz/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/")
+	    "/Users/aziz/Documents/org")
+      ;; (setq org-log-done 'time
+      ;;       ;;org-agenda-files (list org-directory)
+      ;; 	    org-agenda-files (directory-files-recursively org-directory "\\.org$")
+      ;;       org-refile-targets '((org-agenda-files :maxlevel . 5))
+      ;;       org-refile-use-outline-path 'file)
+;; org-refile-targets '((org-agenda-files :maxlevel . 5))
       (setq org-log-done 'time
-            org-agenda-files (list org-directory)
-            org-refile-targets '((org-agenda-files :maxlevel . 5))
-            org-refile-use-outline-path 'file)
+	    org-agenda-files (list org-directory)	   
+	    org-refile-use-outline-path 'file
+	    org-refile-targets '((nil :maxlevel . 5) (org-agenda-files :maxlevel . 5))
+	    org-outline-path-complete-in-steps nil)
       (setq org-default-notes-file (concat org-directory "/notes.org"))
       (setq org-capture-templates nil)
       (setq org-capture-templates
-            `(("i" "inbox" entry (file ,(concat org-directory "inbox.org"))
+            `(("i" "inbox" entry (file ,(concat org-directory "/inbox.org"))
                "* TODO %?")
-              ("l" "link" entry (file ,(concat org-directory "inbox.org"))
+              ("l" "link" entry (file ,(concat org-directory "/inbox.org"))
                "* TODO %(org-cliplink-capture)" :immediate-finish t)
-              ("c" "org-protocol-capture" entry (file ,(concat org-directory "inbox.org"))
+              ("c" "org-protocol-capture" entry (file ,(concat org-directory "/inbox.org"))
                "* TODO [[%:link][%:description]]\n\n %i" :immediate-finish t)
-              ("u" "URL capture from Safari" entry (file+olp+datetree ,(concat org-directory "links.org"))
+              ("u" "URL capture from Safari" entry (file+olp+datetree ,(concat org-directory "/links.org"))
                "* %i    :safari:url:\n%U\n\n"))))
 
+(use-package org-protocol
+  :after org)
 
 ;;;; Hyperbole
 
@@ -545,7 +580,14 @@
 	    :demand t
 	    :config
 	    (add-to-list 'Info-directory-list (concat hyperb:dir "man/"))
-	    (hyperbole-mode t))
+	    (add-to-list 'hyrolo-file-list (concat org-directory "people.org"))
+	    (hyperbole-mode t)
+	    (add-hook 'hyperbole-init-hook
+		      (lambda ()
+			(require 'org)
+			(setq hyrolo-file-list (append (hyrolo-initialize-file-list)
+						       (list org-directory))))))
+
 ;; Nix
 ;; https://github.com/NixOS/nix-mode?tab=readme-ov-filelsp
 (use-package nix-mode
@@ -587,12 +629,152 @@
   :custom
   (magit-define-global-key-bindings 'recommended))
 
+(use-package pdf-tools)
+
+;; Auctex
+(use-package tex
+  :ensure auctex
+  :defer t
+ ;; :mode ("\\.tex\\'" . LaTeX-mode)
+  :hook ((LaTeX-mode . TeX-source-correlate-mode)
+         (LaTeX-mode . TeX-PDF-mode)
+	 (LaTeX-mode . turn-on-reftex)
+	 (LaTeX-mode . abbrev-mode))
+  :custom
+  (TeX-PDF-mode t)
+  (TeX-auto-save t)
+  (TeX-auto-untabify t)
+  (TeX-electric-escape t)
+  (TeX-electric-math '("\\(" . "\\)"))
+  (TeX-engine 'xetex)
+  (TeX-parse-self t)
+  (TeX-master nil)
+  ;; Eglot keybindings interferes with auctex
+  (with-eval-after-load 'eglot
+    (define-key eglot-mode-map (kbd "C-c C-e") nil)
+  :config
+  ;; Set Skim as the PDF viewer
+  (setq TeX-view-program-list
+        '(("Skim" "open -a Skim.app %o")))
+  (setq TeX-view-program-selection
+        '((output-pdf "Skim")
+	  ((output-dvi style-pstricks)
+	   "dvips and gv")
+	  (output-dvi "xdvi")
+	  (output-html "open")))
+  ;; Configure Skim to auto-reload PDF files
+  (setq TeX-source-correlate-mode t)
+  (setq TeX-source-correlate-start-server t)
+  ;; Sync TeX source with Skim
+  (add-hook 'TeX-after-compilation-finished-functions
+            #'TeX-revert-document-buffer)))
+
+
+;;   :defines
+;;   (latex-help-cmd-alist
+;;    latex-help-file)
+;;   :preface
+;;   (defvar latex-prettify-symbols-alist
+;;     '(("\N{THIN SPACE}" . ?\⟷)))
+;;   :config
+;;   (require 'preview)
+
+  ;; (defun latex-help-get-cmd-alist ()    ;corrected version:
+  ;;   "Scoop up the commands in the index of the latex info manual.
+  ;;  The values are saved in `latex-help-cmd-alist' for speed."
+  ;;   ;; mm, does it contain any cached entries
+  ;;   (if (not (assoc "\\begin" latex-help-cmd-alist))
+  ;;       (save-window-excursion
+  ;;         (setq latex-help-cmd-alist nil)
+  ;;         (Info-goto-node (concat latex-help-file "Command Index"))
+  ;;         (goto-char (point-max))
+  ;;         (while (re-search-backward "^\\* \\(.+\\): *\\(.+\\)\\." nil t)
+  ;;           (let ((key (buffer-substring (match-beginning 1) (match-end 1)))
+  ;;                 (value (buffer-substring (match-beginning 2)
+  ;;                                          (match-end 2))))
+  ;;             (add-to-list 'latex-help-cmd-alist (cons key value))))))
+  ;;   latex-help-cmd-alist)
+
+  ;; (info-lookup-add-help :mode 'LaTeX-mode
+  ;;                       :regexp ".*"
+  ;;                       :parse-rule "\\\\?[a-zA-Z]+\\|\\\\[^a-zA-Z]"
+  ;;                       :doc-spec '(("(latex2e)Concept Index")
+  ;;                                   ("(latex2e)Command Index")))
+
+  ;; (add-hook 'LaTeX-mode-hook
+  ;;           #'(lambda
+  ;;               ()
+  ;;               (setq-local prettify-symbols-alist latex-prettify-symbols-alist)
+  ;;               (prettify-symbols-mode 1)))
+
+  ;; (add-hook 'TeX-after-compilation-finished-functions
+  ;;           #'TeX-revert-document-buffer))
+
 ;; My packages
 (use-package capture-frame
-  :load-path "capture-frame.el"
+  :load-path "./capture-frame.el"
   :commands (my/make-capture-frame)) 
 
-  
+(use-package terraform-mode
+  :custom (terraform-indent-level 4)
+  :config
+  (defun my-terraform-mode-init ()
+    ;; if you want to use outline-minor-mode
+    ;; (outline-minor-mode 1)
+    )
+  (add-hook 'terraform-mode-hook 'my-terraform-mode-init))
+
+
+(use-package exec-path-from-shell
+  :config
+  (exec-path-from-shell-initialize)
+  (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_CTYPE" "NIX_SSL_CERT_FILE" "NIX_PATH"))
+    (add-to-list 'exec-path-from-shell-variables var))
+  (exec-path-from-shell-copy-env "PATH"))
+
+
+(use-package helm-org-rifle)
+(use-package org-transclusion)
+(use-package org-ref
+  :config
+  (require 'org-ref-helm)
+  :bind
+  (:map org-mode-map
+        ("C-c ]" . org-ref-insert-link))
+  :custom
+  (bibtex-completion-bibliography '("~/Documents/bibliography.bib"))
+  (bibtex-completion-library-path '("~/My library/"))
+  (bibtex-completion-notes-path "~/notes/")
+  (bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n")
+  (bibtex-completion-additional-search-fields '(keywords))
+  (bibtex-completion-display-formats '((article       . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
+                                       (inbook        . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
+                                       (incollection  . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+                                       (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+                                       (t             . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*}")))
+  (bibtex-completion-pdf-open-function (lambda (fpath) (call-process "open" nil 0 nil fpath))))
+
+(use-package bibtex
+  :custom
+  (bibtex-autokey-year-length 4)
+  (bibtex-autokey-name-year-separator "-")
+  (bibtex-autokey-year-title-separator "-")
+  (bibtex-autokey-titleword-separator "-")
+  (bibtex-autokey-titlewords 2)
+  (bibtex-autokey-titlewords-stretch 1)
+  (bibtex-autokey-titleword-length 5)
+  :bind
+  (:map bibtex-mode-map
+        ("H-b" . org-ref-bibtex-hydra/body)))
+
+(use-package dumb-jump
+  :hook
+  ((add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
+  :custom
+  (setq xref-show-definitions-function #'xref-show-definitions-completing-read))
+
+
+
 ;; References
 ;;;; Disclaimars
 ;; the current version borrows heavily from John Wiegley excellent
@@ -606,16 +788,35 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-agenda-files
+   '("~/tree-3/users/aziz/phd-thesis/pre-defense-presentation.org"
+     "/Users/aziz/Documents/org/Russian.org"
+     "/Users/aziz/Documents/org/calendar-beorg.org"
+     "/Users/aziz/Documents/org/emacs.org"
+     "/Users/aziz/Documents/org/inbox.org"
+     "/Users/aziz/Documents/org/links.org"
+     "/Users/aziz/Documents/org/media.org"
+     "/Users/aziz/Documents/org/people.org"
+     "/Users/aziz/Documents/org/pkg.org"
+     "/Users/aziz/Documents/org/programming.org"
+     "/Users/aziz/Documents/org/research.org"
+     "/Users/aziz/Documents/org/stats.org"
+     "/Users/aziz/Documents/org/training.org"
+     "/Users/aziz/Documents/org/work.org"))
  '(org-fold-core-style 'overlays)
  '(package-selected-packages
-   '(framemove with-simulated-input el-mock vterm projectile pdf-tools nix-ts-mode magit languagetool hyperbole helm elixir-ts-mode ag ace-window nix-mode))
+   '(ace-window ag dumb-jump el-mock elixir-ts-mode framemove helm
+		helm-bibtex hyperbole languagetool magit nix-mode
+		nix-ts-mode org org-ref org-transclusion orgit
+		pdf-tools projectile vterm with-simulated-input))
  '(safe-local-variable-values
-   '((projectile-project-test-cmd . "")
-     (projectile-project-run-cmd . "")
+   '((projectile-project-test-cmd . "") (projectile-project-run-cmd . "")
      (projectile-project-compilation-cmd . "")
      (projectile-project-test-cmd . "nix flake check")
-     (projectile-project-run-cmd . "darwin-rebuild test --flake . --fast")
-     (projectile-project-compilation-cmd . "darwin-rebuild switch --flake .#m1 --impure")
+     (projectile-project-run-cmd
+      . "darwin-rebuild test --flake . --fast")
+     (projectile-project-compilation-cmd
+      . "darwin-rebuild switch --flake .#m1 --impure")
      (projectile-project-configure-cmd . "nix flake update")))
  '(send-mail-function 'mailclient-send-it)
  '(tramp-remote-path '(tramp-own-remote-path)))
@@ -625,3 +826,14 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+
+
+
+
+
+
+
+
+
+
