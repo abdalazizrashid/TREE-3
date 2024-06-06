@@ -1,0 +1,35 @@
+%\documentclass[14pt, a4paper, oneside]{article}
+%\documentclass[12pt]{report}
+\documentclass{book}
+
+\input{preamble.tex}
+
+\begin{document}
+
+\frontmatter
+\include{frontmatter/titlepage}
+\include{frontmatter/abstract}
+%\include{100-Introduction}
+%\include{200-Related_work}
+%\include{formalism}
+%\include{body}
+\tableofcontents
+\listoffigures
+\listoftables
+\mainmatter
+\include{100-Introduction}
+\include{chapters/chapter2}
+\backmatter
+ 
+\appendix
+\include{appendices/appendixA}
+\includepdf[pages=-]{appendices/review.pdf}
+\includepdf[pages=-]{appendices/dataset.pdf}
+\includepdf[pages=-]{appendices/sparse_representation.pdf}
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: LaTeX
+%%% TeX-master: t
+%%% End:

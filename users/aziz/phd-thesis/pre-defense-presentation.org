@@ -1,0 +1,108 @@
+#+startup: beamer
+
+#+title: Presentation
+#+subtitle: pre-defense
+#+author: Al-maeeni Abdalaziz
+#+options: h:2 toc:t num:t
+#+latex_class: beamer
+#+latex_class_options: [presentation]
+#+beamer_theme: madrid
+#+columns: %45item %10beamer_env(env) %10beamer_act(act) %4beamer_col(col)
+
+[[cite:&klicperaGemNetUniversalDirectional2021]]
+[[cite:&schuttSchNetContinuousfilterConvolutional2017a]]
+[[cite:&xie2021crystal;&PhotonicCrystals2008]]
+[[cite:&Pereyra1980Computational]]
+
+
+
+[[cite:&Pereyra1980Cwomputational]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* This is the first structural section
+
+** Frame 1
+*** Thanks to Eric Fraga                                           :B_block:
+    :PROPERTIES:
+    :BEAMER_COL: 0.48
+    :BEAMER_ENV: block
+    :END:
+    for the first viable Beamer setup in Org
+*** Thanks to everyone else                                        :B_block:
+    :PROPERTIES:
+    :BEAMER_COL: 0.48
+    :BEAMER_ACT: <2->
+    :BEAMER_ENV: block
+    :END:
+    for contributing to the discussion
+**** This will be formatted as a beamer note                       :B_note:
+     :PROPERTIES:
+     :BEAMER_env: note
+     :END:
+
+
+     
+* This is the first structural sectionmeeeeeeee
+
+** Frame 1
+*** Thanks to Eric Fraga                                           :B_block:
+    :PROPERTIES:
+    :BEAMER_COL: 0.48
+    :BEAMER_ENV: block
+    :END:
+    for the first viable Beamer setup in Org
+*** Thanks to everyone else                                        :B_block:
+    :PROPERTIES:
+    :BEAMER_COL: 0.48
+    :BEAMER_ACT: <2->
+    :BEAMER_ENV: block
+    :END:
+    for contributing to the discussion
+**** This will be formatted as a beamer note                       :B_note:
+     :PROPERTIES:
+     :BEAMER_env: note
+     :END:
+
+
+** A more complex slide                                               :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 50
+:END:
+This slide illustrates the use of Beamer blocks.  The following text,
+with its own headline, is displayed in a block:
+*** Org mode increases productivity                               :B_theorem:
+    :PROPERTIES:
+    :BEAMER_env: theorem
+    :END:
+    - org mode means not having to remember LaTeX commands.
+    - it is based on ascii text which is inherently portable.
+    - Emacs!
+
+    \hfill \(\qed\)

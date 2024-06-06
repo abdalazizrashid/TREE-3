@@ -1,0 +1,21 @@
+# tex
+
+*.log
+*.pdf
+*.synctex.gz
+*.aux
+*.bcf
+*.out
+*.dvi
+*.log
+*.bcf
+*.run.xml
+*.toc
+*.bbl
+*.blg
+*.lot
+*.lof
+_region_.tex
+
+# nix
+.direnv/

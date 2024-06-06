@@ -1,0 +1,125 @@
+\section{Introduction}
+
+\subsection{Main contributions}
+The main contributions that this research provides can be summarized
+as follows:\todo{before this sentence it might be useful to say how
+  the research is comprised of two distinct parts both of which solve
+  the forward problem (digital twin perspective)}
+\begin{itemize}
+    \item In the first part of this research that deals with 2D
+      materials we employ machine learning techniques to estimate the
+      properties of 2D materials efficiently based on their lattice
+      structure and defect configuration. Our method introduces a
+      novel representation of these materials with defects, enabling a
+      neural network to train with speed and precision. By comparing
+      our approach to state-of-the-art methodologies, we showcase a
+      significant reduction in energy prediction error, achieving a
+      minimum 3.7 times drop. Moreover, our method stands out as
+      remarkably more resource-efficient than competing methods,
+      boasting superior performance in both training and inference
+      stages.
+    \item Another contribution into the material science part of this
+      research is the development of a comprehensive dataset for 2D
+      materials defects, named the 2D Material Defect (2DMD), which
+      encompass defect properties of various 2D materials. These
+      datasets were generated using Density Functional Theory (DFT)
+      calculations. Our research provides an insightful understanding
+      of the intricate behaviors of defect properties in 2D materials
+      through a data-driven approach. This holds great potential in
+      guiding the development of highly efficient machine learning
+      models. Moreover, as our database continues to expand with the
+      inclusion of more materials configurations, it has the
+      capability to serve as a powerful platform for designing
+      materials with predetermined properties.
+    \item In the second part of the research we have successfully
+      developed multiple generative models for a storage system. Each
+      storage component is represented by a probabilistic model that
+      accurately captures the probability distribution of its
+      performance in terms of IOPS and latency. Through rigorous
+      experimentation, we have achieved impressive prediction
+      accuracy. Additionally, we introduce a novel dataset that can
+      serve as a valuable benchmark for regression algorithms,
+      conditional generative models, and uncertainty estimation
+      methods in the field of machine learning.
+      
+    \item 
+\end{itemize}
+
+\subsection{Relevance of the study and applications}
+
+Transition Metal Dichalcogenides (TMDCs) are a class of two-dimensional (2D) materials with a layered structure comprising transition metals and chalcogen atoms. These materials have attracted significant attention in materials science and condensed matter physics due to their exceptional attributes and versatile applications.
+
+% TMDCs exhibit a layered structure where weak van der Waals forces hold together multiple atomic layers. Each layer comprises a transition metal atom sandwiched between two chalcogen atoms, resulting in their atomically thin, 2D nature.
+
+Their tunability is a notable feature, as different combinations of transition metals (e.g., molybdenum, tungsten) and chalcogen atoms (e.g., sulfur, selenium) in the form of point defects enable the fine-tuning of electronic, optical, and chemical properties. This versatility allows researchers to customize TMDC properties to suit specific applications.
+
+Many TMDCs display semiconducting behavior, making them ideal for electronic and optoelectronic devices. Their 2D structure facilitates the development of ultrathin transistors and photodetectors, enhancing the miniaturization and performance of electronic components.
+
+TMDCs possess a direct bandgap, enabling efficient light emission and absorption. This property is crucial for applications such as light-emitting diodes (LEDs), photovoltaics, and lasers, offering opportunities for energy-efficient and high-performance optoelectronic devices.
+
+Certain TMDCs, including molybdenum disulfide ($MoS_2$), exhibit remarkable catalytic activity. They can serve as catalysts in various chemical reactions, such as the hydrogen evolution reaction (HER) and the oxygen reduction reaction (ORR), critical for clean energy technologies like fuel cells and electrolyzers.
+
+Despite their atomic thinness, TMDCs are mechanically robust and can endure significant strain, making them suitable for flexible electronics and wearable devices. This mechanical resilience enhances their applicability in emerging technologies.
+
+The 2D nature of TMDCs can lead to quantum confinement effects, opening avenues for applications in quantum technologies and novel electronic devices with unique quantum properties.
+
+Some TMDCs exhibit topological insulator behavior, a quantum state of matter with potential implications for future quantum computing and electronics, showcasing their significance in advanced quantum technologies.
+
+TMDCs hold promise in nanoelectronics, offering the potential to replace or complement traditional silicon-based electronics. They offer advantages such as smaller size, reduced power consumption, and enhanced performance in nanoscale devices.
+
+Furthermore, TMDCs are under exploration for use in energy storage devices, including batteries and supercapacitors. Their distinctive properties have the potential to improve energy storage capacity and charging efficiency, contributing to sustainable energy solutions.
+
+Those numerous ways of practical application of TMDCs suggest that studying the properties of such 2D materials is a promising research topic which can lead to the development of new materials with many useful properties.
+
+The diverse range of applications and exceptional attributes exhibited by Transition Metal Dichalcogenides (TMDCs) make them a highly promising research topic in the field of materials science. The tunability of TMDCs through the incorporation of different transition metals and chalcogen atoms allows for fine-tuning of their electronic, optical, and chemical properties, enabling customization for specific applications. Their 2D structure facilitates the development of ultrathin transistors and photodetectors, enhancing the performance and miniaturization of electronic components. 
+
+Additionally, TMDCs' direct bandgap enables efficient light emission and absorption, making them suitable for energy-efficient optoelectronic devices such as LEDs and photovoltaics. The catalytic activity of certain TMDCs offers potential applications in clean energy technologies such as fuel cells and electrolyzers. 
+
+Furthermore, their mechanical robustness and ability to endure significant strain make them suitable for flexible electronics and wearable devices. The emergence of quantum confinement effects and topological insulator properties in TMDCs also open up avenues for applications in quantum technologies and advanced electronics. 
+
+Moreover, TMDCs hold promise in nanoelectronics as a potential replacement for or complement to traditional silicon-based electronics, offering advantages such as smaller size, reduced power consumption, and enhanced performance in nanoscale devices. 
+
+Finally, TMDCs are being explored for use in energy storage devices, with the potential to improve energy storage capacity and charging efficiency, contributing to sustainable energy solutions. 
+
+These extensive practical applications of TMDCs highlight the importance of studying their properties and pave the way for the development of new materials with a multitude of useful properties.
+
+Another direction in which this research aims to employ interpretable generative models is 
+studying the performance modeling for digital storage system encompassing critical components such as solid-state drives (SSDs), hard disk drives (HDDs), and storage caches. The increasing volume of data generated in the era of big data necessitates the development of efficient, high-capacity, and cost-effective storage systems. Accurate performance modeling is pivotal in the design and optimization of these systems.
+
+The importance of this problem lies in its multifaceted applications. Firstly, performance modeling aids engineers in comprehending how DSS behaves under diverse conditions, enabling the identification of optimal system designs. Additionally, it facilitates marketing analytics by estimating system performance aligned with customer requirements. Moreover, performance models play a crucial role in diagnostics and predictive maintenance, where they help detect failures and anomalies by comparing model predictions with real-world measurements.
+
+The key components of SSDs include controllers, fast cache memory, and storage pools comprising HDDs or SSDs united with RAID schemes. Accurate performance modeling is particularly challenging for SSDs due to their unique characteristics, such as low latency, slow update, and block-level erasure. Therefore, research in this area explores innovative approaches, using domain knowledge to build data efficient models using machine learning methods, and physics-inspired methods to effectively model and simulate SSD performance.
+
+While the existing solutions provide valuable insights into SSDs performance, they have notable limitations. Many focus on modeling a single device, either HDD or SSD, and are resource-intensive as they simulate physical processes and firmware stacks. Furthermore, these models do not consider the holistic architecture and software complexities of DSS.
+
+In conclusion, research on interpretable invertible generative models for performance modeling in digital storage systems is of paramount importance. The increasing demand for efficient and cost-effective storage systems necessitates accurate performance modeling for optimal system design and optimization. This research holds potential in advancing the field of storage system design and optimization, addressing the challenges associated with the era of big data.
+
+
+\newpage
+\subsection{Purpose of the study and objectives}
+
+The primary purpose of this study is to elucidate the intricate relationship between inductive bias and the interpretability of generative models. This involves investigating how domain-specific knowledge influences the design and training of generative models, and how interpretability can be enhanced through these domain-driven approaches. The study seeks to bridge the gap between theoretical understanding and practical application, providing insights that can guide the development and deployment of generative models in various domains.
+
+
+The proposed solution in this work introduces a data-driven approach using a generative model as a digital twin for storage systems. This aims to facilitate  storage system management, predictive maintenance, and optimization by accurately simulating real-world system behavior and offering insights for enhanced performance and reliability. It learns vendor-specific details, architectural nuances, and software impacts directly from real performance measurements of the system components. By providing datasets of IOPS (Input/Output Operations Per Second) and latency measurements for various system configurations and load parameters, this approach supports benchmarking regression algorithms, conditional generative models, and uncertainty estimation methods in machine learning.
+
+
+Another application of generative modeling that we explore lies within the scope of material science. Our objective is to leverage generative models to predict and synthesize novel TMDC structures with tailored properties, potentially revolutionizing materials design and discovery. 
+
+Through these investigations, we aim to utilize the potential of generative models, aligning them with domain-specific knowledge and incorporating inductive biases in the form of symmetries. This alignment ensures their responsible and effective utilization across a wide spectrum of applications, ranging from materials science advancements to data infrastructure optimization.
+
+
+The objectives of this research are defined as follows:
+
+\begin{description}
+    \item [Explore the Concept of Inductive Bias] One of the core objectives of this study is to delve into the concept of inductive bias and its significance in the context of generative models. Inductive bias refers to the prior knowledge and assumptions incorporated into machine learning algorithms to facilitate learning from data. Understanding how inductive bias affects the behavior of generative models is crucial for making informed decisions regarding their use in specific applications.
+    \item [Investigate the Role of Domain Knowledge] Another key objective is to analyze the role of domain knowledge in shaping the inductive bias of generative models. Domain-specific information, such as expert insights, rules, or constraints, can guide the learning process and help generative models produce more accurate and contextually relevant outputs. This investigation will explore how different domains leverage their unique knowledge to bias generative models effectively.
+    \item [Assess the Trade-offs in Inductive Bias] Generative models often face a trade-off between flexibility and stability. This study aims to examine the trade-offs involved in introducing inductive bias to generative models. By doing so, it will shed light on how domain knowledge can be harnessed to balance these competing objectives and yield models that are both expressive and reliable.
+    % \item [Examine Interpretability Techniques] Interpretability is a critical aspect of generative models, especially in applications where the generated data must be understandable and trustworthy. This study will explore various interpretability techniques and methodologies that can be applied to generative models, elucidating their strengths and weaknesses.
+    \item [Identify Best Practices for Domain-Specific Generative Models] Drawing from the insights gained, this study aims to identify best practices for developing domain-specific generative models. These practices will encompass a holistic approach, incorporating inductive bias strategies and interpretability techniques to create models that align with domain requirements and constraints.
+    \item [Importance of the Study] The importance of this study lies in its potential to advance the responsible and effective use of generative models across various domains. By elucidating the connection between inductive bias and interpretability, this research can guide practitioners in designing generative models that are not only capable of producing high-quality outputs but also adhere to domain-specific requirements and ethical considerations.
+\end{description}
+
+
+
+In conclusion, this study seeks to unravel the complex relationship between inductive bias, domain knowledge, and interpretability in generative models. By achieving its objectives and addressing its purpose, it aspires to provide a comprehensive framework for leveraging domain-specific knowledge to improve the performance and trustworthiness of generative models across diverse application domains.

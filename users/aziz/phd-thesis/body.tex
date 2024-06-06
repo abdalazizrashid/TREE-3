@@ -1,0 +1,676 @@
+
+\section{Materials design}
+\subsection{Introduction}
+    In materials science, the primary objective is the design of materials with predetermined characteristics. Various materials genome projects have been established in pursuit of this goal. A particularly promising avenue lies in 2D materials, which offer the potential for controlled property modifications through chemical alterations. In these materials, foreign atoms can be introduced either on the surface as adatoms or within the crystal plane as substitutions. Remarkably, no existing database addresses the modification of properties in 2D crystals via defect introduction. In this study, we conduct a comprehensive examination of the electronic properties of defects in $MoS_2$ material. Our database facilitates the analysis of defect structures using machine learning techniques.
+    
+    
+    The defect space within 2D materials is primarily characterized by three sets of variables: the host 2D material, the defect components, and the defect configurations. Our dataset encompasses detailed information on various configurations and inter-defect separations for simple defects, making it well-suited for machine learning applications. We have also documented defect properties for several popular materials, including $MoS_2$, $WeSe_2$, $hBN$, $GaSe$, $InSe$, and black phosphorus. However, the random sampling approach employed in this context does lead to data sparsity. Nonetheless, it enables broad coverage of the diverse phase space of defect properties and supports the development of versatile, transferable machine learning algorithms, such as active learning \cite{murray2022addressing}.
+    
+    
+
+%%%%
+    Atomic-scale material customization holds immense potential for unlocking novel quantum and classical properties. Controlled defect engineering, involving the introduction of vacancies or specific impurities, allows for tailored modifications and the creation of new functionalities in crystalline materials \cite{lin2021controllable}. The ability to exfoliate crystals into two-dimensional atomic layers, developed over the past two decades \cite{kostya2005}, has significantly advanced controlled material engineering. The reduced dimensionality in layered two-dimensional materials enables precise manipulation of defects atom by atom, allowing fine-tuning of their properties, even approaching quantum mechanical limits \cite{spe2016}. Such atomic-scale techniques offer promising prospects for the semiconductor industry in the post-Moore era and the development of emerging technologies, including quantum computing \cite{frey2020machine}, catalysts \cite{chanussot2021open}, and photovoltaics \cite{wang2019novel}.
+    
+    Despite decades of research, understanding the structure-property relationship for crystal defects remains limited. Only a small subset of defects in the vast configuration space has been explored \cite{bertoldo2022quantum}. The properties of complexes formed by multiple point defects, where quantum effects dominate, depend intricately on the composition and arrangement of these defects. The complexity arises from the exchange interactions between defect orbitals on discrete lattices \cite{freysoldt2014first}. Traditional trial-and-error experiments and computationally expensive quantum mechanical simulations are impractical due to the extensive chemical and configuration possibilities.
+    
+    Recent advancements in materials databases have spurred the application of deep learning in atomistic predictions. Machine learning models trained on density functional theory (DFT) calculations have proven effective in identifying materials for various applications, such as batteries and catalysts, significantly reducing computational costs while maintaining accuracy \cite{smith2017ani, stocker2022robust}. Notably, graph neural networks, including MEGNet \cite{chen2019graph}, CGCNN \cite{xie2018crystal}, SchNet \cite{schutt2018schnet}, and GemNet \cite{GemNet}, have emerged as successful architectures.
+    
+    This work introduces a machine learning-based method for predicting the energetic and electronic structures of defects in 2D materials. We established the 2D Material Defect database (2DMD) using high-throughput DFT calculations \cite{defectsdataset}, which includes structured and dispersive datasets of defects in representative 2D materials. Our approach, tailored for accurate defect descriptions, outperforms state-of-the-art general methods. It effectively captures the non-linear, non-monotonic property-distance correlations influenced by quantum effects and the periodic lattice structure in 2D materials, in contrast to general methods. Additionally, our approach demonstrates transferability across a wide range of defect concentrations in various 2D materials.
+    
+    Machine learning offers two primary approaches for predicting atomistic properties: graph neural networks (GNNs) and physics-based descriptors. GNNs, known for their invariance to permutations and locality encoding, have excelled in modeling atomic systems. In recent benchmarks, GNNs have outperformed physics-based descriptors \cite{chanussot2021open}.
+    
+    Several GNN architectures have been proposed, such as continuous-filter convolutional layers \cite{schutt2018schnet}, message-passing GNNs \cite{chen2019graph}, and models addressing geometric information loss \cite{klicpera2020directional, GemNet}. Hybrid models, like Graphormer \cite{ying2021transformers, shi2022benchmarking}, combine Transformers and GNNs for enhanced aggregation operations.
+
+
+
+\subsection{Dataset}
+    \label{sec:dataset}
+
+    For the purpose of this investigation, we generated datasets encompassing simple defects and high-density defects within 2D materials. This dataset comprises DFT computational properties associated with 5933 defect configurations for MoS2 and another 5933 for WSe2, which are publicly accessible\footnote{\url{https://research.constructor.tech/pubs-frontend/publications/2d-materials-point-defects/}}\cite{defectsdataset}. Additionally, a dataset of high-density defects was constructed by randomly generating combinations of vacancy and substitution defects across a broad range of concentrations (2.5\%, 5\%, 7.5\%, 10\%, and 12.5\%) for several 2D materials, including \ce{MoS_2}, \ce{WSe_2}, hexagonal boron nitride (\ce{h-BN}), \ce{GaSe}, \ce{InSe}, and black phosphorous (BP). Table~\ref{tab:defect-definitions} provides an overview of the types of point defects included in the dataset. We generated and evaluated 100 structures for each defect concentration for each material, yielding a total of 500 configurations per material and 3000 in total. The availability of these high-density defect datasets, along with a comprehensive set of triple-site defects, facilitates the exploration of complex scenarios that may arise in defect engineering.
+    
+    \begin{table}[h!]
+    \centering
+    \begin{tabular}{c|c|c}
+         Material & Substitutions & Vacancies \\
+         \ce{MoS_2} & \ce{S} $\rightarrow$ \ce{Se}; \ce{Mo} $\rightarrow$ \ce{W} & \ce{Mo}; \ce{S} \\
+         \ce{WSe_2} & \ce{Se} $\rightarrow$ \ce{S}; \ce{W} $\rightarrow$ \ce{Mo} & \ce{W}; \ce{Se} \\
+         \ce{h-BN} & \ce{B} $\rightarrow$ \ce{C}; \ce{N} $\rightarrow$ \ce{C} & \ce{B}; \ce{N} \\
+         \ce{GaSe} & \ce{Ga} $\rightarrow$ \ce{In}; \ce{Se} $\rightarrow$ \ce{S} & \ce{Ga}; \ce{Se} \\
+         \ce{InSe} & \ce{In} $\rightarrow$ \ce{Ga}; \ce{Se} $\rightarrow$ \ce{S} & \ce{In}; \ce{Se} \\
+         BP & \ce{P} $\rightarrow$ \ce{N} & \ce{P}
+    \end{tabular}
+    \caption{Point defect types present in the 2DMD datasets}
+    \label{tab:defect-definitions}
+    \end{table}
+    % Supplementary Table~\ref{tab:si:supercells} offers details on the supercells used, and Supplementary Figure~\ref{fig:si:defects} provides example defect depictions.
+    
+    The dataset comprises two main components: low defect concentration with structured configurations and high defect concentration with random configurations. The low defect concentration segment covers all possible configurations for specific defect types in 8x8 supercells for \ce{MoS_2} and \ce{WSe_2}. The high defect concentration dataset includes randomly generated substitution and vacancy defects for all materials at different defect concentrations, totaling 3000 configurations.
+    
+    In total, the dataset contains 14,866 structures, each consisting of 120 to 192 atoms. These datasets provide training data for AI methods to capture both fine features of quantum mechanics and those associated with different elements, crystal structures, and defect concentrations. Density Functional Theory (DFT) was employed to compute the properties, as described in subsection~\ref{subsec:methods:dft}.
+    
+    We employ two target variables to evaluate machine learning methods: defect formation energy per site and the HOMO-LUMO gap.
+    
+    The defect formation energy, representing the energy required to create a defect, is defined as:
+    \begin{equation}
+        \label{eq:eform}
+        E_\text{f} = E_\text{D} - E_\text{pristine} + \sum_{i}{n_i \mu_i},
+    \end{equation}
+    where $E_\text{D}$ is the total energy of the structure with defects, $E_\text{pristine}$ is the total energy of the pristine base material, $n_i$ represents the number of atoms removed from $(n_i > 0)$ or added to $(n_i < 0)$ the supercell, and $\mu_i$ is the chemical potential of the $i$-th element, computed with the same DFT settings. To make the results comparable across structures with varying numbers of defects, we normalize the formation energy by dividing it by the number of defect sites:
+    \begin{equation}
+        E'_\text{f} = E_\text{f} / N_\text{d},
+    \end{equation}
+    where $N_\text{d}$ is the number of defects in the structure.
+    
+    The electronic properties of defects are characterized by the energy separation between the highest occupied states and the lowest unoccupied states, referred to as the HOMO-LUMO gap. Some materials (\ce{BP}, \ce{GaSe}, \ce{InSe}, \ce{h-BN}) exhibit unpaired electrons and non-zero magnetic momentum, necessitating DFT calculations considering both spin-up and spin-down bands. For machine learning evaluation, we use the minimum of these gaps as the target variable.
+    
+    
+    
+
+
+\subsection{Methods}
+
+\subsubsection{DFT Computations}
+\label{subsec:methods:dft}
+Our computational investigations rely on density functional theory (DFT), utilizing the PBE functional, and are executed using the Vienna Ab Initio Simulation Package (VASP)~\cite{vasp-gga1996, vasp-basis1996, vasp-ab1994}. The interactions between valence electrons and ionic cores are described within the projector augmented wave (PAW) approach~\cite{vasp-paw1994}, employing a plane-wave energy cutoff of 500 eV. Initial crystal structures are sourced from the Material Project database, with specific supercell sizes and computational parameters.
+
+Given the extensive supercell sizes required for defect calculations, the Brillouin zone is sampled using a $\Gamma$-point-only Monkhorst-Pack grid for structural relaxation, while denser grids are employed for subsequent electronic structure computations. A vacuum space of at least 15 Å is incorporated to prevent interactions between neighboring layers. In the structural energy minimization process, atomic coordinates are permitted to relax until the forces on all atoms are below 0.01 eV/Å. The energy tolerance is set at $10^{-6}$ eV. For defect structures with unpaired electrons, standard collinear spin-polarized calculations are utilized, with magnetic ions initialized in a high-spin ferromagnetic state (although ion moments may relax to a low-spin state during subsequent ionic and electronic relaxations).
+
+It's important to note that our current focus centers on the fundamental properties of defects. As such, we have not included spin-orbit coupling (SOC) and charged state calculations in our investigations. Since the materials under consideration are typical nonmagnetic semiconductors without strong correlated systems, we have not employed the GGA+U method. 
+
+% A comparison of a selection of computed values with those available in the literature can be found in Supplementary Table~\ref{tab:si:dft-references}.
+
+% Table~\ref{tab:si:dft-references} below is a comparison of the formation energy and HOMO-LUMO gaps values in 2DMD dataset and literature.
+
+% \begin{table}[htp]
+%     \centering
+%     \begin{tabular}{cp{4cm}*{4}{c}}
+%          Material & Defects & \multicolumn{2}{c}{Formation energy, eV} & \multicolumn{2}{c}{HOMO-LUMO gap, eV} \\
+%          & & 2DMD & Reference & 2DMD & Refernce \\
+%          \ce{MoS2} & \ce{S} vacancy & 2.65 & 2.68~\cite{cao2016first} & 1.14 & 1.12~\cite{bertoldo2022quantum} \\
+%          \ce{MoS2} & \ce{Mo} vacancy & 7.12 & 7.15~\cite{cao2016first} & 0.25 & 0.21~\cite{bertoldo2022quantum} \\
+%          \ce{WSe2} & \ce{Se} vacancy & 2.70 & 2.66~\cite{yang2019electronic} & 1.30 & 1.18~\cite{yang2019electronic} \\
+%          \ce{WSe2} & Two nearest \ce{Se} vacancies on the same side & 5.33 & 5.39~\cite{yang2019electronic} & 1.11 & 1.02~\cite{yang2019electronic} \\
+%          \ce{WSe2} & Two nearest \ce{Se} vacancies on different sides & 4.88 & 4.70~\cite{yang2019electronic} & 1.24 & 1.15~\cite{yang2019electronic} \\
+%          \ce{WSe2} & \ce{W} vacancy & 5.27 & 5.35~\cite{yang2019electronic} & 0.22 & 0.18~\cite{yang2019electronic} \\
+%          \ce{hBN} & \ce{B} vacancy & 7.41 & 7.40~\cite{huang2012defect} &  0.39/0.37 & \\
+%          \ce{hBN} & \ce{N} vacancy & 7.72 & 7.70~\cite{huang2012defect} & 1.80/3.23 & 1.83/3.25~\cite{bertoldo2022quantum}
+%     \end{tabular}
+%     \caption{A comparison of calculated formation energy and HOMO-LUMO gap for selected defects in 2DMD dataset and previous references. $x/y$ notation refers to majority/minority HOMO-LUMO gap.}
+%     \label{tab:si:dft-references}
+% \end{table}
+
+
+\subsubsection{Sparse Representation and Graph Neural Network for Materials}
+    Various types of graph neural networks (GNNs) exist, and in this section, we introduce the message-passing neural network model proposed by Battaglia et al. \cite{1806.01261}, which has gained popularity in the analysis of material structures \cite{chen2019graph}.
+    
+    In the preparation of a training sample, a graph is constructed from a crystal configuration, where atoms are transformed into graph nodes, and graph edges are established between nodes that are within a predefined threshold distance. These connections adhere to periodic boundary conditions, implying that for a significantly large threshold, an edge can connect a node to its image in an adjacent supercell. Furthermore, specific property vectors are associated with both nodes and edges. A node carries information about the atomic number, while an edge is characterized by the Euclidean distance between the atoms it connects.
+    
+    A layer of a message-passing neural network is responsible for converting one graph into another, retaining the same connectivity structure while modifying the nodes, edges, and global attributes. These layers are stacked to create a deep architecture. Let $G = (V, E, u)$ denote a crystal graph from the previous step, where nodes are represented by vectors $V = \{\mathbf{v}_i\}_{i=0}^{|V|}$, with $\mathbf{v}_i \in \mathbb{R}^{d_\text{v}}$, and $|V|$ represents the number of atoms in the supercell. Edge states are described by vectors $\{\mathbf{e}_k\}_{k=0}^{|E|}$, where $\mathbf{e}_k \in \mathbb{R}^{d_e}$. Each edge is associated with a sender node index $v^s \in \{0, \cdots, |V|-1\}$, a receiver node $v^r \in \{0, \cdots, |V|-1\}$, and a set of edge attributes. An edge is defined as a tuple $(\mathbf{v}_k^s, \mathbf{v}_k^r, \mathbf{e}_k)$, with the superscripts $s, r$ indicating the sender and receiver nodes, respectively. The global state vector $\mathbf{u} \in \mathbb{R}^{d_u}$ captures the overall state of the system. In the input graph, the global state conveys information about the entire system, while in the output graph, it contains model predictions for the target variables. A message-passing layer represents a mapping from $G = (V, E, \mathbf{u})$ to $G' = (V', E', \mathbf{u}')$, and this mapping relies on update rules for nodes, edges, and the global state. The edge update rule operates on information from the sender $\mathbf{v}_k^s$, receiver nodes $\mathbf{v}_k^r$, the edge itself $\mathbf{e}_k$, and the global state $\mathbf{u}$. We can formally express this rule using a function $\mathbf{\phi}_\text{e}$:
+    
+    \begin{equation}
+        \mathbf{e}_k' = \mathbf{\phi}_\text{e}(\mathbf{v}_i^s, \mathbf{v}_i^r, \mathbf{e}_k, \mathbf{u}).
+    \end{equation}
+    Node update rule aggregates the information from all the edges $E_{\mathbf{v}_i}=\{\mathbf{e}_k ' \mid \mathbf{e}_k ' \in \text{neighbors}(\mathbf{v}_i)\}$ connected to the node $\mathbf{v}_i$, the node itself $\mathbf{v}_i$ and the global state $\mathbf{u}$. We can represent this rule by function $\mathbf{\phi}_\text{v}$ :
+    \begin{align}
+        \bar{\mathbf{e}_i}  &= \frac{1}{|E_{\mathbf{v}_i}|}\sum_{\text{neighbors}(\mathbf{v}_i)}\mathbf{e}_k' \\
+        \mathbf{v}_i' &= \mathbf{\phi}_\text{v}(\bar{\mathbf{e}_i}, \mathbf{v}_i, \mathbf{u})
+    \end{align}
+    Finally, the global state $\mathbf{u}$ is updated based on the aggregation of both nodes and edges alongside the global state itself and process them with $\mathbf{\phi}_\text{u}$:
+    \begin{align}
+        \bar{\mathbf{u}}_\text{v} & = \frac{1}{|V|} \sum_{i=0}^{|V|-1} \mathbf{v}_i' \\
+        \bar{\mathbf{u}}_\text{e} & = \frac{1}{|E|} \sum_{k=0}^{|E|-1} \mathbf{e}_k' \\
+        \mathbf{u}'  & = \mathbf{\phi}_\text{u}(\bar{\mathbf{u}}_\text{v}, \bar{\mathbf{u}}_\text{e}, \mathbf{u})
+    \end{align}
+    
+    The functions $\mathbf{\phi}_\text{v}, \mathbf{\phi}_\text{e}, \mathbf{\phi}_\text{u}$ are fully-connected neural networks. The model is trained with ordinary backpropagation, minimizing the mean squared error (MSE) loss between the predicted values in $\mathbf{u}$ of the output graph, and the target values in the training dataset.
+    
+    
+    Our proposed sparse representation integrates into the framework of graph neural networks (GNNs), as outlined above:
+    \begin{enumerate}
+        \item Graph nodes are now associated with point defects, not all atoms in a structure.
+        \item The threshold for connecting nodes with edges is based on a cutoff distance.
+        \item Node attributes encompass the atomic number of the atom in the pristine structure and the atomic number of the atom in the structure with a defect, with a value of 0 representing vacancies.
+        \item Edge attributes include not only the Euclidean distance between point defects corresponding to adjacent vertices but also EOS index \ref{eos}, EOS parity index \ref{eos}, and the $Z$-plane distance.
+        \item The input global state captures the chemical composition of the crystal as a vector of atomic numbers.
+    \end{enumerate}
+    
+\subsubsection{Electronic Orbital Shells (EOS) Representation} \label{eos}
+    In the context of crystal defects, the introduction of a defect site perturbs the electronic states, causing oscillations in the electronic wave functions, akin to ripples caused by a stone thrown into a pond. These oscillations propagate through the crystal lattice, and their amplitude decreases with distance from the defect. The nature of these oscillations depends on the electronic orbitals involved, and their decay rate is orbital-specific. These electronic oscillations give rise to the formation of electronic orbital shells (EOS).
+    
+    To describe these EOS, we assign an EOS index to the shells, reflecting the amplitude of the wave function. The larger the amplitude, the lower the EOS index. For example, in Figure \ref{fig:EOS_new}, we illustrate the assignment of EOS indices to S atoms in a binary crystal. The S atom with the highest amplitude is labeled as 1, indicating the largest amplitude, this index is enumerated until a pre-determined cutoff distance. This labeling scheme allows us to capture the oscillatory nature of electronic states neighbouring a defect.
+    
+    To formally define EOS orbitals, we first project all atoms onto the $x$-$y$ plane, creating a two-dimensional representation of the material. For binary crystals, we draw circles centered on each atom and passing through atoms of the other species. We number these circles based on the increasing radius order, and this number becomes the EOS index for that site with respect to the central atom.
+    
+    For unary materials (e.g., \ce{BP} in our dataset), the circle radii are multiples of the unit cell size. The circle number still serves as the EOS index. Importantly, we also include the parity of the EOS index as a separate feature, which we refer to as \textit{EOS parity}. This additional feature accounts for the oscillatory behavior of electronic shells in relation to the crystal lattice nodes.
+    
+    The EOS representation acts as proxy to the electronic structure perturbations caused by defects and enhances our ability to capture the impact of defects on material properties.
+    
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[width=\linewidth]{figures/EOS_new.pdf}
+        \caption{The quantum mechanic nature of defects. a) A defect wave function, simulated using Density Functional Theory (DFT), centered at a single \ce{Mo} site within the \ce{MoS_2} crystal lattice. The varying colors of red and green depict contrasting phases of the wave function isosurfaces. Dashed circles are used to illustrate electronic orbital shells.
+    b) A simplified representation illustrating the interference of wave functions from two defect sites within a crystal lattice.
+    c) The exchange interaction of defect components governs the defect levels, resulting in the dominance of the exchange integral, as explained by valence bond theory, in the separation of these levels.}
+        \label{fig:EOS_new}
+    \end{figure}
+    
+    
+\subsubsection{Physics-Based Descriptors}
+    \label{subsec:matminer-catboost}
+    In order to provide a comprehensive comparison, we also assess a traditional approach, which combines physics-based descriptors with a classical machine learning algorithm for tabular data, namely CatBoost~\cite{prokhorenkova2018catboost}. We extract numerical features from the crystal structures using the matminer package \cite{6ddf244882c24092addcff4be1eb7ce1}, and these features are detailed in Table~\ref{tab:matminer}.
+    
+    \begin{table}[h!]
+    \centering
+    \begin{tabularx}{\textwidth}{@{}lX@{}}
+     \toprule
+     Features & Description \\ [0.5ex] 
+     \midrule
+     Density & Structure density, volume per atom, maximum packing fraction and maximum packing efficiency\\ 
+     \midrule
+     Structural Complexity~\cite{complexity2013} & Shannon information entropy of a structure \\  
+     \midrule
+     XRD Powder Pattern~\cite{Ong2013} & Powder diffraction of a structure \\ 
+     \midrule
+     Orbital Field Matrix~\cite{LamPham2017} & Representation based on the valence shell electrons of neighboring atoms \\
+     \midrule
+     JarvisCFID~\cite{PhysRevMaterials.2.083801} & Pairwise radial, nearest neighbor, bond-angle, dihedral-angle and core-charge distributions \\
+     \bottomrule
+    \end{tabularx}
+    \caption{Matminer feature groups used for a defect configuration description}
+    \label{tab:matminer}
+    \end{table}
+    
+
+\subsection{Aggregate Performance}
+    \label{subsec:evaluation:aggregate}
+    The dataset is divided into three parts: training (60\%), validation (20\%), and test (20\%). This stratified random split ensures an even distribution across each base material. Hyperparameter optimization is performed using random search, generating 50 hyperparameter configurations for each model. Models are trained with each configuration on the training set, and the best-performing configuration is selected based on validation set performance.
+    
+    % The optimal configurations and search spaces can be found in Supplementary Note~\ref{sec:models-params}.
+    To obtain the final results, each model is trained with the optimal parameters on the combined training and validation sets, and quality is evaluated on the unseen test set. This process is repeated 12 times to account for random initialization effects.
+    
+    For input, unrelaxed structures are used, and predictions are made for energy and HOMO-LUMO gap after relaxation. To address material class imbalance, weighted mean absolute error (MAE) is employed as the quality metric during both training and evaluation:
+    \begin{equation}
+        \label{eq:mae}
+        \text{MAE} = \frac{\sum_{i=1}^N |\bar{y}_i - y_i|w_i}{\sum_{i=1}^N w_i},
+    \end{equation}
+    where $w_i$ represents the weight assigned to each example, $y_i$ is the predicted value, $\bar{y}_i$ is the true value, and $N$ is the number of structures in the dataset. Weights are used to prevent the combined error value from being dominated by the low defect density part of the dataset, as it is four times more numerous than the high defect density part. Weight calculation is as follows:
+    \begin{equation}
+        w_\text{part} = \frac{N_\text{total}}{C_\text{parts}N_\text{part}},
+        \label{eq:weight}
+    \end{equation}
+    where $w_\text{dataset}$ is the weight associated with each example in a dataset part, $N_\text{total}=14866$ is the total number of examples, $C_\text{parts}=8$ is the total number of dataset parts (2 low-density and 6 high-density), and $N_\text{part} \in \{500, 5933\}$ is the number of examples in the part ($500$ for low defect density parts, $5933$ for the high defect density parts).
+    
+    The performance of our sparse representation combined with MEGNet~\cite{chen2019graph} is compared to several baseline methods: full structures MEGNet, SchNet~\cite{schutt2018schnet}, and GemNet~\cite{GemNet} on full representation, and CatBoost~\cite{prokhorenkova2018catboost} with matminer-generated features~\ref{subsec:matminer-catboost}. The results are presented in table~\ref{tab:results-mae}. For energy prediction, our model achieves a $3.7$ times lower combined MAE compared to the best baseline, with a range of 2.2x to 6.0x difference in individual dataset parts. In the case of the HOMO-LUMO gap, the use of sparse representation does not lead to an overall increase in prediction quality. While the prediction quality for \ce{MoS2} and \ce{WSe2} is improved by a factor of 1.3 to 4.8, this is outweighed by a factor of 1.06 to 1.15 increase in MAE for the other materials. Coincidentally, the combined MAEs are similar when averaged over the absolute error values.
+    
+    Regarding computation time, when trained on a Tesla V100 GPU, MegNet with sparse representation took 45 minutes, MegNet with full representation took 105 minutes, GemNet took 210 minutes, SchNet took 100 minutes, and CatBoost took 0.5 minutes. The low memory footprint and GPU utilization allow for fitting four simultaneous runs with sparse representation on the same GPU (16 GiB RAM) without sacrificing speed, which is not possible for GNNs running on full representation. Computing matminer features cannot be performed on a GPU and consumes 7.5 CPU core-minutes per structure and 1860 core-hours for the entire 2DMD dataset. 
+    % Model configurations are listed in Supplementary Note~\ref{sec:models-params}.
+    
+    \begin{table}[h!]
+    \centering
+    \sisetup{detect-weight=true}
+    \begin{tabular}{cc|*{2}{S[table-format=4(3)]}
+                    S[table-format=3(3)]
+                    S[table-format=3.1(2.1)]
+                    S[table-format=3(2)]}
+    \toprule
+    \multicolumn{7}{c}{Formation energy per site MAE, meV; lower is better} \\ \midrule {Material} & {Density} & {SchNet} & {GemNet} & {MEGNet (Full)} & {CatBoost} & {Sparse (MEGNet)} \\
+    \midrule
+    combined & both & 631(31) & 483(91) & 158(47) & 164(5) & \bfseries 43(5) \\
+    \ce{BP} & high & 2088(72) & 1490(429) & 198(211) & 382(30) & \bfseries 80(10) \\
+    \ce{GaSe} & high & 245(12) & 230(41) & 107(25) & 103(4) & \bfseries 48(7) \\
+    \ce{InSe} & high & 268(19) & 247(26) & 95(27) & 137(5) & \bfseries 35(2) \\
+    \ce{MoS2} & high & 321(100) & 535(206) & 136(22) & 136(5) & \bfseries 23(5) \\
+    \ce{WSe2} & high & 536(123) & 575(181) & 112(33) & 162(6) & \bfseries 23(4) \\
+    \ce{h-BN} & high & 1442(68) & 697(315) & 496(229) & 363(17) & \bfseries 127(16) \\
+    \ce{MoS2} & low & 65(5) & 44(14) & 58(11) & 12.6(0.4) & \bfseries 4(1) \\
+    \ce{WSe2} & low & 85(22) & 42(9) & 65(16) & 16.3(0.8) & \bfseries 6(1) \\
+    \bottomrule
+    \end{tabular}
+    \begin{tabular}{cc|*{2}{S[table-format=3(3)]}
+                    S[table-format=3(1)]
+                    S[table-format=3.1(1.1)]
+                    S[table-format=3.1(2.1)]}
+    \toprule
+    \multicolumn{7}{c}{HOMO -- LUMO gap MAE, meV; lower is better} \\ \midrule
+     {Material} & {Density} & {SchNet} & {GemNet} & {MEGNet (Full)} & {CatBoost} & {Sparse (MEGNet)} \\
+    \midrule
+    combined & both & 224(111) & 166(42) & \bfseries 112(3) & \bfseries 117(1) & \bfseries 112(3) \\
+    \ce{BP} & high & 208(20) & 176(10) & \bfseries 170(4) & \bfseries 174(2) & 187(9) \\
+    \ce{GaSe} & high & 309(83) & 196(11) & \bfseries 178(8) & \bfseries 173(4) & 194(11) \\
+    \ce{InSe} & high & 214(69) & 178(22) & \bfseries 156(7) & \bfseries 155(1) & \bfseries 167(15) \\
+    \ce{MoS2} & high & 204(121) & 174(111) & 54(4) & 71(4) & \bfseries 39(4) \\
+    \ce{WSe2} & high & 186(177) & 268(182) & 47(3) & 106(6) & \bfseries 38(4) \\
+    \ce{h-BN} & high & 244(24) & 227(6) & 233(4) & \bfseries 208(3) & 260(14) \\
+    \ce{MoS2} & low & 187(180) & 46(42) & 30(2) & 26.7(0.8) & \bfseries 5.7(0.2) \\
+    \ce{WSe2} & low & 236(224) & 64(46) & 32(5) & 18.3(0.6) & \bfseries 8.1(0.6) \\
+    \bottomrule
+    \end{tabular}
+    
+    \caption{Performance of the different methods in terms of the mean absolute error (MAE).  Sparse (MEGNet) is our representation implemented in the MEGNet model with all the improvements enabled. SchNet, GemNet, MEGNet (full) have full structures as their input with no additional features. CatBoost uses matminer featurizers. All the models were trained on the same dataset, containing stratified samples of all the parts of 2DMD dataset. The dataset splitting strategy is described in detail in subsection~\ref{subsec:evaluation:aggregate}. Combined refers to the whole test sample, with the error contributions weighted according to equation \ref{eq:weight}. The individual material/density combinations refer to the subsets of the combined test dataset. Error indicates the standard deviation of the results obtained from 12 experiments with the same datasets and model parameters, but different random initialization. Bold font indicates the best results for each dataset, taking the uncertainty into account.}
+    \label{tab:results-mae}
+    \end{table}
+    
+    
+\subsection{Discussion}
+\label{sec:conclusion}
+    Two-dimensional (2D) crystals hold immense promise in the field of materials design due to their tunability and versatility. However, the vast search space for possible crystal configurations, especially when incorporating defects, poses a significant challenge. Accurate prediction of the properties of defect-laden 2D crystals is crucial for realizing their potential in various applications. In this study, we have focused on enhancing the accuracy of defect property predictions by proposing a sparse representation combined with graph neural network architectures like MEGnet. Our approach has demonstrated remarkable improvements in energy prediction quality, with a 3.7-fold reduction in prediction error compared to the closest competitor. Furthermore, our sparse representation is compatible with various machine learning algorithms based on point clouds, making it a versatile tool for materials research. In terms of computational efficiency, training graph neural networks with sparse representation requires significantly less memory and GPU operations compared to full representations, making it a practical choice for large-scale studies.
+    
+    Our findings suggest two promising directions for future research. Firstly, the extension of our approach to three-dimensional (3D) materials. While our sparse representation is readily applicable to 3D crystals with point defects, additional considerations are needed to account for line and planar defects, as well as the generally lesser impact of point defects on 3D materials' properties. Secondly, the generalization of our method to unseen materials. By combining the sparse defect representation with advanced base material representations, we can potentially predict the properties of defect complexes in new materials without requiring a training dataset specific to those materials.
+    
+    This work introduces a novel crystal structure representation based on Electronic Orbital Shells (EOS) to improve the accuracy of machine learning predictions for materials affected by defects. By capturing the oscillatory nature of electronic states around defects, the EOS representation offers a valuable tool for understanding and predicting the influence of defects on material behavior. Our computational experiments shed light on the challenges faced by machine learning in modeling defects and quantum mechanical effects accurately. We have contributed to the field by addressing these challenges and presenting a robust approach that outperforms existing methods in predicting properties influenced by defects. Finally our approach will pave the road of materials generation by guiding the generation of new materials using different optimization methods and generation methods.
+    
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                                   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Storage systems performance modeling}
+\subsection{Introduction}
+    The primary focus of industrial data analysis involves highly accurate modeling of systems. These models, often referred to as digital twins, are essential for predicting how systems will perform under different circumstances. In this research, we have created various models for a storage system using machine learning-based generative techniques. This storage system comprises different elements, including hard disk drives (HDDs), solid-state drives (SSDs), various RAID configurations, and cache. Each storage component is represented by a probabilistic model, which characterizes the likelihood distribution of component performance, considering factors like IOPS (Input/Output Operations Per Second) and latency. These performance characteristics are influenced by component settings and external data loads.
+    
+    % Our experimental findings indicate prediction errors ranging from 4% to 10% for IOPS and 3% to 16% for latency, depending on the specific system components and models employed. Notably, our predictions exhibit a Pearson correlation of up to 0.99 with Little's law, offering a means for automated reliability assessments of the models.
+    
+    We address the simulation of HDD (Hard Disk Drive) and SSD (Solid-State Drive) storage pools, along with cache systems, which constitute integral elements of data storage systems. The objective of this investigation is to forecast the performance characteristics of these components under specific configuration settings and data load parameters. The performance metrics are characterized by two key aspects: the rate of input and output operations per second (IOPS) and the average latencies associated with these operations. The data load parameters encompass several variables: load type, IO (Input/Output) type, read fraction, block size, number of jobs, and queue depth for each job. Two distinct load types are considered: random and sequential. Each data load is comprised of a mixture of read and write operations. The IO type indicates whether read or write operations are under consideration in our simulations. The read fraction signifies the proportion of read operations relative to the total number of operations within the data load. Each operation processes a data block of a specified size. Data loads are generated by multiple jobs, each with a designated queue depth.
+    
+    In addition to data load parameters, HDD and SSD storage pools have their own configuration parameters, namely, the total number of disks within a pool and the RAID (Redundant Array of Independent Disks) scheme, which is defined by the number of data and parity blocks. For the cache component, a single configuration is employed, which is not described by any specific parameter. 
+    
+    % The comprehensive lists of input and output features within our simulation models are presented in Table~\ref{tab1}.
+    
+    % \begin{table}
+    % \caption{Input and output features of the simulation models}
+    % % \label{table}
+    % \small
+    % % \begin{tabular*}{17.5pc}{@{}|p{30pt}|p{112pt}<{\raggedright}|p{30pt}<{\raggedright}|@{}}
+    % % \begin{tabular*}{17.5pc}{@{}|p{30pt}|p{112pt}|p{30pt}|@{}}
+    % \begin{tabularx}{\linewidth}{@{}p{2cm} @{}p{8.5cm}<{\raggedright} X@{}}
+    % \hline
+    % Model & 
+    % Inputs & 
+    % Outputs \\
+    % \hline
+    % Storage pool & 
+    % Load type, IO type, read fraction, block size, number of jobs, queue depth, number of disks, number of data, and parity blocks in RAID & 
+    % IOPS, Latency \\
+    % \hline
+    % Storage cache & 
+    % Load type, IO type, read fraction, block size, number of jobs, queue depth & 
+    % IOPS, Latency \\
+    % \hline
+    % \end{tabularx}
+    % \label{tab1}
+    % \end{table}
+    We denote the input feature vector as $x$ and the output vector as $y$. Furthermore, let there be $n$ pairs of measurements $\{x_i, y_i\}_{i=1}^{n}$, where each pair represents output vectors $y_i$ corresponding to given input vectors $x_i$. These pairs are derived from the generation of diverse data loads on an actual data storage system, followed by the measurement of pool or cache performance metrics in terms of IOPS and latency. The primary aim of this research is to estimate the conditional probability distribution $p(y|x)$ for the storage component. Subsequently, we predict the performance $\hat{y}_j$ for unknown inputs $x_j$ by drawing samples from the learned distribution:
+    
+    \begin{equation}
+    \hat{y}_j \sim p(y|x_j).
+    \end{equation}
+    
+    The distinct advantage of this data-driven approach is the avoidance of the need to comprehensively model and simulate all physical processes within the storage components. Instead, the model solely relies on a set of measured data points. Machine learning algorithms effectively capture and infer all pertinent physical dependencies from the data. This model can be harnessed for a range of purposes, including exploration and visualization of performance trends in relation to configuration and data load parameters, prediction of average performance values and deviations under new conditions, and analysis of various other performance-related properties.
+    \subsection{Data Collection}
+    We collected four distinct datasets related to storage pools and cache performance under various data load scenarios. The first dataset pertains to the cache component operating under random data loads. To acquire this dataset, we leveraged the Perf performance analysis tool in the Linux environment, generating a total of 510 unique data loads. The load parameters and their value ranges can be found in Table~\ref{tab:data-cache}. We employed the Sobol sequence for quasi-random selection of parameter values for each data load, resulting in more uniform coverage of the parameter space compared to random or grid sampling. Each data load had a duration of 60 seconds during which we recorded IOPS and average latency values separately for read and write operations. Consequently, this dataset comprises $510\times60\times2$ measurement pairs $(x_i, y_i)$.
+    % , detailed in Table~\ref{tab:data-ssd-rnd}
+    Similarly, we collected datasets for the SSD pool operating under random data loads. The dataset, encompasses both pool configuration parameters and data load characteristics. The former includes the RAID scheme (defined by K data and M parity blocks) and the total number of disks in the pool. We generated a total of 512 different data loads, each lasting 120 seconds. IOPS and average latency measurements were recorded separately for read and write operations at one-second intervals. This dataset comprises $512\times120\times2$ measurement pairs $(x_i, y_i)$.
+    
+    Additionally, two datasets were collected for SSD and HDD storage pools operating under sequential data loads. We followed the same data collection methodology as described earlier, with a key distinction being the use of pure loads having read fractions of either 0\% or 100\%. Furthermore, larger block sizes were employed for the sequential data loads.
+     % Tables~\ref{tab:data-ssd-seq} and \ref{tab:data-hdd-seq} present comprehensive lists of data load and configuration parameters, along with their respective value ranges.
+    \begin{table}[h!]
+    
+    \caption{Data load parameters and their value ranges for the storage cache data set similar configuration used for SSD and HDD}
+    %\label{table}
+    \small
+    % \begin{tabular*}{17.5pc}{@{}|p{60pt}|p{125pt}<{\raggedright}|@{}}
+    %\begin{tabular*}{17.5pc}{@{}|p{30pt}|p{112pt}|p{30pt}|@{}}
+    \begin{tabularx}{\textwidth}{@{}p{7cm} X@{}}
+    \hline
+    Parameter & 
+    Value range \\
+    \hline
+    Load type & random \\
+    %IO type & read, write \\
+    Block size & 4, 8, 16, 32, 64, 128, 256 KB \\
+    Read fraction & 0 - 100\% \\
+    Number of jobs & 1 - 64 \\
+    Queue depth & 1 - 16 \\
+    \hline
+    \end{tabularx}
+    \label{tab:data-cache}
+    \end{table}
+\subsection{Methods}
+\subsubsection{Gradient boosting models}
+We utilize the CatBoost-based model as our initial model in this study for predicting the performance of storage pools and cache, given specific data load and, in the case of pools, configuration parameters. The model structure is visualized in Figure~\ref{fig:catboost}.
+
+The core concept behind this model is a parametric generative approach, building upon the CatBoost regression model~\cite{catboost2018}. We establish relationships between IOPS and latencies within the same data load using Little's law~\cite{10.2307/167570}. This law, which relates queue depth ($Q$) and the number of jobs ($J$) to IOPS and latencies, allows us to make the following assumption for read or write operations:
+
+
+\begin{equation}
+\begin{split}
+Q \times J & = IOPS_{read} \times Latency_{read} + IOPS_{write} \times Latency_{write},
+\end{split}
+\label{eq:little}
+\end{equation}
+
+\begin{equation}
+\log IOPS \sim -\log Latency.
+\end{equation}
+
+Recognizing the stochastic nature of IOPS and latencies, we approximate the distribution of their logarithmic values through conditional 2D normal distributions:
+
+\begin{equation}
+\hat{z}_i = \log \hat{y}_i,
+\end{equation}
+\begin{equation}
+\hat{z}_i \sim \mathcal{N}(\hat{\mu}(x_i), \hat{\Sigma}(x_i)),
+\end{equation}
+
+Here, $\hat{y}_i$ denotes a vector of predictions for IOPS and latency, while the mean ($\hat{\mu}(x_i)$) and covariance matrix ($\hat{\Sigma}(x_i)$) depend on the input vector $x_i$, representing data load and configuration parameters. These parameters are predicted by the CatBoost regression model. Figure~\ref{fig:catboost} provides a visual representation of this model.
+
+As outlined in the previous section, a dataset comprises $2m$ read and write data loads, each with $k$ measurements $\{x_i, y_i\}_{i=0}^{k}$ for either read or write operations. Consequently, the total number of measurements is $n=2mk$. We calculate the mean vectors ($\mu_j$) and covariance matrices ($\Sigma_j$) for each of these data loads. Additionally, we employ Cholesky decomposition~\cite{10.5555/248979} for the matrices $\Sigma_j^{-1}=L_jL_j^T$ to ensure that the predicted covariance matrices will be positive semi-definite.
+
+For model training, we employ the CatBoost regression model with the MultiRMSE loss function, defined as:
+
+\begin{equation}
+L^2 = \frac{1}{2m}\sum_{j=1}^{2m} (\hat{\mu}(x_j)-\mu_j)^2 + \frac{1}{2m}\sum_{j=1}^{2m} (\hat{L}(x_j)-L_j)^2,
+\end{equation}
+
+Here, $\hat{\Sigma}^{-1}(x_i)=\hat{L}(x_j)\hat{L}(x_j)^T$. The model comprises 5000 decision trees, and we determine optimal hyperparameter values for the CatBoost regressor via a grid search tailored to each storage system component.
+
+\begin{figure*}
+\centerline{\includegraphics[width=1\textwidth]{figures/catboost.pdf}}
+\caption{The CatBoost-based model for performance predictions of the storage pools and cache for the given values of data load and configuration parameters.}
+\label{fig:catboost}
+\end{figure*}
+
+
+\subsubsection{Normalizing flows}
+
+The second model employed in this study is based on Normalizing Flows (NF)~\cite{JMLR:v22:19-1028}. Figure~\ref{fig:nf} provides an overview of the normalizing flow model for predicting the performance of storage pools and cache based on input data load and, for pools, configuration parameters.
+
+Consider a dataset consisting of $n$ measurements $\{x_i, y_i\}_{i=1}^{i=n}$, representing various data loads and configurations for a data storage component. We introduce a latent random variable $z$ following a standard normal distribution, denoted as $q(z) = \mathcal{N}(0, I)$. The objective of the NF model is to learn an invertible transformation that maps the vector of measured IOPS and latency $y_i$ into the latent variable $z_i$ given the corresponding $x_i$:
+
+\begin{equation}
+z_i = f(y_i, x_i).
+\end{equation}
+
+The change of variable theorem establishes a relationship between the estimated performance $\hat{p}(y_i|x_i)$ and the distributions of the latent variable $q(z_i)$:
+
+\begin{equation}
+\hat{p}(y_i|x_i) = q(f(y_i, x_i)) \left| \det \frac{\partial f(y_i, x_i)}{\partial y_i} \right|.
+\end{equation}
+
+In this work, we adopt the real-valued non-volume preserving (Real NVP) NF model~\cite{realnvp}, where the function $f(y_i, x_i)$ is constructed using a sequence of neural networks. The model is trained by maximizing the log-likelihood function:
+
+\begin{equation}
+L = \frac{1}{n} \sum_{i=1}^{n} \log \hat{p}(y_i|x_i) \to \max_{f}.
+\end{equation}
+
+To make predictions of performance values, we employ the inverse transformation as follows: $\hat{y}_i=f^{-1}(z_i, x_i)$, where $z_i$ is randomly sampled from the $q(z)$ distribution. This process involves sampling $\hat{y}_i$ from the learned distribution $\hat{p}(y_i|x_i)$, representing IOPS and latency values with specific data load and configuration parameter values.
+
+In our experimental setup, we implement sixteen Real NVP transformations, each consisting of two simple 2-layer fully connected neural networks. The model is trained using the {\it Adam} optimizer and employs the {\it tanh} activation function. Training runs for 80 epochs with a batch size of 200 and a learning rate $\eta = 10^{-2}$.
+
+\begin{figure*}
+\centerline{\includegraphics[width=\textwidth]{figures/nf.pdf}}
+\caption{The normalizing flow model for performance predictions of the storage pools and cache for the given values of data load and configuration (for the pools only) parameters}
+\label{fig:nf}
+\end{figure*}
+
+\subsubsection{Baseline}
+
+We consider an input vector denoted as $x^{*}$ for which we seek to predict IOPS and latency values. Similar to our previous approach, let's assume our training dataset comprises $2m$ data loads encompassing both read and write operations, each containing $k$ measurements. This results in a total of $n=2mk$ observations, represented as $\{x_i, y_i\}_{i=0}^{i=n}$. These data loads are characterized by $2m$ distinct input vectors, denoted as $U=\{u_i\}_{j=1}^{j=2m}$.
+
+To predict the performance for the new input $x^{*}$, we employ the k Nearest Neighbors (kNN) algorithm, which seeks the nearest vector $u^{*}$ using the following equation:
+
+\begin{equation}
+u^{*} = \arg \min_{u_j \in U} d(x^{*}, u_j),
+\end{equation}
+
+Here, $d(x, z)$ represents the distance metric between two input vectors, with the Euclidean distance being the choice of distance metric in this study. The prediction process proceeds as follows: the model selects all $k$ observations $y_i$ for which $x_i=u^{*}$:
+
+\begin{equation}
+\hat{y}^{*} = \{y_i | x_i = u^{*}\}.
+\end{equation}
+
+In essence, this approach identifies the closest known data load to the new input and utilizes its recorded IOPS and latencies as predictions. We employ this method as a baseline in our study to determine whether the machine learning-based CatBoost and NF models yield superior prediction results compared to the naive kNN algorithm-based approach.
+
+
+\subsection{Evaluation}
+Let's consider the evaluation of our models using various quality metrics on a dataset containing measurements $\{x_i, y_i\}_{i=0}^{k}$ representing read or write operations in a single data load. This sample comprises 120 (60 for cache) measurements, where all $x_i$ share identical input feature values, and $y_i = (\text{IOPS}_i, \text{Latency}_i)^T$ represents the performance values. Additionally, we have predictions $\{x_i, \hat{y}_i\}_{i=0}^{k}$ from one of our models for the same $x_i$. Our goal is to assess the dissimilarity between the distributions of $y_i$ and $\hat{y}_i$.
+
+The first quality metric we employ is the Percentage Error of Mean (PEM), which gauges the models' ability to predict the mean values of IOPS and latency for each data load:
+
+\begin{equation}
+\text{PEM} = \left|{\frac{\hat{\mu} - \mu}{\mu}}\right|\times 100\%,
+\end{equation}
+
+where $\mu = \frac{1}{k}\sum_{i=1}^{k} y_i$ represents the mean.
+
+Similarly, we employ the Percentage Error of Standard Deviation (PES), which assesses the models' capability to predict the standard deviations of IOPS and latency values for each data load:
+
+\begin{equation}
+\text{PES} = \left|{\frac{\hat{\sigma} - \sigma}{\sigma}}\right|\times 100\%,
+\end{equation}
+
+where $\sigma = \sqrt{\frac{1}{k-1}\sum_{i=1}^{k} (y_i-\mu)^2}$ represents the standard deviation.
+
+We also utilize two additional metrics to quantify the disparities between the distributions of $y_i$ and $\hat{y}_i$. The first metric is the Fréchet Distance (FD)~\cite{DOWSON1982450}, commonly used to evaluate generative models. Assuming that the vectors $y_i$ and $\hat{y}_i$ follow 2D Gaussian distributions $\mathcal{N}(\mu, \Sigma)$ and $\mathcal{N}(\hat{\mu}, \hat{\Sigma})$, respectively, the FD is defined as:
+
+\begin{equation}
+\begin{split}
+\text{FD} & = \| \mu -\hat{\mu} \|^{2}_{2} + tr(\Sigma + \hat{\Sigma} - 2(\Sigma\hat{\Sigma})^{1/2} ).
+\end{split}
+\end{equation}
+
+Another metric is the Maximum Mean Discrepancy (MMD)~\cite{JMLR:v13:gretton12a}, defined as:
+
+
+One more metric is the Maximum Mean Discrepancy (MMD)~\cite{JMLR:v13:gretton12a}, which is defined as:
+
+\begin{equation}
+\begin{split}
+\text{MMD} & = \frac{1}{k^2}\sum_{i=1}^{k}\sum_{j=1}^{k} K(y_i, y_j) +\frac{1}{k^2}\sum_{i=1}^{k}\sum_{j=1}^{k} K(\hat{y}_i, \hat{y}_j) - \frac{2}{k^2}\sum_{i=1}^{k}\sum_{j=1}^{k} K(y_i, \hat{y}_j), 
+\end{split}
+\end{equation}
+
+where $K(u, v) = C(\sigma) exp(-\frac{|u - v|^2}{2\sigma^2})$ is the Radial Basis Function (RBF) with normalization constant $C(\sigma)$ and $\sigma$ equals the median distance between the vectors in the combined sample $y_i$ and $\hat{y}_i$.
+
+To address the issue of IOPS and latency having different scales, which affects the calculation of FD and MMD, we employ the Standard Scaler~\cite{scikit-learn} to normalize the real observations $\{y_i\}_{i=1}^{k}$. This scaler is applied to transform the values of $y_i$ and $\hat{y}_i$. Subsequently, the scaled vectors are used for the FD and MMD estimations.
+
+To evaluate the models, we split data loads into train and test samples, with the test sample containing 100 random data loads, each with all their measurements $\{x_i, y_i\}$. For each model, we calculate the quality metrics individually for each data load and subsequently use the bootstrap technique to compute their average and standard deviation over all data loads in the test sample.
+
+
+\subsection{Results}
+
+
+
+
+
+\begin{table}[t]
+\caption{Quality metrics for the storage cache under random data load}
+% \label{table}
+\small
+\begin{tabularx}{\linewidth}{X@{}X@{}X@{}X@{}}
+%\begin{tabular*}{17.5pc}{@{}|p{30pt}|p{112pt}|p{30pt}|@{}}
+\hline
+Metric & 
+kNN & 
+CatBoost &
+NF \\
+\hline
+PEM (IOPS), \%  & 26$\pm$2 & 6.3$\pm$0.4 & 4.1$\pm$0.4 \\
+PEM (Lat), \%   & 18$\pm$1   & 4.9$\pm$0.3 & 2.9$\pm$0.2 \\
+PES (IOPS), \%  & 35$\pm$2 & 23.9$\pm$0.8 & 412$\pm$23 \\
+PES (Lat), \%   & 30$\pm$1   & 24.1$\pm$0.9 & 299$\pm$29 \\
+FD              & 6655$\pm$822 & 445$\pm$57   & 365$\pm$55 \\
+MMD             & 1.61$\pm$0.01 & 1.34$\pm$0.02 & 0.59$\pm$0.02 \\
+\hline
+\end{tabularx}
+\label{tab:metrics_cache_rnd}
+\end{table}
+
+
+\begin{table}[t]
+\caption{Quality metrics for the SSD pool under random data load}
+% \label{table}
+\small
+\begin{tabularx}{\linewidth}{X@{}X@{}X@{}X@{}}
+%\begin{tabular*}{17.5pc}{@{}|p{30pt}|p{112pt}|p{30pt}|@{}}
+\hline
+Metric & 
+kNN & 
+CatBoost &
+NF \\
+\hline
+PEM (IOPS), \%  & 38$\pm$3        & 8.9$\pm$0.6     & 10.1$\pm$0.8 \\
+PEM (Lat), \%   & 19.2$\pm$0.9    & 7.4$\pm$0.4     & 8.8$\pm$0.6 \\
+PES (IOPS), \%  & 52$\pm$3        & 22$\pm$0.9      & 183$\pm$14 \\
+PES (Lat), \%   & 40$\pm$2        & 25$\pm$1.1      & 135$\pm$9 \\
+FD              & 1647$\pm$211    & 140$\pm$19      & 161$\pm$16 \\
+MMD             & 1.38$\pm$0.02   & 1.05$\pm$0.02   & 0.83$\pm$0.02 \\
+\hline
+\end{tabularx}
+\label{tab:metrics_ssd_rnd}
+\end{table}
+
+
+\begin{table}[t]
+\caption{Quality metrics for the SSD pool under sequential data load}
+% \label{table}
+\small
+\begin{tabularx}{\linewidth}{X@{}X@{}X@{}X@{}}
+%\begin{tabular*}{17.5pc}{@{}|p{30pt}|p{112pt}|p{30pt}|@{}}
+\hline
+Metric & 
+kNN & 
+CatBoost &
+NF \\
+\hline
+PEM (IOPS), \%  & 31$\pm$3          & 10.2$\pm$0.9     & 9.9$\pm$1 \\
+PEM (Lat), \%   & 42$\pm$3          & 10.7$\pm$0.7     & 8.1$\pm$0.7 \\
+PES (IOPS), \%  & 90$\pm$12       & 37$\pm$5        & 134$\pm$16 \\
+PES (Lat), \%   & 101$\pm$16      & 42$\pm$5      & 131$\pm$17 \\
+FD              & 1692$\pm$241      & 110$\pm$18      & 89$\pm$19 \\
+MMD             & 1.23$\pm$0.03     & 1.01$\pm$0.03   & 0.69$\pm$0.03 \\
+\hline
+\end{tabularx}
+\label{tab:metrics_ssd_seq}
+\end{table}
+
+
+\begin{table}[t]
+\caption{Quality metrics for the HDD pool under sequential data load}
+% \label{table}
+\small
+\begin{tabularx}{\linewidth}{X@{}X@{}X@{}X@{}}
+%\begin{tabular*}{17.5pc}{@{}|p{30pt}|p{112pt}|p{30pt}|@{}}
+\hline
+Metric & 
+kNN & 
+CatBoost &
+NF \\
+\hline
+PEM (IOPS), \%  & 27$\pm$2   & 10.6$\pm$0.9     & 11.4$\pm$0.9 \\
+PEM (Lat), \%   & 49$\pm$4   & 16$\pm$2         & 18$\pm$2 \\
+PES (IOPS), \%  & 33$\pm$3     & 18$\pm$1         & 43$\pm$4 \\
+PES (Lat), \%   & 60$\pm$8     & 23$\pm$2         & 62$\pm$7 \\
+FD              & 96$\pm$19  & 5.0$\pm$0.6      & 6.7$\pm$0.9 \\
+MMD             & 0.81$\pm$0.04   & 0.33$\pm$0.02    & 0.23$\pm$0.02 \\
+\hline
+\end{tabularx}
+\label{tab:metrics_hdd_seq}
+\end{table}
+
+
+\begin{figure*}
+\centerline{\includegraphics[width=1.\textwidth]{figures/read-hse-09132022-203135-z63942.pdf}}
+\caption{Example of real observations and predictions for one data load on the cache; the load parameters: load type is random; io type is read; block size is 32 KB; read fraction is 63 \%; the number of jobs is 56; queue depth is 12}
+\label{fig:ex_cache_rnd}
+\end{figure*}
+
+\begin{figure*}
+\centerline{\includegraphics[width=1.\textwidth]{figures/write-hse-07172022-101709-z53396.pdf}}
+\caption{Example of real observations and predictions for one data load on the SSD pool; the load parameters: load type is random; io type is read; block size is 4 KB; read fraction is 87 \%; the number of jobs is 2; queue depth is 12; RAID is 2+2; the number of disks is 20.}
+\label{fig:ex_ssd_rnd}
+\end{figure*}
+
+\begin{figure*}
+\centerline{\includegraphics[width=1.0\textwidth]{figures/write-hse-08242022-085437-z50131.pdf}}
+\caption{Example of real observations and predictions for one data load on the SSD pool. The load parameters: load type is sequential; io type is write; block size is 1024 KB; read fraction is 0\%; number of jobs is 7; queue depth is 31; RAID is 2+2; number of disks is 15.}
+\label{fig:ex_ssd_seq}
+\end{figure*}
+
+\begin{figure*}
+\centerline{\includegraphics[width=1.0\textwidth]{figures/read-hse-08302022-152553-z86556.pdf}}
+\caption{Example of real observations and predictions for one data load on the HDD pool; the load parameters: load type is sequential; IO type is read; block size is 1024 KB; read fraction is 100 \%; the number of jobs is 5; queue depth is 28; RAID is 4+1; the number of disks is 20.}
+\label{fig:ex_hdd_seq}
+\end{figure*}
+
+
+
+\begin{figure}
+\centerline{\includegraphics[width=1.\textwidth]{figures/little_law.pdf}}
+\caption{Little's law verification for observed and predicted IOPS and latency; each point corresponds to one data load and one configuration of a component}
+\label{fig:little-law}
+\end{figure}
+
+
+The results of our experiments, which aim to evaluate the quality of the models utilized in this study. All the models described earlier were trained on the same set of training data, made predictions on identical test data, and underwent evaluation using the quality metrics discussed in the previous section. The metrics for the cache, SSD, and HDD pools are reported in Tables \ref{tab:metrics_cache_rnd}, \ref{tab:metrics_ssd_rnd}, \ref{tab:metrics_ssd_seq}, and \ref{tab:metrics_hdd_seq}. These models are designed to learn the conditional distributions of IOPS and latency, with their predictions representing samples from these distributions. Each metric assesses different aspects of prediction quality, as detailed below.
+
+In Table~\ref{tab:metrics_cache_rnd}, we present the metrics for the kNN, CatBoost, and NF models applied to cache performance under random data loads. Figure~\ref{fig:ex_cache_rnd} provides an illustrative example of predictions for a test data load. The table includes PEM and PES metrics, which assess the accuracy of mean and standard deviation predictions, respectively, for IOPS and latency in each data load. The NF model demonstrates the best PEM values, with prediction errors of approximately 4.1\% and 2.9\% for IOPS and latency, respectively. This is significantly better than the 25\% and 17.8\% errors observed with the kNN model. Similarly, the CatBoost model exhibits the smallest PES values at 23.9\% and 24.1\% for IOPS and latency, respectively, while the NF model has the largest errors at 412\% and 299\% for IOPS and latency. The results indicate that estimating standard deviations is challenging for all models, with the NF model predicting the widest distributions, as evident in Figure~\ref{fig:ex_cache_rnd}.
+
+The FD metric in Table~\ref{tab:metrics_cache_rnd} compares mean values and covariance matrices of predictions and real observations. Although CatBoost and NF models have FD values approximately 15 and 18 times smaller than the kNN model, they are still relatively large. This can be attributed to two factors. First, the standard scaling transformation applied before metric calculation was fitted on real observations and applied to the predictions. Second, the cache, being the fastest component, has smaller standard deviations in its IOPS and latency measurements compared to other system components. Consequently, the distances between observed and predicted distributions are larger for the cache compared to other components. The MMD metric, which measures distances between pairs of points in two distributions, normalizes these distances by their median values, making it more robust to different distribution scales. The results show that the NF model achieves the best MMD value.
+
+Table~\ref{tab:metrics_ssd_rnd} presents metrics values for the kNN, CatBoost, and NF models applied to the SSD pool under random data loads, with Figure~\ref{fig:ex_ssd_rnd} illustrating an example of predictions. CatBoost outperforms the other models, demonstrating better FD, PEM, and PES metrics, while NF excels in the MMD metric. CatBoost predicts mean IOPS and latency values with errors of 8.9\% and 7.4\%, respectively, compared to 38\% and 19.2\% for kNN. Standard deviation estimation errors for IOPS and latency are 22\% and 25\% for CatBoost, and 52\% and 40\% for the kNN model. Although the NF model predicts wider distributions for SSD pools under random data loads, as evident from the PES values, it achieves better distribution estimation according to the MMD metric.
+
+In Table~\ref{tab:metrics_ssd_seq}, metrics values are provided for the SSD pool under sequential data loads, with Figure~\ref{fig:ex_ssd_seq} illustrating an example of predictions. CatBoost performs best in terms of FD, PEM, and PES metrics, while NF excels in the MMD and PEM metrics. CatBoost predicts mean IOPS and latency values with errors of 10.2\% and 10.7\%, compared to 31\% and 42\% for kNN. The standard deviation estimation errors for IOPS and latency are 37\% and 42\% for CatBoost, and 90\% and 101\% for the kNN model. Similarly to the cache, the NF model predicts wider distributions for SSD pools under sequential data loads, as indicated by the PES values, but better distribution estimation is achieved according to the MMD metric.
+
+Lastly, Table~\ref{tab:metrics_hdd_seq} presents metrics values for the HDD pool under sequential data loads, with Figure~\ref{fig:ex_hdd_seq} illustrating an example of predictions. CatBoost performs best in terms of FD, PEM, and PES metrics, while NF excels in the MMD metric.
+
+CatBoost predicts mean IOPS and latency values with errors of 10.6\% and 16.0\%, compared to 27\% and 49\% for kNN. The standard deviation estimation errors for IOPS and latency are 18\% and 23\% for CatBoost, and 33\% and 60\% for the kNN model. The NF model predicts the widest distributions, as indicated by the PES values, but performs better in distribution estimation according to the MMD metric.
+
+In summary, the results demonstrate that both the NF and CatBoost models significantly outperform the kNN models across all datasets. CatBoost consistently outperforms the other models in terms of metrics. The NF model exhibits lower standard deviation estimation accuracy but excels in the MMD metric.
+
+To assess the reliability of our models, we conducted an additional experiment. We evaluated the validity of Little's law~\cite{10.2307/167570}, which relates IOPS and latencies within the same data load. For each data load in the test samples, we calculated both sides of this equation and compared them. The results, shown in Figure~\ref{fig:little-law}, demonstrate that Little's law holds for real observations in all datasets used in this study, as well as for predictions made by CatBoost and NF models. These models directly learn the dependency in Equation~\ref{eq:little} from the data. 
+Table~\ref{tab:pearson} provides Pearson's correlation coefficients between the measurements in Figure~\ref{fig:little-law}, confirming the similarity between the coefficients for real observations and predictions of CatBoost and NF models, thus supporting the models' reliability. Notably, the kNN model exhibits larger deviations from Little's law compared to other models.
+
+Figure~\ref{fig:little-law} also reveals that for several data loads, CatBoost and NF predictions deviate significantly from Little's law. In such cases, prediction errors are substantial, making these predictions unreliable for decision-making.
+
+\begin{table}[t]
+\caption{Pearson correlation coefficients between measurements in Figure~\ref{fig:little-law} for Little's equation's left and right parts.}
+% \label{table}
+\small
+\begin{tabularx}{\linewidth}{X@{}X@{}X@{}X@{}X@{}}
+%\begin{tabular*}{17.5pc}{@{}|p{30pt}|p{112pt}|p{30pt}|@{}}
+\hline
+Sample & 
+Observations & 
+kNN & 
+CatBoost &
+NF \\
+\hline
+Cache     & 0.99  & 0.96    & 0.99    & 0.99 \\ 
+SSD rand. & 0.99  & 0.92    & 0.97    & 0.99 \\
+SSD seq.  & 0.99  & 0.89    & 0.99    & 0.99 \\
+HDD seq.  & 0.91  & 0.72    & 0.92    & 0.89 \\
+\hline
+\end{tabularx}
+\label{tab:pearson}
+\end{table}
+
+
+\subsection{Discussion}
+
+This study presents the outcomes of performance modeling for a data storage system using generative models. Several key conclusions can be drawn from our findings:
+
+\begin{itemize}
+
+\item Generative models offer a viable alternative for performance modeling across various scenarios, encompassing individual devices and their combinations.
+
+\item Both models demonstrate comparable predictive capabilities for mean IOPS and latency values. However, the catboost model excels in estimating standard deviations.
+
+\item These models can effectively predict the performance of a data storage system and its constituent components based on specified data load and configuration parameters.
+
+\item Little's law provides an unsupervised approach for assessing prediction reliability, and the models discussed in this paper exhibit satisfactory reliability in this context.
+
+\item We provide a comprehensive dataset comprising real measurements of IOPS and latency for the cache, SSD, and HDD pools within a data storage system. This dataset can be used as a benchmark for future research in the domains of data-driven performance modeling, conditional generative models, uncertainty estimation, and model reliability studies.
+
+\end{itemize}
+
+For access to the experiment scripts and datasets used in this work, please refer to our GitHub repository\footnote{\url{https://github.com/HSE-LAMBDA/digital-twin}}.
