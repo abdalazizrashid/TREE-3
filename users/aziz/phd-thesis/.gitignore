@@ -16,6 +16,6 @@
 *.lot
 *.lof
 _region_.tex
-
+auto/
 # nix
 .direnv/
