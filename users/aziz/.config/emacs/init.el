@@ -15,10 +15,10 @@
 
 (require 'use-package)
 
-(setq use-package-verbose init-file-debug
-      use-package-expand-minimally (not init-file-debug)
-      use-package-compute-statistics t
-      debug-on-error init-file-debug)
+;; (setq use-package-verbose init-file-debug
+;;       use-package-expand-minimally (not init-file-debug)
+;;       use-package-compute-statistics t
+;;       debug-on-error init-file-debug)
 
 ;; Define the “data environment” for this instance of Emacs
 
@@ -48,24 +48,8 @@
 )
 
 
-;; ;; Define the function to safely load a theme
-;; (defun my/load-theme (theme)
-;;   "Load THEME, disabling any previously enabled themes."
-;;   (mapc #'disable-theme custom-enabled-themes)
-;;   (load-theme theme t))
-
-
-;; ;; Example of integrating another theme
-;; (use-package modus-vivendi-theme
-;;   :ensure t
-;;   :config
-;;   ;; Load the theme if it is not already loaded
-;;   (unless (member 'modus-vivendi custom-enabled-themes)
-;;     (my/load-theme 'modus-vivendi)))
-;; ;; Using `use-package` to configure emacs, here emacs is a pseudo
-;; ;; package
-
-
+;; Using `use-package` to configure emacs, here emacs is a pseudo
+;; package
 (use-package emacs
   :bind* (
           ("M-o" . ace-window)
@@ -174,17 +158,18 @@
   (global-set-key (kbd "<C-wheel-up>") nil)
   (global-set-key (kbd "<C-wheel-down>") nil)
 
-  :custom-face
-
-
+  
   :init
   (setq disabled-command-function nil) ;; enable all commands
+  ;; Add all your customizations prior to loading the themes
+  (setq modus-themes-italic-constructs t
+        modus-themes-bold-constructs t
+        modus-themes-region '(bg-only)
+	modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi))
   
+  :bind ("<f5>" . modus-themes-toggle)
 
-  :config
-  ;; Setup theme
-  (load-theme 'modus-operandi)
-  
+  :config  
   ;; Setup font
   (advice-add 'server-create-window-system-frame
               :after 'my/setup-fonts)
@@ -208,7 +193,12 @@
       (tool-bar-mode 1)
       (tool-bar-mode 0)))
 
-  (add-hook 'after-make-frame-functions 'my-toggle-toolbar))
+  (add-hook 'after-make-frame-functions 'my-toggle-toolbar)
+  ;; Load the theme of your choice:
+  (load-theme 'modus-operandi-tinted :no-confirm)
+  (modus-themes-select 'modus-operandi-tinted)
+  )
+
 
 (use-package package
   :custom
@@ -218,6 +208,9 @@
         ("gnu" . "https://elpa.gnu.org/packages/")
         ("org" . "http://orgmode.org/elpa/")))
   (package-initialize))
+
+
+
 
 (use-package imenu
   :config
@@ -338,8 +331,9 @@
 (use-package projectile
   :init
   (require 'tramp)
-  (projectile-mode t)
+ 
   :config
+  (projectile-mode t)
   (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
   (setq projectile-sort-order 'recentf)
   (setq projectile-git-use-fd t)
@@ -354,25 +348,27 @@
 
 
 
-;; Treesitter
-;;;; Treesitter remapping
-(add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
-(add-to-list 'major-mode-remap-alist '(nix-mode . nix-ts-mode))
-(add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
-(add-to-list 'major-mode-remap-alist '(elixir-mode . elixir-ts-mode))
-(add-to-list 'major-mode-remap-alist '(js-mode . js-ts-mode))
-(add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
-
-;;;; Structural editing
 (use-package treesit
   :mode (("\\.tsx\\'" . tsx-ts-mode))
-  :after combobulate)
-
-(use-package combobulate
+  :preface
+  ;; Treesitter remapping
+  (dolist (mapping
+         '((python-mode . python-ts-mode)
+	   (elixir-mode . elixir-ts-mode)
+           (css-mode . css-ts-mode)
+           (typescript-mode . typescript-ts-mode)
+           (js2-mode . js-ts-mode)
+           (bash-mode . bash-ts-mode)
+           (css-mode . css-ts-mode)
+           (json-mode . json-ts-mode)
+           (js-json-mode . json-ts-mode)))
+    (add-to-list 'major-mode-remap-alist mapping))
+  :config
+  (use-package combobulate
     :preface
     (setq combobulate-key-prefix "C-c o")
     :hook
-    ((python-ts-mode . combobulate-mode)
+      ((python-ts-mode . combobulate-mode)
        (js-ts-mode . combobulate-mode)
        (html-ts-mode . combobulate-mode)
        (css-ts-mode . combobulate-mode)
@@ -380,7 +376,9 @@
        (typescript-ts-mode . combobulate-mode)
        (json-ts-mode . combobulate-mode)
        (tsx-ts-mode . combobulate-mode))
-    :load-path ("combobulate/combobulate"))
+      :config(
+	      (package-vc-install
+	       '(combobulate :url "https://github.com/mickeynp/combobulate")))))
 
 
 ;;;; eglot
@@ -515,7 +513,6 @@
 (use-package helm
   :demand t
   :config
-  (helm-mode 1)
   (global-set-key (kbd "M-x") #'helm-M-x)
   (global-set-key (kbd "C-x m") #'helm-M-x)
   (global-set-key (kbd "C-c m") #'helm-M-x)
@@ -626,6 +623,7 @@
    ("C-c C-j" . avy-resume)))
 
 (use-package magit
+  :bind ("C-x g" . magit-status)
   :custom
   (magit-define-global-key-bindings 'recommended))
 
@@ -769,17 +767,24 @@
 
 (use-package dumb-jump
   :hook
-  ((add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
+  (('xref-backend-functions #'dumb-jump-xref-activate))
   :custom
   (setq xref-show-definitions-function #'xref-show-definitions-completing-read))
 
 
+(defun my/projectile-remove-selected-projects ()
+  "Select and remove multiple projects from the known projects list."
+  (interactive)
+  (let* ((projects (projectile-relevant-known-projects))
+         (selected (completing-read-multiple "Select projects to remove: " projects)))
+    (dolist (project selected)
+      (projectile-remove-known-project project))
+    (message "Removed projects: %s" (string-join selected ", "))))
 
-;; References
+; References
 ;;;; Disclaimars
 ;; the current version borrows heavily from John Wiegley excellent
 ;; dot-emacs repo (https://github.com/jwiegley/dot-emacs)
-
 
 
 
@@ -788,6 +793,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("1ea82e39d89b526e2266786886d1f0d3a3fa36c87480fad59d8fab3b03ef576e"
+     "7613ef56a3aebbec29618a689e47876a72023bbd1b8393efc51c38f5ed3f33d1"
+     default))
  '(org-agenda-files
    '("~/tree-3/users/aziz/phd-thesis/pre-defense-presentation.org"
      "/Users/aziz/Documents/org/Russian.org"
@@ -805,12 +814,23 @@
      "/Users/aziz/Documents/org/work.org"))
  '(org-fold-core-style 'overlays)
  '(package-selected-packages
-   '(ace-window ag dumb-jump el-mock elixir-ts-mode framemove helm
-		helm-bibtex hyperbole languagetool magit nix-mode
+   '(ace-window ag combobulate dumb-jump el-mock elixir-ts-mode framemove
+		helm helm-bibtex hyperbole languagetool magit nix-mode
 		nix-ts-mode org org-ref org-transclusion orgit
 		pdf-tools projectile vterm with-simulated-input))
+ '(package-vc-selected-packages
+   '((combobulate :url "https://github.com/mickeynp/combobulate")))
  '(safe-local-variable-values
-   '((projectile-project-test-cmd . "") (projectile-project-run-cmd . "")
+   '((eval let
+	   ((nix-path
+	     (shell-command-to-string
+	      "nix develop --command printenv PATH")))
+	   (setenv "PATH" nix-path)
+	   (setq exec-path (split-string nix-path path-separator)))
+     (eval setq-local projectile-project-root
+	   (file-name-directory (dir-locals-find-file ".")))
+     (projectile-project-test-cmd . "")
+     (projectile-project-run-cmd . "")
      (projectile-project-compilation-cmd . "")
      (projectile-project-test-cmd . "nix flake check")
      (projectile-project-run-cmd
@@ -826,14 +846,4 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
-
-
-
-
-
-
-
-
-
 
