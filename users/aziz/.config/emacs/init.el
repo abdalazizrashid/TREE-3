@@ -14,6 +14,8 @@
                 (list (emacs-path "lisp")))))
 
 (require 'use-package)
+;; Set use-package to always ensure packages are installed
+(setq use-package-always-ensure t)
 
 ;; (setq use-package-verbose init-file-debug
 ;;       use-package-expand-minimally (not init-file-debug)
@@ -33,11 +35,11 @@
 
 (defconst user-data-directory
   (emacs-path (if emacs-data-suffix
-                  (format "data-%s" emacs-data-suffix)
+                  (format "data-%s" emacs-data-suffix)
                 "data")))
 
-(defun user-data (dir)
-  (expand-file-name dir user-data-directory))
+;; (defun user-data (
+;;   (expand-file-name dir user-data-directory)))
 
 ;; Font setup
 ;; https://slumpy.org/blog/2016-01-11-proper-way-to-setup-fonts-in-emacs/
@@ -46,7 +48,14 @@
   (set-face-font 'default "Berkeley Mono-15")
   (set-fontset-font t 'hebrew (font-spec :name "Berkeley Mono-15"))
 )
-
+;; (add-to-list 'default-frame-alist '(font . "IBM Plex Mono" ))
+;; (set-face-attribute 'default t :font "IBM Plex Mono")
+(use-package modus-themes
+  :ensure t
+  :custom
+  ;; Load the theme of your choice:
+  (load-theme 'modus-operandi-tinted :no-confirm)
+  (modus-themes-select 'modus-operandi-tinted))
 
 ;; Using `use-package` to configure emacs, here emacs is a pseudo
 ;; package
@@ -194,21 +203,25 @@
       (tool-bar-mode 0)))
 
   (add-hook 'after-make-frame-functions 'my-toggle-toolbar)
-  ;; Load the theme of your choice:
-  (load-theme 'modus-operandi-tinted :no-confirm)
-  (modus-themes-select 'modus-operandi-tinted)
   )
 
 
 (use-package package
   :custom
-  (add-to-list 'package-archives
-      '(("melpa" . "https://melpa.org/packages/")
-	("melpa-stable" . "https://stable.melpa.org/packages/")
-        ("gnu" . "https://elpa.gnu.org/packages/")
-        ("org" . "http://orgmode.org/elpa/")))
-  (package-initialize))
+  (setq package-archives '(("melpa-stable" . "https://stable.melpa.org/packages/")
+                         ("melpa" . "https://melpa.org/packages/")
+                         ("gnu" . "http://elpa.gnu.org/packages/")
+			 ("org" . "http://orgmode.org/elpa/")))
 
+  (defun validate-package-urls (urls)
+    "Validate the given package repository URLs."
+    (dolist (url urls)
+      (unless (string-match "\\`https?:" (cdr url))
+	(error "Invalid URL: %s" (cdr url)))))
+
+  (validate-package-urls package-archives)
+
+  (package-initialize))
 
 
 
@@ -313,13 +326,15 @@
                 (ibuffer-switch-to-saved-filter-groups "default"))))
 
 (use-package dired
+  :ensure nil
   :config
   ;; (when (string= system-type "darwin")
   ;;   (setq dired-use-ls-dired t
   ;;         insert-directory-program "/usr/local/bin/gls"
   ;;         dired-listing-switches "-aBhl --group-directories-first")))
-)  
+)
 (use-package dired-x
+  :ensure nil
   :after dired
   :config
   (add-hook 'dired-mode-hook #'dired-omit-mode))
@@ -330,55 +345,68 @@
 ;;;; projectile
 (use-package projectile
   :init
+  (projectile-mode t)
   (require 'tramp)
+  :bind
+  ((:map projectile-mode-map
+         ("s-p" . projectile-command-map))
+         ("s-p v" . 'magit))
  
   :config
-  (projectile-mode t)
+  
   (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
   (setq projectile-sort-order 'recentf)
   (setq projectile-git-use-fd t)
-  (setq projectile-enable-caching t))
+  (setq projectile-enable-caching t)
+  (add-to-list 'projectile-other-file-alist '("ex" . ("html.heex" "html.leex")))
+  (add-to-list 'projectile-other-file-alist '("html.heex" . ("ex")))
+  (add-to-list 'projectile-other-file-alist '("html.leex" . ("ex")))
+  (setq projectile-completion-system 'helm)
+  (setq projectile-switch-project-action #'projectile-dired))
 
 
+ 
 
 ;; Terminal emulator
 ;;;; vterm
 (use-package vterm
   :defer t)
 
+(use-package elixir-mode)
 
+;; (use-package treesit
+;;   :mode (("\\.tsx\\'" . tsx-ts-mode))
+;;   :preface
+;;   ;; Treesitter remapping
+;;   (dolist (mapping
+;;          '((python-mode . python-ts-mode)
+;; 	   (elixir-mode . elixir-ts-mode)
+;;            (css-mode . css-ts-mode)
+;;            (typescript-mode . typescript-ts-mode)
+;;            (js2-mode . js-ts-mode)
+;;            (bash-mode . bash-ts-mode)
+;;            (css-mode . css-ts-mode)
+;;            (json-mode . json-ts-mode)
+;;            (js-json-mode . json-ts-mode)))
+;;     (add-to-list 'major-mode-remap-alist mapping))
 
-(use-package treesit
-  :mode (("\\.tsx\\'" . tsx-ts-mode))
-  :preface
-  ;; Treesitter remapping
-  (dolist (mapping
-         '((python-mode . python-ts-mode)
-	   (elixir-mode . elixir-ts-mode)
-           (css-mode . css-ts-mode)
-           (typescript-mode . typescript-ts-mode)
-           (js2-mode . js-ts-mode)
-           (bash-mode . bash-ts-mode)
-           (css-mode . css-ts-mode)
-           (json-mode . json-ts-mode)
-           (js-json-mode . json-ts-mode)))
-    (add-to-list 'major-mode-remap-alist mapping))
-  :config
-  (use-package combobulate
-    :preface
-    (setq combobulate-key-prefix "C-c o")
-    :hook
-      ((python-ts-mode . combobulate-mode)
-       (js-ts-mode . combobulate-mode)
-       (html-ts-mode . combobulate-mode)
-       (css-ts-mode . combobulate-mode)
-       (yaml-ts-mode . combobulate-mode)
-       (typescript-ts-mode . combobulate-mode)
-       (json-ts-mode . combobulate-mode)
-       (tsx-ts-mode . combobulate-mode))
-      :config(
-	      (package-vc-install
-	       '(combobulate :url "https://github.com/mickeynp/combobulate")))))
+;;   :config
+;;   (use-package combobulate
+;;     :preface
+;;     (setq combobulate-key-prefix "C-c o")
+;;     :hook
+;;       ((python-ts-mode . combobulate-mode)
+;;        (js-ts-mode . combobulate-mode)
+;;        (html-ts-mode . combobulate-mode)
+;;        (css-ts-mode . combobulate-mode)
+;;        (yaml-ts-mode . combobulate-mode)
+;;        (typescript-ts-mode . combobulate-mode)
+;;        (json-ts-mode . combobulate-mode)
+;;        (tsx-ts-mode . combobulate-mode))
+;;       :init
+;;       (
+;; 	      (package-vc-install
+;; 	       '(combobulate :url "https://github.com/mickeynp/combobulate")))))
 
 
 ;;;; eglot
@@ -399,21 +427,26 @@
          (python-ts-mode . (lambda () (set-fill-column 88)))
          (nix-ts-mode . eglot-ensure)
 	 (tex-mode . eglot-ensure)
-         (prog-mode . (lambda ()
-                        (add-hook 'before-save-hook 'eglot-format nil t))))
+         ;; (prog-mode . (lambda ()
+         ;;               (add-hook 'before-save-hook 'eglot-format nil t)))
+	 )
  
   :config
-  (setq read-process-output-max (* 1024 1024))
-  (add-to-list 'eglot-server-programs '(nix-ts-mode . ("nixd")))
-  (with-eval-after-load 'eglot
-    (dolist (mode '((nix-mode . ("nixd"))))
-      (add-to-list 'eglot-server-programs mode)))
-
   (add-to-list
-   'eglot-server-programs `(elixir-ts-mode
-       . ,(eglot-alternatives
-      ;; look for flakes first
-	   '(("nix-shell" "-p" "elixir-ls" "elixir" "--run" "elixir-ls")))))
+   'eglot-server-programs
+   '(nix-ts-mode
+     . ("nix-shell" "-p" "nixd" "--run" "nixd")))
+  (add-to-list
+   'eglot-server-programs
+   '((elixir-ts-mode heex-ts-mode)
+     ;; TODO remove elixir package from runtime shell
+     . ("nix-shell" "-p" "elixir-ls" "elixir" "--run" "elixir-ls")))
+  
+  (setq read-process-output-max (* 1024 1024))
+  ;; (with-eval-after-load 'eglot
+  ;;   (dolist (mode '((nix-mode . ("nixd"))))
+  ;;     (add-to-list 'eglot-server-programs mode)))
+
   
   (add-hook 'eglot-managed-mode-hook
           #'(lambda ()
@@ -430,13 +463,11 @@
                  :pydocstyle (:enabled t :convention "numpy") :yapf
                  (:enabled t) :autopep8 (:enabled :json-false) :black
                  (:enabled t :line_length 88 :cache_config t))))
-      (:nixd . (
-		(nixpkgs :expr "import <nixpkgs> {}")
- 	        (formatting 
-		 command ["nixpkgs-fmt"])
-                (options (nixos :expr "(builtins.getFlake \"/Users/aziz/.config/nix-darwin/\").darwinConfigurations.simple.options")
-                         ( home-manager :expr "import <home-manager> {}")
-			 ))))))
+  
+      (:nixd
+       (:nixpkgs
+	(:expr "import <nixpkgs> { }"))))))
+      
 
 ;; Manuals and Docs
 ;;;; info TODO: read and refactor
@@ -510,9 +541,13 @@
 ;;    '(orderless-affix-dispatch prefixes-for-separators)))
 
 ;;;; Helm
+
+(use-package helm-projectile)
 (use-package helm
   :demand t
   :config
+  (require 'helm-source)
+ 
   (global-set-key (kbd "M-x") #'helm-M-x)
   (global-set-key (kbd "C-x m") #'helm-M-x)
   (global-set-key (kbd "C-c m") #'helm-M-x)
@@ -520,9 +555,62 @@
   (global-set-key (kbd "C-x C-f") #'helm-find-files)
   (global-set-key (kbd "C-c i n") #'helm-complete-file-name-at-point)
   (global-set-key (kbd "C-x i") #'helm-imenu)
-  (global-set-key (kbd "M-g i") #'helm-imenu)
+  (global-set-key (kbd "C-x b") 'helm-mini)
+
   
-  (setq helm-completion-style 'helm))
+  (setq helm-buffers-fuzzy-matching t
+      helm-recentf-fuzzy-match    t)
+
+  ;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
+  ;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
+  ;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
+  (global-set-key (kbd "C-c h") 'helm-command-prefix)
+  (global-unset-key (kbd "C-x c"))
+
+  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
+  (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
+  (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+
+  
+  (when (executable-find "curl")
+    (setq helm-google-suggest-use-curl-p t))
+
+  (setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
+	helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
+	helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
+	helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
+	helm-ff-file-name-history-use-recentf t
+	helm-echo-input-in-header-line t)
+
+  (defun spacemacs//helm-hide-minibuffer-maybe ()
+    "Hide minibuffer in Helm session if we use the header line as input field."
+    (when (with-helm-buffer helm-echo-input-in-header-line)
+      (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+	(overlay-put ov 'window (selected-window))
+	(overlay-put ov 'face
+		     (let ((bg-color (face-background 'default nil)))
+		       `(:background ,bg-color :foreground ,bg-color)))
+	(setq-local cursor-type nil))))
+
+  ;; (when (executable-find "ack-grep")
+  ;; (setq helm-grep-default-command "ack-grep -Hn --no-group --no-color %e %p %f"
+  ;;       helm-grep-default-recurse-command "ack-grep -H --no-group --no-color %e %p %f"))
+
+  (add-to-list 'helm-sources-using-default-as-input 'helm-source-man-pages)
+
+  (add-hook 'helm-minibuffer-set-up-hook
+	    'spacemacs//helm-hide-minibuffer-maybe)
+
+  (setq helm-autoresize-max-height 0)
+  (setq helm-autoresize-min-height 40)
+  (helm-autoresize-mode 1)
+
+
+  
+  (setq helm-completion-style 'helm)
+  (setq helm-M-x-fuzzy-match t)
+  (helm-mode t)
+  )
 
 ;; ;;;; ido
 ;; (use-package ido
@@ -535,6 +623,8 @@
 
 ;; Information management
 ;;;; Org-mode
+;;;; org babel support for nix
+(use-package ob-nix)
 (use-package org
       :bind
       ("C-c l" . 'org-store-link)
@@ -544,20 +634,16 @@
       :config
       (setq auto-revert-verbose nil)
       (setq org-directory
-	    "/Users/aziz/Documents/org")
-      ;; (setq org-log-done 'time
-      ;;       ;;org-agenda-files (list org-directory)
-      ;; 	    org-agenda-files (directory-files-recursively org-directory "\\.org$")
-      ;;       org-refile-targets '((org-agenda-files :maxlevel . 5))
-      ;;       org-refile-use-outline-path 'file)
-;; org-refile-targets '((org-agenda-files :maxlevel . 5))
-      (setq org-log-done 'time
-	    org-agenda-files (list org-directory)	   
-	    org-refile-use-outline-path 'file
-	    org-refile-targets '((nil :maxlevel . 5) (org-agenda-files :maxlevel . 5))
-	    org-outline-path-complete-in-steps nil)
+	    "~/Documents/org/")
+      (setq org-agenda-files (list "/tmp/"))
+      (setq org-log-done 'time)
+      (setq org-agenda-files (list org-directory))
+      (setq org-refile-use-outline-path 'file)
+      (setq org-refile-targets '(
+	      (nil :maxlevel . 5)
+	      (org-agenda-files :maxlevel . 5)))
+      (setq org-outline-path-complete-in-steps nil)
       (setq org-default-notes-file (concat org-directory "/notes.org"))
-      (setq org-capture-templates nil)
       (setq org-capture-templates
             `(("i" "inbox" entry (file ,(concat org-directory "/inbox.org"))
                "* TODO %?")
@@ -565,10 +651,16 @@
                "* TODO %(org-cliplink-capture)" :immediate-finish t)
               ("c" "org-protocol-capture" entry (file ,(concat org-directory "/inbox.org"))
                "* TODO [[%:link][%:description]]\n\n %i" :immediate-finish t)
-              ("u" "URL capture from Safari" entry (file+olp+datetree ,(concat org-directory "/links.org"))
-               "* %i    :safari:url:\n%U\n\n"))))
+              ("u" "URL capture from Safari" entry (file+olp+datetree ,(concat
+ org-directory "/links.org"))
+               "* %i    :safari:url:\n%U\n\n")))
+      (org-babel-do-load-languages
+       'org-babel-load-languages
+       '((nix . t)
+	 (shell .t))))
 
 (use-package org-protocol
+  :ensure nil
   :after org)
 
 ;;;; Hyperbole
@@ -604,12 +696,29 @@
 
 
 ;; Tramp
+;;;; https://www.gnu.org/software/emacs/manual/html_node/tramp/Ssh-setup.html
 (use-package tramp
   :config
+  (setq tramp-ssh-controlmaster-options
+      (concat
+       "-o ControlMaster=auto "
+       "-o ControlPath=~/tmp/.ssh-control-%%r-%%h-%%p"))
+  (tramp-set-completion-function
+   "ssh" (append (tramp-get-completion-function "ssh")
+               (mapcar (lambda (file) `(tramp-parse-sconfig ,file))
+                       (directory-files
+                        "~/.ssh/conf.d/"
+                        'full directory-files-no-dot-files-regexp))))
+  
   (setq tramp-default-method "ssh")
+  :custom
   (custom-set-variables  '(tramp-remote-path
                            (quote
-                            (tramp-own-remote-path)))))
+                            (tramp-own-remote-path))))
+  (debug-ignored-errors
+        (cons 'remote-file-error debug-ignored-errors))
+  (tramp-lock-file-name-transforms
+      '(("\\`\\(.+\\)\\'" "\\1~"))))
 
 (use-package avy
   :config
@@ -765,11 +874,16 @@
   (:map bibtex-mode-map
         ("H-b" . org-ref-bibtex-hydra/body)))
 
+;; this issue pr fix the issue with tramp
 (use-package dumb-jump
-  :hook
-  (('xref-backend-functions #'dumb-jump-xref-activate))
-  :custom
-  (setq xref-show-definitions-function #'xref-show-definitions-completing-read))
+  ;; :hook
+  ;; (('xref-backend-functions #'dumb-jump-xref-activate))
+  :config
+  (setq dumb-jump-force-searcher 'rg)
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
+  (setq xref-show-definitions-function 'xref-show-definitions-completing-read)
+  ;; (setq xref-show-definitions-function 'xref-show-definitions-buffer)
+  )
 
 
 (defun my/projectile-remove-selected-projects ()
@@ -780,6 +894,28 @@
     (dolist (project selected)
       (projectile-remove-known-project project))
     (message "Removed projects: %s" (string-join selected ", "))))
+
+(use-package ebib
+  :after
+  (use-package org-ebib)
+  :custom
+  (global-set-key (kbd "C-c e") 'ebib)
+  (setq ebib-bibtex-dialect 'biblatex) 
+  (setq ebib-preload-bib-files '("../research/bibliography.bib" "~/Documents/bibliography.bib")))
+
+
+
+
+(use-package djvu)
+
+(use-package org-noter
+  :custom
+  (setq org-noter-auto-save-last-location t))
+
+(use-package s)
+(use-package slurm-mode
+  :config
+  (use-package slurm-script-mode))
 
 ; References
 ;;;; Disclaimars
@@ -794,56 +930,23 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("1ea82e39d89b526e2266786886d1f0d3a3fa36c87480fad59d8fab3b03ef576e"
-     "7613ef56a3aebbec29618a689e47876a72023bbd1b8393efc51c38f5ed3f33d1"
-     default))
- '(org-agenda-files
-   '("~/tree-3/users/aziz/phd-thesis/pre-defense-presentation.org"
-     "/Users/aziz/Documents/org/Russian.org"
-     "/Users/aziz/Documents/org/calendar-beorg.org"
-     "/Users/aziz/Documents/org/emacs.org"
-     "/Users/aziz/Documents/org/inbox.org"
-     "/Users/aziz/Documents/org/links.org"
-     "/Users/aziz/Documents/org/media.org"
-     "/Users/aziz/Documents/org/people.org"
-     "/Users/aziz/Documents/org/pkg.org"
-     "/Users/aziz/Documents/org/programming.org"
-     "/Users/aziz/Documents/org/research.org"
-     "/Users/aziz/Documents/org/stats.org"
-     "/Users/aziz/Documents/org/training.org"
-     "/Users/aziz/Documents/org/work.org"))
+   '("36b57dcbe8262c52d3123ed30fa34e5ef6b355881674142162a8ca8e26124da9" "6b912e025527ffae0feb76217f1a3e494b0699e5219ab59ea4b3a36c319cea17" "52632b69c2813771327a2c22f51ccaca466ba3cc1aa8f3bf2d613573ea934993" default))
+ '(nil nil t)
  '(org-fold-core-style 'overlays)
  '(package-selected-packages
-   '(ace-window ag combobulate dumb-jump el-mock elixir-ts-mode framemove
-		helm helm-bibtex hyperbole languagetool magit nix-mode
-		nix-ts-mode org org-ref org-transclusion orgit
-		pdf-tools projectile vterm with-simulated-input))
+   '(ivy-mode helm-config helm-projectile projectile-helm slurm-script-mode s combobulate slurm-mode org-noter djvu org-ebib ebib dumb-jump org-ref org-transclusion helm-org-rifle exec-path-from-shell terraform-mode pdf-tools avy org-protocol treesit elixir-modeg dired-x dired use-package auctex vterm treesit-auto projectile ob-nix nix-mode modus-themes magit hyperbole helm elixir-mode))
  '(package-vc-selected-packages
    '((combobulate :url "https://github.com/mickeynp/combobulate")))
  '(safe-local-variable-values
-   '((eval let
-	   ((nix-path
-	     (shell-command-to-string
-	      "nix develop --command printenv PATH")))
-	   (setenv "PATH" nix-path)
-	   (setq exec-path (split-string nix-path path-separator)))
-     (eval setq-local projectile-project-root
-	   (file-name-directory (dir-locals-find-file ".")))
-     (projectile-project-test-cmd . "")
-     (projectile-project-run-cmd . "")
-     (projectile-project-compilation-cmd . "")
-     (projectile-project-test-cmd . "nix flake check")
-     (projectile-project-run-cmd
-      . "darwin-rebuild test --flake . --fast")
-     (projectile-project-compilation-cmd
-      . "darwin-rebuild switch --flake .#m1 --impure")
+   '((projectile-project-test-cmd . "nix flake check")
+     (projectile-project-run-cmd . "darwin-rebuild test --flake . --fast")
+     (projectile-project-compilation-cmd . "darwin-rebuild switch --flake .#m1 --impure")
      (projectile-project-configure-cmd . "nix flake update")))
- '(send-mail-function 'mailclient-send-it)
  '(tramp-remote-path '(tramp-own-remote-path)))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
