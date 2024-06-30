@@ -1,58 +1,140 @@
-
 ;; Garbage collect after startup
 (add-hook 'after-init-hook #'garbage-collect t)
 
-;; Load use packages
-(eval-and-compile
-  (defsubst emacs-path (path)
-    (expand-file-name path user-emacs-directory))
 
-  (setq package-enable-at-startup nil
-        load-path
-        (append (list (emacs-path "use-package"))
-                (delete-dups load-path)
-                (list (emacs-path "lisp")))))
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-(require 'use-package)
-;; Set use-package to always ensure packages are installed
-(setq use-package-always-ensure t)
 
-;; (setq use-package-verbose init-file-debug
-;;       use-package-expand-minimally (not init-file-debug)
-;;       use-package-compute-statistics t
-;;       debug-on-error init-file-debug)
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
+;; :config
+;; ;; Setup a personal keymap. I'll bind various things to this later on:
+(bind-keys :prefix "<f1>"
+           :prefix-map my/map)
+(setq use-package-enable-imenu-support t
+      use-package-compute-statistics t)
 
-;; Define the “data environment” for this instance of Emacs
+(use-package auto-compile
+  :straight t
+  :demand t
+  :custom
+  (auto-compile-mode-line-counter t "Show compile info in the mode-line")
+  (auto-compile-source-recreate-deletes-dest t)
+  (auto-compile-toggle-deletes-nonlib-dest t)
+  (auto-compile-update-autoloads t)
+  (auto-compile-display-buffer nil "Don't display compile buffer")
+  :hook
+  (auto-compile-inhibit-compile . auto-compile-inhibit-compile-detached-git-head)
+  :config
+  (auto-compile-on-load-mode)
+  (auto-compile-on-save-mode))
 
-(defconst emacs-environment (or (getenv "NIX_MYENV_NAME") "default"))
 
-(defconst emacs-data-suffix
-  (cond ((string= "emacsERC" emacs-environment) "alt")
-        ((string-match "emacs2[6789]\\(.+\\)$" emacs-environment)
-         (match-string 1 emacs-environment))))
+(use-package no-littering
+  :straight t
+  :demand t)
 
-(defconst alternate-emacs (string= emacs-data-suffix "alt"))
 
-(defconst user-data-directory
-  (emacs-path (if emacs-data-suffix
-                  (format "data-%s" emacs-data-suffix)
-                "data")))
+
+;; ;; Load use packages
+;; (eval-and-compile
+;;   (defsubst emacs-path (path)
+;;     (expand-file-name path user-emacs-directory))
+
+;;   (setq package-enable-at-startup nil
+;;         load-path
+;;         (append (list (emacs-path "use-package"))
+;;                 (delete-dups load-path)
+;;                 (list (emacs-path "lisp")))))
+
+;; (require 'use-package)
+;; ;; Set use-package to always ensure packages are installed
+;; (setq use-package-always-ensure t)
+
+;; ;; (setq use-package-verbose init-file-debug
+;; ;;       use-package-expand-minimally (not init-file-debug)
+;; ;;       use-package-compute-statistics t
+;; ;;       debug-on-error init-file-debug)
+
+;; ;; Define the “data environment” for this instance of Emacs
+
+;; (defconst emacs-environment (or (getenv "NIX_MYENV_NAME") "default"))
+
+;; (defconst emacs-data-suffix
+;;   (cond ((string= "emacsERC" emacs-environment) "alt")
+;;         ((string-match "emacs2[6789]\\(.+\\)$" emacs-environment)
+;;          (match-string 1 emacs-environment))))
+
+;; (defconst alternate-emacs (string= emacs-data-suffix "alt"))
+
+;; (defconst user-data-directory
+;;   (emacs-path (if emacs-data-suffix
+;;                   (format "data-%s" emacs-data-suffix)
+;;                 "data")))
 
 ;; (defun user-data (
 ;;   (expand-file-name dir user-data-directory)))
 
 ;; Font setup
 ;; https://slumpy.org/blog/2016-01-11-proper-way-to-setup-fonts-in-emacs/
+
+
 (defun my/setup-fonts ()
   (interactive)
   (set-face-font 'default "Berkeley Mono-15")
   (set-fontset-font t 'hebrew (font-spec :name "Berkeley Mono-15"))
 )
-;; (add-to-list 'default-frame-alist '(font . "IBM Plex Mono" ))
-;; (set-face-attribute 'default t :font "IBM Plex Mono")
+
+
+;; (add-to-list 'default-frame-alist '(font . "Berkeley Mono" ))
+;; (set-face-attribute 'default t :font "Berkeley Mono")
 (use-package modus-themes
   :ensure t
-  :custom
+  :init
+  ;; Add all your customizations prior to loading the themes
+  (setq modus-themes-italic-constructs t
+        modus-themes-bold-constructs t
+        modus-themes-region '(bg-only)
+	modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi))
+  (setq modus-themes-custom-auto-reload nil
+        modus-themes-to-toggle '(modus-operandi modus-vivendi)
+        ;; modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi-tinted)
+        ;; modus-themes-to-toggle '(modus-operandi-deuteranopia modus-vivendi-deuteranopia)
+        ;; modus-themes-to-toggle '(modus-operandi-tritanopia modus-vivendi-tritanopia)
+        modus-themes-mixed-fonts t
+        modus-themes-variable-pitch-ui t
+        modus-themes-italic-constructs t
+        modus-themes-bold-constructs nil
+        modus-themes-org-blocks nil
+        modus-themes-completions '((t . (extrabold)))
+        modus-themes-prompts '(extrabold)
+        modus-themes-headings
+        '((agenda-structure . (variable-pitch light 2.2))
+          (agenda-date . (variable-pitch regular 1.3))
+          (t . (regular 1.15))))
+
+  (setq modus-themes-common-palette-overrides nil)
+        ;; '((bg-mode-line-active bg-cyan-subtle)
+        ;;   (keybind yellow-warmer)))
+
+
+  :bind ("<f5>" . modus-themes-toggle)
+
+  :config
   ;; Load the theme of your choice:
   (load-theme 'modus-operandi-tinted :no-confirm)
   (modus-themes-select 'modus-operandi-tinted))
@@ -167,23 +249,17 @@
   (global-set-key (kbd "<C-wheel-up>") nil)
   (global-set-key (kbd "<C-wheel-down>") nil)
 
-  
+  (vc-follow-symlinks nil)
   :init
   (setq disabled-command-function nil) ;; enable all commands
-  ;; Add all your customizations prior to loading the themes
-  (setq modus-themes-italic-constructs t
-        modus-themes-bold-constructs t
-        modus-themes-region '(bg-only)
-	modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi))
-  
-  :bind ("<f5>" . modus-themes-toggle)
 
+ 
   :config  
   ;; Setup font
   (advice-add 'server-create-window-system-frame
-              :after 'my/setup-fonts)
+               :after 'my/setup-fonts)
   (advice-add 'server-create-tty-frame
-              :after 'my/setup-fonts)
+               :after 'my/setup-fonts)
   (unless (daemonp) (my/setup-fonts))
 
   ;; Enable line numbers only with programing modes
@@ -196,32 +272,33 @@
   (add-hook 'after-init-hook (lambda () 
                              (tool-bar-mode 1) 
                              (tool-bar-mode 0)))
-  (defun my-toggle-toolbar (frame)
-    "Toggle tool-bar-mode on then off when a new frame is created."
-    (with-selected-frame frame
-      (tool-bar-mode 1)
-      (tool-bar-mode 0)))
+  ;;(;; defun my-toggle-toolbar (frame)
+   ;;  "Toggle tool-bar-mode on then off when a new frame is created."
+   ;;  (with-selected-frame frame
+   ;;    (tool-bar-mode 1)
+   ;;    (tool-bar-mode 0)))
 
-  (add-hook 'after-make-frame-functions 'my-toggle-toolbar)
+  ;; (add-hook 'after-make-frame-functions 'my-toggle-toolbar)
+  ;;)
   )
 
 
-(use-package package
-  :custom
-  (setq package-archives '(("melpa-stable" . "https://stable.melpa.org/packages/")
-                         ("melpa" . "https://melpa.org/packages/")
-                         ("gnu" . "http://elpa.gnu.org/packages/")
-			 ("org" . "http://orgmode.org/elpa/")))
+;; (use-package package
+;;   :custom
+;;   (setq package-archives '(("melpa-stable" . "https://stable.melpa.org/packages/")
+;;                          ("melpa" . "https://melpa.org/packages/")
+;;                          ("gnu" . "http://elpa.gnu.org/packages/")
+;; 			 ("org" . "http://orgmode.org/elpa/")))
 
-  (defun validate-package-urls (urls)
-    "Validate the given package repository URLs."
-    (dolist (url urls)
-      (unless (string-match "\\`https?:" (cdr url))
-	(error "Invalid URL: %s" (cdr url)))))
+;;   (defun validate-package-urls (urls)
+;;     "Validate the given package repository URLs."
+;;     (dolist (url urls)
+;;       (unless (string-match "\\`https?:" (cdr url))
+;; 	(error "Invalid URL: %s" (cdr url)))))
 
-  (validate-package-urls package-archives)
+;;   (validate-package-urls package-archives)
 
-  (package-initialize))
+;;   (package-initialize))
 
 
 
@@ -326,6 +403,7 @@
                 (ibuffer-switch-to-saved-filter-groups "default"))))
 
 (use-package dired
+  :straight nil
   :ensure nil
   :config
   ;; (when (string= system-type "darwin")
@@ -334,16 +412,19 @@
   ;;         dired-listing-switches "-aBhl --group-directories-first")))
 )
 (use-package dired-x
+  :straight nil
   :ensure nil
   :after dired
   :config
   (add-hook 'dired-mode-hook #'dired-omit-mode))
 
-  
+(use-package helm-rg
+  :straight t)
 
 ;; Project management
 ;;;; projectile
 (use-package projectile
+  :straight t
   :init
   (projectile-mode t)
   (require 'tramp)
@@ -353,16 +434,18 @@
          ("s-p v" . 'magit))
  
   :config
-  
-  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
   (setq projectile-sort-order 'recentf)
   (setq projectile-git-use-fd t)
   (setq projectile-enable-caching t)
+  (setq projectile-completion-system 'helm)
+  (setq projectile-switch-project-action 'helm-projectile)
+  (advice-add 'projectile-project-root :before-while
+	      (lambda (&optional dir)
+		(not (file-remote-p (or dir default-directory)))))
   (add-to-list 'projectile-other-file-alist '("ex" . ("html.heex" "html.leex")))
   (add-to-list 'projectile-other-file-alist '("html.heex" . ("ex")))
   (add-to-list 'projectile-other-file-alist '("html.leex" . ("ex")))
-  (setq projectile-completion-system 'helm)
-  (setq projectile-switch-project-action #'projectile-dired))
+  )
 
 
  
@@ -370,9 +453,12 @@
 ;; Terminal emulator
 ;;;; vterm
 (use-package vterm
+  :disabled
+  :straight t
   :defer t)
 
-(use-package elixir-mode)
+(use-package elixir-mode
+  :straight t)
 
 ;; (use-package treesit
 ;;   :mode (("\\.tsx\\'" . tsx-ts-mode))
@@ -542,8 +628,19 @@
 
 ;;;; Helm
 
-(use-package helm-projectile)
+(use-package helm-projectile
+  :straight t
+  :config
+  (helm-projectile-on))
+
+
+(use-package helm-tramp
+  :straight t
+  :config
+  (define-key global-map (kbd "C-c s") 'helm-tramp))
+
 (use-package helm
+  :straight t
   :demand t
   :config
   (require 'helm-source)
@@ -556,7 +653,9 @@
   (global-set-key (kbd "C-c i n") #'helm-complete-file-name-at-point)
   (global-set-key (kbd "C-x i") #'helm-imenu)
   (global-set-key (kbd "C-x b") 'helm-mini)
-
+  (global-set-key (kbd "C-h SPC") 'helm-all-mark-rings)
+  (global-set-key (kbd "C-c h x") 'helm-register)
+  (global-set-key (kbd "C-c h M-:") 'helm-eval-expression-with-eldoc)
   
   (setq helm-buffers-fuzzy-matching t
       helm-recentf-fuzzy-match    t)
@@ -570,15 +669,19 @@
   (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
   (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
   (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
-
+ 
   
   (when (executable-find "curl")
     (setq helm-google-suggest-use-curl-p t))
 
-  (setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
-	helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
-	helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
-	helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
+  ; open helm buffer inside current window, not occupy whole other window
+  (setq helm-split-window-in-side-p           t
+	; move to end or beginning of source when reaching top or bottom of source.
+	helm-move-to-line-cycle-in-source     t
+	; search for library in `require' and `declare-function' sexp.
+	helm-ff-search-library-in-sexp        t
+	; scroll 8 lines other window using M-<next>/M-<prior>
+	helm-scroll-amount                    8
 	helm-ff-file-name-history-use-recentf t
 	helm-echo-input-in-header-line t)
 
@@ -609,6 +712,8 @@
   
   (setq helm-completion-style 'helm)
   (setq helm-M-x-fuzzy-match t)
+  (setq helm-apropos-fuzzy-match t)
+  (setq helm-lisp-fuzzy-completion t)
   (helm-mode t)
   )
 
@@ -625,47 +730,49 @@
 ;;;; Org-mode
 ;;;; org babel support for nix
 (use-package ob-nix)
+
 (use-package org
-      :bind
-      ("C-c l" . 'org-store-link)
-      ("C-c a" . 'org-agenda)
-      ("C-c c" . 'org-capture)
-      :hook (org-mode . auto-revert-mode)
-      :config
-      (setq auto-revert-verbose nil)
-      (setq org-directory
-	    "~/Documents/org/")
-      (setq org-agenda-files (list "/tmp/"))
-      (setq org-log-done 'time)
-      (setq org-agenda-files (list org-directory))
-      (setq org-refile-use-outline-path 'file)
-      (setq org-refile-targets '(
-	      (nil :maxlevel . 5)
-	      (org-agenda-files :maxlevel . 5)))
-      (setq org-outline-path-complete-in-steps nil)
-      (setq org-default-notes-file (concat org-directory "/notes.org"))
-      (setq org-capture-templates
-            `(("i" "inbox" entry (file ,(concat org-directory "/inbox.org"))
-               "* TODO %?")
-              ("l" "link" entry (file ,(concat org-directory "/inbox.org"))
-               "* TODO %(org-cliplink-capture)" :immediate-finish t)
-              ("c" "org-protocol-capture" entry (file ,(concat org-directory "/inbox.org"))
-               "* TODO [[%:link][%:description]]\n\n %i" :immediate-finish t)
-              ("u" "URL capture from Safari" entry (file+olp+datetree ,(concat
- org-directory "/links.org"))
-               "* %i    :safari:url:\n%U\n\n")))
-      (org-babel-do-load-languages
-       'org-babel-load-languages
-       '((nix . t)
-	 (shell .t))))
+  :bind
+  ("C-c l" . 'org-store-link)
+  ("C-c a" . 'org-agenda)
+  ("C-c c" . 'org-capture)
+  :hook (org-mode . auto-revert-mode)
+  :config
+  (setq auto-revert-verbose nil)
+  (setq org-directory
+	"~/Documents/org/")
+  (setq org-log-done 'time)
+  (setq org-agenda-files (list org-directory))
+  (setq org-refile-use-outline-path 'file)
+  (setq org-refile-targets '(
+			     (nil :maxlevel . 5)
+			     (org-agenda-files :maxlevel . 5)))
+  (setq org-outline-path-complete-in-steps nil)
+  (setq org-default-notes-file (concat org-directory "notes.org"))
+  (setq org-capture-templates
+        `(("i" "inbox" entry (file ,(concat org-directory "inbox.org"))
+           "* TODO %?")
+          ("l" "link" entry (file ,(concat org-directory "inbox.org"))
+           "* TODO %(org-cliplink-capture)" :immediate-finish t)
+          ("c" "org-protocol-capture" entry (file ,(concat org-directory "/inbox.org"))
+           "* TODO [[%:link][%:description]]\n\n %i" :immediate-finish t)
+          ("u" "URL capture from Safari" entry (
+						file+olp+datetree ,(concat org-directory "/links.org"))
+           "* %i    :safari:url:\n%U\n\n")))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((nix . t)
+     (shell .t))))
 
 (use-package org-protocol
+  :straight nil
   :ensure nil
   :after org)
 
 ;;;; Hyperbole
 
 (use-package hyperbole
+  :straight t
 	    :demand t
 	    :config
 	    (add-to-list 'Info-directory-list (concat hyperb:dir "man/"))
@@ -680,17 +787,21 @@
 ;; Nix
 ;; https://github.com/NixOS/nix-mode?tab=readme-ov-filelsp
 (use-package nix-mode
+  :straight t
   :mode ("\\.nix\\'" "\\.nix.in\\'"))
 
 (use-package nix-drv-mode
+  :straight nil
   :ensure nix-mode
   :mode "\\.drv\\'")
 
 (use-package nix-shell
+  :straight nil
   :ensure nix-mode
   :commands (nix-shell-unpack nix-shell-configure nix-shell-build))
 
 (use-package nix-repl
+  :straight nil
   :ensure nix-mode
   :commands (nix-repl))
 
@@ -711,6 +822,16 @@
                         'full directory-files-no-dot-files-regexp))))
   
   (setq tramp-default-method "ssh")
+  (add-hook 'helm-tramp-pre-command-hook '(lambda () (global-aggressive-indent-mode 0)
+				     (projectile-mode 0)
+				     ;;(editorconfig-mode 0)
+				     ))
+  (add-hook 'helm-tramp-quit-hook '(lambda () (global-aggressive-indent-mode 1)
+			      (projectile-mode 1)
+			      ;;(editorconfig-mode 1)
+			      ))
+  (setq make-backup-files nil)
+  (setq create-lockfiles nil)
   :custom
   (custom-set-variables  '(tramp-remote-path
                            (quote
@@ -721,6 +842,7 @@
       '(("\\`\\(.+\\)\\'" "\\1~"))))
 
 (use-package avy
+  :straight t
   :config
   (avy-setup-default)
   :bind
@@ -732,14 +854,20 @@
    ("C-c C-j" . avy-resume)))
 
 (use-package magit
+  :straight t
   :bind ("C-x g" . magit-status)
   :custom
   (magit-define-global-key-bindings 'recommended))
 
-(use-package pdf-tools)
+(use-package pdf-tools
+  :straight t
+  )
 
 ;; Auctex
+(use-package auctex
+  :straight t)
 (use-package tex
+  :straight nil
   :ensure auctex
   :defer t
  ;; :mode ("\\.tex\\'" . LaTeX-mode)
@@ -819,10 +947,12 @@
 
 ;; My packages
 (use-package capture-frame
+  :disabled
   :load-path "./capture-frame.el"
-  :commands (my/make-capture-frame)) 
+  :commands (my/make-capture-frame))
 
 (use-package terraform-mode
+  :straight t
   :custom (terraform-indent-level 4)
   :config
   (defun my-terraform-mode-init ()
@@ -833,6 +963,7 @@
 
 
 (use-package exec-path-from-shell
+  :straight t
   :config
   (exec-path-from-shell-initialize)
   (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_CTYPE" "NIX_SSL_CERT_FILE" "NIX_PATH"))
@@ -840,18 +971,25 @@
   (exec-path-from-shell-copy-env "PATH"))
 
 
-(use-package helm-org-rifle)
-(use-package org-transclusion)
+(use-package helm-org-rifle
+  :straight t)
+(use-package org-transclusion
+  :straight t)
+(use-package helm-bibtex
+  :straight t
+  :config)
 (use-package org-ref
+  :straight t
   :config
   (require 'org-ref-helm)
   :bind
   (:map org-mode-map
         ("C-c ]" . org-ref-insert-link))
   :custom
-  (bibtex-completion-bibliography '("~/Documents/bibliography.bib"))
-  (bibtex-completion-library-path '("~/My library/"))
-  (bibtex-completion-notes-path "~/notes/")
+  ;;  (bibtex-completion-bibliography '("~/Documents/bibliography.bib"))
+  (bibtex-completion-bibliography '("~/Documents/inbox.bib"))
+  (bibtex-completion-library-path '("~/Documents/library/"))
+  (bibtex-completion-notes-path "~/Documents/notes/")
   (bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n")
   (bibtex-completion-additional-search-fields '(keywords))
   (bibtex-completion-display-formats '((article       . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
@@ -862,6 +1000,7 @@
   (bibtex-completion-pdf-open-function (lambda (fpath) (call-process "open" nil 0 nil fpath))))
 
 (use-package bibtex
+  :straight t
   :custom
   (bibtex-autokey-year-length 4)
   (bibtex-autokey-name-year-separator "-")
@@ -876,6 +1015,7 @@
 
 ;; this issue pr fix the issue with tramp
 (use-package dumb-jump
+  :straight t
   ;; :hook
   ;; (('xref-backend-functions #'dumb-jump-xref-activate))
   :config
@@ -894,8 +1034,9 @@
     (dolist (project selected)
       (projectile-remove-known-project project))
     (message "Removed projects: %s" (string-join selected ", "))))
-
+(require 'org)
 (use-package ebib
+  :straight t
   :after
   (use-package org-ebib)
   :custom
@@ -904,46 +1045,49 @@
   (setq ebib-preload-bib-files '("../research/bibliography.bib" "~/Documents/bibliography.bib")))
 
 
-
-
-(use-package djvu)
+(use-package djvu
+  :straight t)
 
 (use-package org-noter
+  :straight t
   :custom
   (setq org-noter-auto-save-last-location t))
 
-(use-package s)
-(use-package slurm-mode
-  :config
-  (use-package slurm-script-mode))
+(use-package s
+  :straight t)
 
+(use-package slurm-mode
+  :straight t
+  :config
+  (require 'slurm-script-mode))
+
+(use-package yasnippet
+  :straight t
+  :config
+  (yas-global-mode 1)
+  ;; get more snippets from here
+  ;; https://github.com/AndreaCrotti/yasnippet-snippets/tree/master/snippets
+  (setq yas-snippet-dirs
+      '("~/.emacs.d/snippets")))
+
+ 
 ; References
 ;;;; Disclaimars
 ;; the current version borrows heavily from John Wiegley excellent
 ;; dot-emacs repo (https://github.com/jwiegley/dot-emacs)
-
-
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("36b57dcbe8262c52d3123ed30fa34e5ef6b355881674142162a8ca8e26124da9" "6b912e025527ffae0feb76217f1a3e494b0699e5219ab59ea4b3a36c319cea17" "52632b69c2813771327a2c22f51ccaca466ba3cc1aa8f3bf2d613573ea934993" default))
- '(nil nil t)
+   '("6b912e025527ffae0feb76217f1a3e494b0699e5219ab59ea4b3a36c319cea17" default))
  '(org-fold-core-style 'overlays)
- '(package-selected-packages
-   '(ivy-mode helm-config helm-projectile projectile-helm slurm-script-mode s combobulate slurm-mode org-noter djvu org-ebib ebib dumb-jump org-ref org-transclusion helm-org-rifle exec-path-from-shell terraform-mode pdf-tools avy org-protocol treesit elixir-modeg dired-x dired use-package auctex vterm treesit-auto projectile ob-nix nix-mode modus-themes magit hyperbole helm elixir-mode))
- '(package-vc-selected-packages
-   '((combobulate :url "https://github.com/mickeynp/combobulate")))
  '(safe-local-variable-values
    '((projectile-project-test-cmd . "nix flake check")
      (projectile-project-run-cmd . "darwin-rebuild test --flake . --fast")
      (projectile-project-compilation-cmd . "darwin-rebuild switch --flake .#m1 --impure")
-     (projectile-project-configure-cmd . "nix flake update")))
- '(tramp-remote-path '(tramp-own-remote-path)))
-
+     (projectile-project-configure-cmd . "nix flake update"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

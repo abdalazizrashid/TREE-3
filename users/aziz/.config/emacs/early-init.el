@@ -10,10 +10,10 @@
 ;; plists provide better performance in deserialization and also put less presure than hash-tables
 (setenv "LSP_USE_PLISTS" "true")
 
-;; Disable the tool bar
-(tool-bar-mode -1)
-(menu-bar-mode 1)
-(toggle-scroll-bar -1) 
-(scroll-bar-mode -1)
+;; ;; Disable the tool bar
+;; (tool-bar-mode -1)
+;; (menu-bar-mode 1)
+;; (toggle-scroll-bar -1) 
+;; (scroll-bar-mode -1)
 
 

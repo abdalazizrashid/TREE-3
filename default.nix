@@ -13,9 +13,10 @@
 #   in
 #   node.m1
 
-{ config, pkgs, ... }:
+{ sources ? import nix/sources.nix, ... }:
 let
-  home-manager = import <home-manager> { };
+  pkgs = import sources.nixpkgs { overlays = []; config = {}; };
+  home-manager = import sources.home-manager { };
 in
 {
   imports = [ ./nodes/default.nix ];

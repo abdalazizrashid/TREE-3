@@ -1,6 +1,32 @@
 { config, pkgs, ... }:
 {
   # NixOS configuration.
+
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+      allowBroken = false;
+      allowInsecure = false;
+      allowUnsupportedSystem = false;
+
+      permittedInsecurePackages = [
+        "python-2.7.18.7"
+        "libressl-3.4.3"
+      ];
+    };
+
+    overlays =
+      let
+        path = ../overlays;
+      in
+      with builtins;
+      map (n: import (path + ("/" + n))) (
+        filter (n: match ".*\\.nix" n != null || pathExists (path + ("/" + n + "/default.nix"))) (
+          attrNames (readDir path)
+        )
+      )
+      ++ [ (import ./envs.nix) ];
+  };
   nix = {
     useDaemon = true;
     settings = {
@@ -15,6 +41,17 @@
       keep-derivations = true
     '';
     configureBuildUsers = true;
+    nixPath = lib.mkForce (
+      lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry
+      ++ [
+        {
+          #ssh-config-file = "${home}/.ssh/config";
+          #         ssh-auth-sock   = "${xdg_configHome}/gnupg/S.gpg-agent.ssh";
+          #        darwin-config   = "${home}/src/nix/config/darwin.nix";
+          #       hm-config       = "${home}/src/nix/config/home.nix";
+        }
+      ]
+    );
   };
   # Nix is installed externally 
   # services.nix-daemon.enable = true;
@@ -73,6 +110,10 @@
     recursive
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
   ];
+  fonts.packages = with pkgs; [
+    ibm-plex
+    ia-writer-duospace
+  ];
 
   # Keyboard
   system.keyboard.enableKeyMapping = true;
@@ -84,6 +125,114 @@
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
   system.stateVersion = 4;
+  system = {
+    defaults = {
+      NSGlobalDomain = {
+        AppleKeyboardUIMode = 3;
+        AppleInterfaceStyle = "Dark";
+        AppleShowAllExtensions = true;
+        NSAutomaticWindowAnimationsEnabled = false;
+        NSNavPanelExpandedStateForSaveMode = true;
+        NSNavPanelExpandedStateForSaveMode2 = true;
+        "com.apple.keyboard.fnState" = true;
+        _HIHideMenuBar = true;
+        "com.apple.mouse.tapBehavior" = 1;
+        "com.apple.sound.beep.volume" = 0.0;
+        "com.apple.sound.beep.feedback" = 0;
+        ApplePressAndHoldEnabled = false;
+      };
+
+      CustomUserPreferences = {
+        "com.apple.finder" = {
+          ShowExternalHardDrivesOnDesktop = false;
+          ShowHardDrivesOnDesktop = false;
+          ShowMountedServersOnDesktop = true;
+          ShowRemovableMediaOnDesktop = true;
+          _FXSortFoldersFirst = true;
+          # When performing a search, search the current folder by default
+          FXDefaultSearchScope = "SCcf";
+        };
+
+        "com.apple.desktopservices" = {
+          # Avoid creating .DS_Store files on network or USB volumes
+          DSDontWriteNetworkStores = true;
+          DSDontWriteUSBStores = true;
+        };
+
+        "com.apple.spaces" = {
+          "spans-displays" = 0; # Display have seperate spaces
+        };
+
+        "com.apple.WindowManager" = {
+          EnableStandardClickToShowDesktop = 0; # Click wallpaper to reveal desktop
+          StandardHideDesktopIcons = 0; # Show items on desktop
+          HideDesktop = 0; # Do not hide items on desktop & stage manager
+          StageManagerHideWidgets = 0;
+          StandardHideWidgets = 0;
+        };
+
+        "com.apple.screencapture" = {
+          location = "~/Downloads";
+          type = "png";
+        };
+
+        "com.apple.AdLib" = {
+          allowApplePersonalizedAdvertising = false;
+        };
+
+        # Prevent Photos from opening automatically when devices are plugged in
+        "com.apple.ImageCapture".disableHotPlug = true;
+
+        "com.apple.print.PrintingPrefs" = {
+          # Automatically quit printer app once the print jobs complete
+          "Quit When Finished" = true;
+        };
+
+        "com.apple.SoftwareUpdate" = {
+          AutomaticCheckEnabled = true;
+          # Check for software updates daily, not just once per week
+          ScheduleFrequency = 1;
+          # Download newly available updates in background
+          AutomaticDownload = 1;
+          # Install System data files & security updates
+          CriticalUpdateInstall = 1;
+        };
+        "com.apple.TimeMachine".DoNotOfferNewDisksForBackup = true;
+
+        # Turn on app auto-update
+        "com.apple.commerce".AutoUpdate = true;
+      };
+
+      ".GlobalPreferences" = {
+        "com.apple.sound.beep.sound" = "/System/Library/Sounds/Funk.aiff";
+      };
+
+      dock = {
+        autohide = true;
+        orientation = "right";
+        launchanim = false;
+        show-process-indicators = true;
+        show-recents = false;
+        static-only = true;
+      };
+
+      finder = {
+        AppleShowAllExtensions = true;
+        ShowPathbar = true;
+        FXEnableExtensionChangeWarning = false;
+      };
+
+      trackpad = {
+        Clicking = true;
+        TrackpadThreeFingerDrag = true;
+      };
+    };
+
+    keyboard = {
+      enableKeyMapping = true;
+      remapCapsLockToControl = true;
+    };
+  };
 
   # The platform the configuration will be used on.
   nixpkgs.hostPlatform = "aarch64-darwin";
@@ -107,4 +256,5 @@
     "2001:4860:4860::8888"
     "2001:4860:4860::8844"
   ];
+
 }
