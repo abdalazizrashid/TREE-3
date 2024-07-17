@@ -54,6 +54,7 @@ in
       gh
       fd
       vivid # Generator for LS_COLORS with support for multiple color themes
+      git-lfs
       emacs29MacPortFromUsePackageEnv
     ]
   );
@@ -224,9 +225,10 @@ in
     '';
   };
   home.file = {
-    ".emacs.d/init.el".source = config.lib.file.mkOutOfStoreSymlink "/Users/aziz/tree-3/users/aziz/.config/emacs/init.el";
-    ".emacs.d/early-init.el".source = config.lib.file.mkOutOfStoreSymlink "/Users/aziz/tree-3/users/aziz/.config/emacs/early-init.el";
-    ".emacs.d/capture-frame.el".source = config.lib.file.mkOutOfStoreSymlink "/Users/aziz/tree-3/users/aziz/.config/emacs/capture-frame.el";
-    ".emacs.d/snippets/".source = config.lib.file.mkOutOfStoreSymlink "/Users/aziz/tree-3/users/aziz/snippets";
+#    ".emacs.d/init.el".source = config.lib.file.mkOutOfStoreSymlink "/Users/aziz/tree-3/users/aziz/.config/emacs/init.el";
+#   ".emacs.d/early-init.el".source = config.lib.file.mkOutOfStoreSymlink "/Users/aziz/tree-3/users/aziz/.config/emacs/early-init.el";
+#    ".emacs.d/capture-frame.el".source = config.lib.file.mkOutOfStoreSymlink "/Users/aziz/tree-3/users/aziz/.config/emacs/capture-frame.el";
+#    ".emacs.d/snippets/".source = config.lib.file.mkOutOfStoreSymlink "/Users/aziz/tree-3/users/aziz/snippets";
+    ".emacs.d/".source = config.lib.file.mkOutOfStoreSymlink "/Users/aziz/tree-3/users/aziz/.config/emacs";
   };
 }

@@ -31,7 +31,7 @@
     useDaemon = true;
     settings = {
       substituters = [ "https://cache.nixos.org/" ];
-      trusted-public-keys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" ];
+      trusted-public-keys = [ "cache.c1.s1.black.hole-1:ahIxOKW/NU+VPcLQRA0bLdsPVtRuMBkqaz5jawJYbDg=aziz@c1" "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" ];
     };
     # Optimize storage space by hardlinking identical derivations in /nix/store
     extraOptions = ''
