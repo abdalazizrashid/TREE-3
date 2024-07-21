@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# contributor: Aziz R.
+# name: use-package
+# key: ups
+# --
+(use-package ${1:package-name}
+:straight t
+:config$0)

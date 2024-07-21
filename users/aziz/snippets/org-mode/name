@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: name keyword
+# key: n
+# contributor: John Kitchin <jkitchin@andrew.cmu.edu>
+# condition: (looking-back "^n" 2)
+# --
+#+name: ${1:name}$0

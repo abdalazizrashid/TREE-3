@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: import scipy.optimize.fsolve
+# key: ifs
+# contributor: John Kitchin <jkitchin@andrew.cmu.edu>
+# --
+from scipy.optimize import fsolve

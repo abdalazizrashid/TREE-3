@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: latex equation
+# key: eq
+# contributor: John Kitchin <jkitchin@andrew.cmu.edu>
+# --
+\begin{equation}\label{$1}
+$0
+\end{equation}

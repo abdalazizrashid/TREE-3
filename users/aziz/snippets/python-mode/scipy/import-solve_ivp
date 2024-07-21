@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: import scipy.integrate.solve_ivp
+# key: iivp
+# contributor: John Kitchin <jkitchin@andrew.cmu.edu>
+# --
+from scipy.integrate import solve_ivp
