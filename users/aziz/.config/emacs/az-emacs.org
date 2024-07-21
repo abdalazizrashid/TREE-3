@@ -284,7 +284,7 @@ Emacs configurations
 #+begin_src emacs-lisp :tangle "init.el"
   (use-package s)
 #+end_src
-** Asyn
+** Async
 Used by other packages such as org-ref
 #+begin_src emacs-lisp :tangle "init.el"
   (use-package async)
@@ -838,44 +838,46 @@ I use hyperbole to control multiple aspects of emacs
 ** Org mode
 Org is the main component of knowledge management
 #+begin_src emacs-lisp :tangle "init.el"
-    ;;;; Org-mode
-    (use-package org
-      :init
-      ;;;; org babel support for nix
-      (use-package ob-nix)
-      :bind
-      ("C-c l" . 'org-store-link)
-      ("C-c a" . 'org-agenda)
-      ("C-c c" . 'org-capture)
-      :hook (org-mode . auto-revert-mode)
-      :config
-      (require 'org-protocol)
-      (setq auto-revert-verbose nil)
-      (setq org-directory
-            "~/Documents/org/")
-      (setq org-log-done 'time)
-      (setq org-agenda-files (list org-directory))
-      (setq org-refile-use-outline-path 'file)
-      (setq org-refile-targets '(
-                                 (nil :maxlevel . 5)
-                                 (org-agenda-files :maxlevel . 5)))
-      (setq org-outline-path-complete-in-steps nil)
-      (setq org-default-notes-file (concat org-directory "notes.org"))
-      (setq org-capture-templates
-            `(("i" "inbox" entry (file ,(concat org-directory "inbox.org"))
-               "* TODO %?")
-              ("l" "link" entry (file ,(concat org-directory "inbox.org"))
-               "* TODO %(org-cliplink-capture)" :immediate-finish t)
-              ("c" "org-protocol-capture" entry (file ,(concat org-directory "/inbox.org"))
-               "* TODO [[%:link][%:description]]\n\n %i" :immediate-finish t)
-              ("u" "URL capture from Safari" entry (
-                                                    file+olp+datetree ,(concat org-directory "/links.org"))
-               "* %i    :safari:url:\n%U\n\n")))
-      (org-babel-do-load-languages
-       'org-babel-load-languages
-       '((nix . t)
-         (shell . t)
-         (python . t)))
+  ;;;; Org-mode
+  (use-package org
+    :init
+    ;;;; org babel support for nix
+    (use-package ob-nix)
+    :bind
+    ("C-c l" . 'org-store-link)
+    ("C-c a" . 'org-agenda)
+    ("C-c c" . 'org-capture)
+    :hook (org-mode . auto-revert-mode)
+    :config
+    (require 'org-protocol)
+    (setq auto-revert-verbose nil)
+    (setq org-directory
+          "~/Documents/org/")
+    (setq org-log-done 'time)
+    (setq org-agenda-files (list org-directory))
+    (setq org-refile-use-outline-path 'file)
+    (setq org-refile-targets '(
+                               (nil :maxlevel . 5)
+                               (org-agenda-files :maxlevel . 5)))
+    (setq org-outline-path-complete-in-steps nil)
+    (setq org-default-notes-file (concat org-directory "notes.org"))
+    (setq org-capture-templates
+          `(("i" "inbox" entry (file ,(concat org-directory "inbox.org"))
+             "* TODO %?")
+            ("l" "link" entry (file ,(concat org-directory "inbox.org"))
+             "* TODO %(org-cliplink-capture)" :immediate-finish t)
+            ("c" "org-protocol-capture" entry (file ,(concat org-directory "/inbox.org"))
+             "* TODO [[%:link][%:description]]\n\n %i" :immediate-finish t)
+            ("u" "URL capture from Safari" entry (
+                                                  file+olp+datetree ,(concat org-directory "/links.org"))
+             "* %i    :safari:url:\n%U\n\n")))
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((nix . t)
+       (shell . t)
+       (python . t)))
+    (setq org-preview-latex-default-process 'dvisvgm))
+
 #+end_src
 #+begin_src emacs-lisp :tangle "init.el"
 
@@ -917,7 +919,7 @@ Org is the main component of knowledge management
   ;; (load "other_importers.el")
 #+end_src
 
-*** Publishing
+*** COMMENT Publishing
 #+begin_src emacs-lisp
   (require 'ox-publish)
   (require 'ox-html)
@@ -964,7 +966,7 @@ Org is the main component of knowledge management
   	 :auto-preamble t
   	 :auto-sitemap t
   	 :exclude ".*.org"
-  	 :include ("pkg.org" "az-emacs.org")
+  	 :include ("pkg.org" "az-emacs.org", "dft.org")
   	 :html-postamble nil
   	 :section-numbers nil
   	 :sitemap-filename "index.org"
@@ -1244,6 +1246,90 @@ https://github.com/NixOS/nix-mode?tab=readme-ov-filelsp
         '("~/.emacs.d/snippets")))
 #+end_src
 
+** Mathematics
+#+begin_src emacs-lisp :tangle "init.el"
+  ;; Auctex
+  (use-package auctex)
+  (use-package cdlatex)
+  (use-package tex
+    :straight nil
+    :ensure auctex
+    :defer t
+   ;; :mode ("\\.tex\\'" . LaTeX-mode)
+    :hook ((LaTeX-mode . TeX-source-correlate-mode)
+           (LaTeX-mode . TeX-PDF-mode)
+           (LaTeX-mode . turn-on-reftex)
+           (LaTeX-mode . abbrev-mode))
+    :custom
+    (TeX-PDF-mode t)
+    (TeX-auto-save t)
+    (TeX-auto-untabify t)
+    (TeX-electric-escape t)
+    (TeX-electric-math '("\\(" . "\\)"))
+    (TeX-engine 'xetex)
+    (TeX-parse-self t)
+    (TeX-master nil)
+    ;; Eglot keybindings interferes with auctex
+    (with-eval-after-load 'eglot
+      (define-key eglot-mode-map (kbd "C-c C-e") nil)
+    :config
+    ;; Set Skim as the PDF viewer
+    (setq TeX-view-program-list
+          '(("Skim" "open -a Skim.app %o")))
+    (setq TeX-view-program-selection
+          '((output-pdf "Skim")
+            ((output-dvi style-pstricks)
+             "dvips and gv")
+            (output-dvi "xdvi")
+            (output-html "open")))
+    ;; Configure Skim to auto-reload PDF files
+    (setq TeX-source-correlate-mode t)
+    (setq TeX-source-correlate-start-server t)
+    ;; Sync TeX source with Skim
+    (add-hook 'TeX-after-compilation-finished-functions
+              #'TeX-revert-document-buffer)))
+
+
+  ;;   :defines
+  ;;   (latex-help-cmd-alist
+  ;;    latex-help-file)
+  ;;   :preface
+  ;;   (defvar latex-prettify-symbols-alist
+  ;;     '(("\N{THIN SPACE}" . ?\⟷)))
+  ;;   :config
+  ;;   (require 'preview)
+
+    ;; (defun latex-help-get-cmd-alist ()    ;corrected version:
+    ;;   "Scoop up the commands in the index of the latex info manual.
+    ;;  The values are saved in `latex-help-cmd-alist' for speed."
+    ;;   ;; mm, does it contain any cached entries
+    ;;   (if (not (assoc "\\begin" latex-help-cmd-alist))
+    ;;       (save-window-excursion
+    ;;         (setq latex-help-cmd-alist nil)
+    ;;         (Info-goto-node (concat latex-help-file "Command Index"))
+    ;;         (goto-char (point-max))
+    ;;         (while (re-search-backward "^\\* \\(.+\\): *\\(.+\\)\\." nil t)
+    ;;           (let ((key (buffer-substring (match-beginning 1) (match-end 1)))
+    ;;                 (value (buffer-substring (match-beginning 2)
+    ;;                                          (match-end 2))))
+    ;;             (add-to-list 'latex-help-cmd-alist (cons key value))))))
+    ;;   latex-help-cmd-alist)
+
+    ;; (info-lookup-add-help :mode 'LaTeX-mode
+    ;;                       :regexp ".*"
+    ;;                       :parse-rule "\\\\?[a-zA-Z]+\\|\\\\[^a-zA-Z]"
+    ;;                       :doc-spec '(("(latex2e)Concept Index")
+    ;;                                   ("(latex2e)Command Index")))
+
+    ;; (add-hook 'LaTeX-mode-hook
+    ;;           #'(lambda
+    ;;               ()
+    ;;               (setq-local prettify-symbols-alist latex-prettify-symbols-alist)
+    ;;               (prettify-symbols-mode 1)))
+
+    ;; (add-hook 'TeX-after-compilation-finished-functions
+    ;;           #'TeX-revert-document-buffer))
+#+end_src
 * Misc
 ** Slurm
 #+begin_src emacs-lisp :tangle "init.el"
@@ -1252,6 +1338,10 @@ https://github.com/NixOS/nix-mode?tab=readme-ov-filelsp
     (require 'slurm-script-mode))
 #+end_src
 
+** Distraction free environment
+#+begin_src emacs-lisp :tangle "init.el"
+  (use-package writeroom-mode)
+#+end_src
 * Rest
 #+begin_src emacs-lisp :tangle "init.el" :tangle no
     (use-package auto-compile
@@ -1535,89 +1625,6 @@ https://github.com/NixOS/nix-mode?tab=readme-ov-filelsp
   ;;   (info-lookmore-elisp-gnus)
   ;;   (info-lookmore-apropos-elisp))
 
-
- 
-  ;; Auctex
-  (use-package auctex
-    :straight t)
-  (use-package tex
-    :straight nil
-    :ensure auctex
-    :defer t
-   ;; :mode ("\\.tex\\'" . LaTeX-mode)
-    :hook ((LaTeX-mode . TeX-source-correlate-mode)
-           (LaTeX-mode . TeX-PDF-mode)
-           (LaTeX-mode . turn-on-reftex)
-           (LaTeX-mode . abbrev-mode))
-    :custom
-    (TeX-PDF-mode t)
-    (TeX-auto-save t)
-    (TeX-auto-untabify t)
-    (TeX-electric-escape t)
-    (TeX-electric-math '("\\(" . "\\)"))
-    (TeX-engine 'xetex)
-    (TeX-parse-self t)
-    (TeX-master nil)
-    ;; Eglot keybindings interferes with auctex
-    (with-eval-after-load 'eglot
-      (define-key eglot-mode-map (kbd "C-c C-e") nil)
-    :config
-    ;; Set Skim as the PDF viewer
-    (setq TeX-view-program-list
-          '(("Skim" "open -a Skim.app %o")))
-    (setq TeX-view-program-selection
-          '((output-pdf "Skim")
-            ((output-dvi style-pstricks)
-             "dvips and gv")
-            (output-dvi "xdvi")
-            (output-html "open")))
-    ;; Configure Skim to auto-reload PDF files
-    (setq TeX-source-correlate-mode t)
-    (setq TeX-source-correlate-start-server t)
-    ;; Sync TeX source with Skim
-    (add-hook 'TeX-after-compilation-finished-functions
-              #'TeX-revert-document-buffer)))
-
-
-  ;;   :defines
-  ;;   (latex-help-cmd-alist
-  ;;    latex-help-file)
-  ;;   :preface
-  ;;   (defvar latex-prettify-symbols-alist
-  ;;     '(("\N{THIN SPACE}" . ?\⟷)))
-  ;;   :config
-  ;;   (require 'preview)
-
-    ;; (defun latex-help-get-cmd-alist ()    ;corrected version:
-    ;;   "Scoop up the commands in the index of the latex info manual.
-    ;;  The values are saved in `latex-help-cmd-alist' for speed."
-    ;;   ;; mm, does it contain any cached entries
-    ;;   (if (not (assoc "\\begin" latex-help-cmd-alist))
-    ;;       (save-window-excursion
-    ;;         (setq latex-help-cmd-alist nil)
-    ;;         (Info-goto-node (concat latex-help-file "Command Index"))
-    ;;         (goto-char (point-max))
-    ;;         (while (re-search-backward "^\\* \\(.+\\): *\\(.+\\)\\." nil t)
-    ;;           (let ((key (buffer-substring (match-beginning 1) (match-end 1)))
-    ;;                 (value (buffer-substring (match-beginning 2)
-    ;;                                          (match-end 2))))
-    ;;             (add-to-list 'latex-help-cmd-alist (cons key value))))))
-    ;;   latex-help-cmd-alist)
-
-    ;; (info-lookup-add-help :mode 'LaTeX-mode
-    ;;                       :regexp ".*"
-    ;;                       :parse-rule "\\\\?[a-zA-Z]+\\|\\\\[^a-zA-Z]"
-    ;;                       :doc-spec '(("(latex2e)Concept Index")
-    ;;                                   ("(latex2e)Command Index")))
-
-    ;; (add-hook 'LaTeX-mode-hook
-    ;;           #'(lambda
-    ;;               ()
-    ;;               (setq-local prettify-symbols-alist latex-prettify-symbols-alist)
-    ;;               (prettify-symbols-mode 1)))
-
-    ;; (add-hook 'TeX-after-compilation-finished-functions
-    ;;           #'TeX-revert-document-buffer))
 
   ;; My packages
   (use-package capture-frame

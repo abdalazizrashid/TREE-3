@@ -398,7 +398,7 @@
   ;; (setq consult-project-function nil)
 
   (add-to-list 'consult-fd-args "--hidden" t)
-  (add-to-list 'consult-fd-args "--exclude .git")
+  (add-to-list 'consult-fd-args "--exclude .git" t)
   )
 
 (use-package embark-consult)
@@ -463,7 +463,9 @@
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((nix . t)
-     (shell .t))))
+     (shell . t)
+     (python . t)))
+  (setq org-preview-latex-default-process 'dvisvgm))
 
 (use-package org-transclusion)
 
@@ -498,126 +500,7 @@
                                        (t             . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*}")))
   (bibtex-completion-pdf-open-function (lambda (fpath) (call-process "open" nil 0 nil fpath))))
 
-;; Sci-hub
-  (defun sci-hub-pdf-url (doi)
-    "Get url to the pdf from SCI-HUB"
-    (setq *doi-utils-pdf-url* (concat "https://sci-hub.se/" doi) ;captcha
-          *doi-utils-waiting* t
-          )
-    ;; try to find PDF url (if it exists)
-    (url-retrieve (concat "https://sci-hub.se/" doi)
-              (lambda (status)
-                (goto-char (point-min))
-                (while (search-forward-regexp "\\(https://\\|//sci-hub.se/downloads\\).+download=true'" nil t)
-                  (let ((foundurl (match-string 0)))
-                    (message foundurl)
-                    (if (string-match "https:" foundurl)
-                    (setq *doi-utils-pdf-url* foundurl)
-                  (setq *doi-utils-pdf-url* (concat "https:" foundurl))))
-                  (setq *doi-utils-waiting* nil))))
-    (while *doi-utils-waiting* (sleep-for 0.1))
-    *doi-utils-pdf-url*)
-
-    (defun doi-utils-get-bibtex-entry-pdf (&optional arg)
-    "Download pdf for entry at point if the pdf does not already exist
-locally.
-The entry must have a doi. The pdf will be saved to
-`org-ref-pdf-directory', by the name %s.pdf where %s is the
-bibtex label.  Files will not be overwritten.  The pdf will be
-checked to make sure it is a pdf, and not some html failure
-page. You must have permission to access the pdf. We open the pdf
-at the end if `doi-utils-open-pdf-after-download' is non-nil.
-
-With one prefix ARG, directly get the pdf from a file (through
-`read-file-name') instead of looking up a DOI. With a double
-prefix ARG, directly get the pdf from an open buffer (through
-`read-buffer-to-switch') instead. These two alternative methods
-work even if the entry has no DOI, and the pdf file is not
-checked."
-    (interactive "P")
-    (save-excursion
-      (bibtex-beginning-of-entry)
-      (let ( ;; get doi, removing http://dx.doi.org/ if it is there.
-        (doi (replace-regexp-in-string
-          "https?://\\(dx.\\)?.doi.org/" ""
-          (bibtex-autokey-get-field "doi")))
-        (key (cdr (assoc "=key=" (bibtex-parse-entry))))
-        (pdf-url)
-        (pdf-file))
-    (setq pdf-file (concat
-            (if org-ref-pdf-directory
-                (file-name-as-directory org-ref-pdf-directory)
-              (read-directory-name "PDF directory: " "."))
-            key ".pdf"))
-    ;; now get file if needed.
-    (unless (file-exists-p pdf-file)
-      (cond
-       ((and (not arg)
-         doi
-         (if (doi-utils-get-pdf-url doi)
-             (setq pdf-url (doi-utils-get-pdf-url doi))
-           (setq pdf-url "https://www.sciencedirect.com/science/article/")))
-        (url-copy-file pdf-url pdf-file)        
-        ;; now check if we got a pdf
-        (if (org-ref-pdf-p pdf-file)
-        (message "%s saved" pdf-file)
-          (delete-file pdf-file)
-          ;; sci-hub fallback option
-          (setq pdf-url (sci-hub-pdf-url doi))
-          (url-copy-file pdf-url pdf-file)
-          ;; now check if we got a pdf
-          (if (org-ref-pdf-p pdf-file)
-          (message "%s saved" pdf-file)
-        (delete-file pdf-file)
-        (message "No pdf was downloaded.") ; SH captcha
-        (browse-url pdf-url))))
-       ;; End of sci-hub fallback option
-       ((equal arg '(4))
-        (copy-file (expand-file-name (read-file-name "Pdf file: " nil nil t))
-               pdf-file))
-       ((equal arg '(16))
-        (with-current-buffer (read-buffer-to-switch "Pdf buffer: ")
-          (write-file pdf-file)))
-       (t
-        (message "We don't have a recipe for this journal.")))
-      (when (and doi-utils-open-pdf-after-download (file-exists-p pdf-file))
-        (org-open-file pdf-file))))))
-
-(use-package ox-publish
-    :config
-    (setq org-global-properties
-	  '(("PUBLISH" . "yes no")))
-    (defun blog/org-publish-headline-filter (backend)
-      "Filter headlines based on a special attribute before publishing.
-Only publish headlines with the property :PUBLISH: set to 'yes'."
-  (org-map-entries
-   (lambda ()
-     (let ((publish (org-entry-get (point) "PUBLISH")))
-       (unless (and publish (string= publish "yes"))
-         (org-cut-subtree))))
-   nil 'file))
-    
-    (add-hook 'org-export-before-processing-hook #'blog/org-publish-headline-filter)
-    (setq org-html-head
-      "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\" />")
-    (setq org-publish-project-alist
-  	'(("blog-org-files"
-             :base-directory "~/Documents/org/"
-             :base-extension "org"
-             :publishing-directory "~/Documents/org/public/"
-             :recursive t
-             :publishing-function org-html-publish-to-html
-             :headline-levels 4
-             :auto-preamble t)
-
-            ("blog-static"
-             :base-directory "~Documents/org/"
-             :base-extension "css\\|js\\|png\\|jpg\\|gif"
-             :publishing-directory "~/Documents/org/public/html/"
-             :recursive t
-             :publishing-function org-publish-attachment)
-
-            ("blog" :components ("blog-org-files" "blog-static")))))
+;; (load "other_importers.el")
 
 (use-package bibtex
   :straight t
@@ -837,6 +720,90 @@ Only publish headlines with the property :PUBLISH: set to 'yes'."
   (setq yas-snippet-dirs
       '("~/.emacs.d/snippets")))
 
+;; Auctex
+(use-package auctex)
+(use-package cdlatex)
+(use-package tex
+  :straight nil
+  :ensure auctex
+  :defer t
+ ;; :mode ("\\.tex\\'" . LaTeX-mode)
+  :hook ((LaTeX-mode . TeX-source-correlate-mode)
+         (LaTeX-mode . TeX-PDF-mode)
+         (LaTeX-mode . turn-on-reftex)
+         (LaTeX-mode . abbrev-mode))
+  :custom
+  (TeX-PDF-mode t)
+  (TeX-auto-save t)
+  (TeX-auto-untabify t)
+  (TeX-electric-escape t)
+  (TeX-electric-math '("\\(" . "\\)"))
+  (TeX-engine 'xetex)
+  (TeX-parse-self t)
+  (TeX-master nil)
+  ;; Eglot keybindings interferes with auctex
+  (with-eval-after-load 'eglot
+    (define-key eglot-mode-map (kbd "C-c C-e") nil)
+  :config
+  ;; Set Skim as the PDF viewer
+  (setq TeX-view-program-list
+        '(("Skim" "open -a Skim.app %o")))
+  (setq TeX-view-program-selection
+        '((output-pdf "Skim")
+          ((output-dvi style-pstricks)
+           "dvips and gv")
+          (output-dvi "xdvi")
+          (output-html "open")))
+  ;; Configure Skim to auto-reload PDF files
+  (setq TeX-source-correlate-mode t)
+  (setq TeX-source-correlate-start-server t)
+  ;; Sync TeX source with Skim
+  (add-hook 'TeX-after-compilation-finished-functions
+            #'TeX-revert-document-buffer)))
+
+
+;;   :defines
+;;   (latex-help-cmd-alist
+;;    latex-help-file)
+;;   :preface
+;;   (defvar latex-prettify-symbols-alist
+;;     '(("\N{THIN SPACE}" . ?\⟷)))
+;;   :config
+;;   (require 'preview)
+
+  ;; (defun latex-help-get-cmd-alist ()    ;corrected version:
+  ;;   "Scoop up the commands in the index of the latex info manual.
+  ;;  The values are saved in `latex-help-cmd-alist' for speed."
+  ;;   ;; mm, does it contain any cached entries
+  ;;   (if (not (assoc "\\begin" latex-help-cmd-alist))
+  ;;       (save-window-excursion
+  ;;         (setq latex-help-cmd-alist nil)
+  ;;         (Info-goto-node (concat latex-help-file "Command Index"))
+  ;;         (goto-char (point-max))
+  ;;         (while (re-search-backward "^\\* \\(.+\\): *\\(.+\\)\\." nil t)
+  ;;           (let ((key (buffer-substring (match-beginning 1) (match-end 1)))
+  ;;                 (value (buffer-substring (match-beginning 2)
+  ;;                                          (match-end 2))))
+  ;;             (add-to-list 'latex-help-cmd-alist (cons key value))))))
+  ;;   latex-help-cmd-alist)
+
+  ;; (info-lookup-add-help :mode 'LaTeX-mode
+  ;;                       :regexp ".*"
+  ;;                       :parse-rule "\\\\?[a-zA-Z]+\\|\\\\[^a-zA-Z]"
+  ;;                       :doc-spec '(("(latex2e)Concept Index")
+  ;;                                   ("(latex2e)Command Index")))
+
+  ;; (add-hook 'LaTeX-mode-hook
+  ;;           #'(lambda
+  ;;               ()
+  ;;               (setq-local prettify-symbols-alist latex-prettify-symbols-alist)
+  ;;               (prettify-symbols-mode 1)))
+
+  ;; (add-hook 'TeX-after-compilation-finished-functions
+  ;;           #'TeX-revert-document-buffer))
+
 (use-package slurm-mode
   :config
   (require 'slurm-script-mode))
+
+(use-package writeroom-mode)
