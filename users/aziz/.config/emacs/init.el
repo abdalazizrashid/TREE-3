@@ -66,6 +66,149 @@
   (modus-themes-select 'modus-operandi-tinted)
   )
 
+;; Using `use-package` to configure emacs, here emacs is a pseudo
+;; package
+(use-package emacs
+  :bind* (
+          ("M-o" . ace-window)
+          ("C-x <C-m>" . execute-extended-command)
+          ("C-c <C-m>" . execute-extended-command) ;; Sloppy version
+          ("C-h h" . nil) ;; Disable the hello page
+          )
+  
+  :custom
+  (user-full-name "A.R.M")
+
+
+  ;; Settings for the Cocoa port
+  (ns-alternate-modifier 'super)
+  (ns-command-modifier 'meta)
+  (ns-function-modifier 'hyper)
+  (ns-right-alternate-modifier 'super)
+
+  ;; Settings for the Emacs Mac-port
+  (mac-command-modifier 'meta)
+  (mac-option-modifier 'super)
+  (mac-pass-command-to-system nil)
+
+  (frame-title-format
+   '(:eval
+     (concat
+      (if buffer-file-name default-directory "%b")
+      "    "
+      (number-to-string
+       (cdr
+        (assq 'width
+              (frame-parameters))))
+      "x"
+      (number-to-string
+       (cdr
+        (assq 'height
+              (frame-parameters)))))))
+
+  (completion-cycle-threshold 7)
+  (completion-ignored-extensions
+   '(".a"
+     ".aux"
+     ".bbl"
+     ".bin"
+     ".elc"
+     ".git/"
+     ".o"
+     ".pyc"
+     ".pyo"
+     ".so"
+     ".toc"
+     "~"))
+
+  ;; startup.el
+  (auto-save-list-file-prefix (user-data "auto-save-list/.saves-"))
+  (inhibit-startup-echo-area-message "aziz")
+  (inhibit-startup-screen t)
+  (initial-buffer-choice t)
+  (initial-major-mode 'fundamental-mode)
+  (initial-scratch-message "")
+  (user-mail-address "abdalaziz.rashid@outlook.com")
+
+  ;; files.el
+  (auto-save-file-name-transforms '(("\\`/[^/]*:.*" "~/.emacs.d/auto-saves/" t)))
+  (backup-directory-alist '(("." . "~/.local/share/emacs/backups")))
+  (delete-old-versions t)
+  (directory-abbrev-alist
+   '(("\\`/org" . "~/org")
+     ("\\`/home-manager" . "~/.config/home-manager")))
+  (directory-free-space-args "-kh")
+  (large-file-warning-threshold nil)
+  (save-abbrevs 'silently)
+  (trash-directory "~/.Trash")
+  (version-control t)
+
+  ;; bytecomp.el
+  (byte-compile-verbose nil)
+
+  ;; scroll-bar.el
+  (scroll-bar-mode nil)
+
+  ;; paren.el
+  (show-paren-delay 0)
+
+  ;; window.el
+  (same-window-buffer-names
+   '("*eshell*"
+     "*shell*"
+     "*mail*"
+     "*inferior-lisp*"
+     "*ielm*"
+     "*scheme*"))
+  (switch-to-buffer-preserve-window-point t)
+
+  ;; warnings.el
+  (warning-minimum-log-level :error)
+
+  ;; frame.el
+  (window-divider-default-bottom-width 1)
+  (window-divider-default-places 'bottom-only)
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
+
+
+  ;; mwheel.el
+  ;; TODO: disable keybindings to  mouse-wheel-global-text-scale
+  ;; and mouse-wheel-text-scale
+  (global-set-key (kbd "<C-wheel-up>") nil)
+  (global-set-key (kbd "<C-wheel-down>") nil)
+
+  (vc-follow-symlinks nil)
+  :init
+  (setq disabled-command-function nil) ;; enable all commands
+
+
+  :config  
+  ;; Setup font
+  ;; (advice-add 'server-create-window-system-frame
+  ;;              :after 'my/setup-fonts)
+  ;; (advice-add 'server-create-tty-frame
+  ;;              :after 'my/setup-fonts)
+  ;; (unless (daemonp) (my/setup-fonts))
+
+  ;; ;; Enable line numbers only with programing modes
+  ;; (add-hook 'prog-mode-hook (lambda () (
+  ;;           display-line-numbers-mode
+  ;;           (setq-default display-line-numbers-type 'relative))))
+
+  ;; This is an ugly hack the fix is upstream but hasn't been merge yet
+  ;; https://github.com/doomemacs/doomemacs/issues/7532
+  (add-hook 'after-init-hook (lambda () 
+                             (tool-bar-mode 1) 
+                             (tool-bar-mode 0)))
+  (defun my-toggle-toolbar (frame)
+    "Toggle tool-bar-mode on then off when a new frame is created."
+    (with-selected-frame frame
+      (tool-bar-mode 1)
+      (tool-bar-mode 0)))
+
+  (add-hook 'after-make-frame-functions 'my-toggle-toolbar)
+  )
+
 (use-package s)
 
 (use-package async)

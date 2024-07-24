@@ -134,7 +134,7 @@ Packages customizations are defined here
 #+end_src
 
 Emacs configurations
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "init.el"
 
   ;; Using `use-package` to configure emacs, here emacs is a pseudo
   ;; package
@@ -260,8 +260,7 @@ Emacs configurations
     ;;              :after 'my/setup-fonts)
     ;; (unless (daemonp) (my/setup-fonts))
 
-    ;; ;; En
-    able line numbers only with programing modes
+    ;; ;; Enable line numbers only with programing modes
     ;; (add-hook 'prog-mode-hook (lambda () (
     ;;           display-line-numbers-mode
     ;;           (setq-default display-line-numbers-type 'relative))))
