@@ -3,12 +3,196 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-07-19 Fri 01:14 -->
+<!-- 2024-07-25 Thu 13:33 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
 <meta name="author" content="A.R.M" />
 <meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
 <link rel="stylesheet" type="text/css" href="style.css" />
 <script>
 // @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&amp;dn=gpl-3.0.txt GPL-v3-or-Later
@@ -42,6 +226,83 @@
 <li><a href="#org87931c3">SSH</a></li>
 </ul>
 </li>
+<li><a href="#orgd3e5ce8">Bash</a>
+<ul>
+<li><a href="#org73208b2">Bash useful flags</a></li>
+<li><a href="#orge0a0eb6"><span class="todo TODO">TODO</span> use <code>ps -afx</code> for showing hierarchical processes</a></li>
+<li><a href="#org6f53ffd">How does bash, zsh, and sh load the environment files</a></li>
+</ul>
+</li>
+<li><a href="#orgab20cf1">Beam VM</a>
+<ul>
+<li><a href="#org76fd648"><span class="todo TODO">TODO</span> lfe/lfe: Lisp Flavoured Erlang (LFE)</a></li>
+<li><a href="#orgcacb6bc"><span class="todo TODO">TODO</span> joxa/joxa: A Modern Lisp for the Erlang VM</a></li>
+<li><a href="#org4a72b7c">Elixir</a>
+<ul>
+<li><a href="#orgce10a07"><span class="todo TODO">TODO</span> eglot elixir-ls configuration</a></li>
+<li><a href="#orga7a64b1">Livebook</a></li>
+</ul>
+</li>
+<li><a href="#orgc19e0f7">Erlang</a></li>
+<li><a href="#orgaa88958"><span class="todo TODO">TODO</span> happi/theBeamBook: A description of the Erlang Runtime System ERTS and the virtual Machine BEAM.</a></li>
+</ul>
+</li>
+<li><a href="#org9a25ac7">Lean</a></li>
+<li><a href="#org909ab59">Lisp</a>
+<ul>
+<li><a href="#org1f376e1">Closure</a>
+<ul>
+<li><a href="#orgbebe077">Usage</a></li>
+</ul>
+</li>
+<li><a href="#org76ce224">Common Lisp</a></li>
+<li><a href="#org7769ac4">Racket</a></li>
+<li><a href="#org3b6c550">Scheme</a></li>
+<li><a href="#org7c733ae">Emacs Lisp</a>
+<ul>
+<li><a href="#orgf0220ca"><span class="todo TODO">TODO</span> alhassy/emacs.d: My Emacs configuration, literately :smile:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org7449136">Nix</a>
+<ul>
+<li><a href="#org870a433">https://mynixos.com/</a></li>
+<li><a href="#orgde7d5cf">Finding things in nixpkgs and nixos source code</a></li>
+<li><a href="#orgfa013d5">Modules</a></li>
+<li><a href="#org2375de7">Darwin</a></li>
+<li><a href="#org2d3528f">callPackage https://summer.nixos.org/blog/callpackage-a-tool-for-the-lazy/</a></li>
+<li><a href="#orgf6037c1"><code>breakpoint</code> provide it as native build input allowing us to intercept the packages</a></li>
+<li><a href="#org399b51f">On nixpkgs repository</a></li>
+<li><a href="#orgb4082fb">Misc</a></li>
+<li><a href="#orga6d8bd9">https://mynixos.com/</a></li>
+<li><a href="#org438a4b5">Finding things in nixpkgs and nixos source code</a></li>
+<li><a href="#org360a8ab"><span class="todo TODO">TODO</span> nix debugging unsafeGetAttrPos</a></li>
+<li><a href="#org8b93759">Other people configs</a>
+<ul>
+<li><a href="#org83945ec"><span class="todo TODO">TODO</span> mitchellh/nixos-config: My NixOS configurations.</a></li>
+<li><a href="#org869626b"><span class="todo TODO">TODO</span> nix-config/config/darwin.nix at master · jwiegley/nix-config</a></li>
+<li><a href="#org5ad8aa1"><span class="todo TODO">TODO</span> MatthiasBenaets/nixos-config at 333d151ea784dabfd3260cabff01c090cb275a8e</a></li>
+<li><a href="#org617d758"><span class="todo TODO">TODO</span> infinisil/system: My system configuration</a></li>
+</ul>
+</li>
+<li><a href="#org8399989"><span class="todo TODO">TODO</span> Nix Flakes is an experiment that did too much at once… — Samuel Dionne-Riel</a></li>
+<li><a href="#org22e0bde"><span class="todo TODO">TODO</span> 1000 instances of nixpkgs</a></li>
+<li><a href="#orgbe34e9e">Nix remote build</a>
+<ul>
+<li><a href="#orgca11a62">Siging</a>
+<ul>
+<li><a href="#org038df52">nix-store &#x2013;generate-binary-cache-key $HOSTNAME $PRIVATE<sub>FILE</sub><sub>NAME</sub> $PUBLIC<sub>FILE</sub><sub>NAME</sub></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orge35cd0c">Ocaml</a></li>
+<li><a href="#org7fec295">Python</a></li>
+<li><a href="#orgce97815">Rust</a></li>
+<li><a href="#org85b861b">Zig</a></li>
 <li><a href="#orgb5849ae">Books</a></li>
 <li><a href="#org96d3743">LLMs</a></li>
 <li><a href="#org8266c2d">Games</a></li>
@@ -91,6 +352,431 @@
 </div>
 </div>
 </div>
+<div id="outline-container-orgd3e5ce8" class="outline-2">
+<h2 id="orgd3e5ce8">Bash</h2>
+<div class="outline-text-2" id="text-orgd3e5ce8">
+</div>
+<div id="outline-container-org73208b2" class="outline-3">
+<h3 id="org73208b2">Bash useful flags</h3>
+<div class="outline-text-3" id="text-org73208b2">
+<p>
+figure out the equivlant flags for zsh and fish
+</p>
+<div class="org-src-container">
+<pre class="src src-basho"># Display matches for ambiguous patterns at first tab press set
+show-all-if-ambiguous on
+
+# Perform file completion in a case-insensitive fashion set
+completion-ignore-case on
+
+# Treat hyphens and underscore as equivalent set completion-map-case
+#on
+
+# Print colors set colored-stats on set colored-completion-prefix on
+
+# Blink on matching parentheses set blink-matching-paren on
+
+# Show mode in prompt set show-mode-in-prompt on
+
+# Skip over already-completed text set skip-completed-text on
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orge0a0eb6" class="outline-3">
+<h3 id="orge0a0eb6"><span class="todo TODO">TODO</span> use <code>ps -afx</code> for showing hierarchical processes</h3>
+</div>
+<div id="outline-container-org6f53ffd" class="outline-3">
+<h3 id="org6f53ffd">How does bash, zsh, and sh load the environment files</h3>
+<div class="outline-text-3" id="text-org6f53ffd">
+<ul class="org-ul">
+<li><a href="https://blog.flowblok.id.au/2013-02/shell-startup-scripts.html">https://blog.flowblok.id.au/2013-02/shell-startup-scripts.html</a></li>
+<li><a href="https://heptapod.host/flowblok/shell-startup">https://heptapod.host/flowblok/shell-startup</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgab20cf1" class="outline-2">
+<h2 id="orgab20cf1">Beam VM</h2>
+<div class="outline-text-2" id="text-orgab20cf1">
+</div>
+<div id="outline-container-org76fd648" class="outline-3">
+<h3 id="org76fd648"><span class="todo TODO">TODO</span> <a href="https://github.com/lfe/lfe">lfe/lfe: Lisp Flavoured Erlang (LFE)</a></h3>
+</div>
+<div id="outline-container-orgcacb6bc" class="outline-3">
+<h3 id="orgcacb6bc"><span class="todo TODO">TODO</span> <a href="https://github.com/joxa/joxa">joxa/joxa: A Modern Lisp for the Erlang VM</a></h3>
+</div>
+<div id="outline-container-org4a72b7c" class="outline-3">
+<h3 id="org4a72b7c">Elixir</h3>
+<div class="outline-text-3" id="text-org4a72b7c">
+</div>
+<div id="outline-container-orgce10a07" class="outline-4">
+<h4 id="orgce10a07"><span class="todo TODO">TODO</span> eglot elixir-ls configuration</h4>
+<div class="outline-text-4" id="text-orgce10a07">
+<p>
+;; (elixir-ts-mode
+;;  . (
+;;     (eglot-workspace-configuration
+;;      . (:elixirLS (:projectDir "./src/probabilistic/")))))
+</p>
+</div>
+</div>
+<div id="outline-container-orga7a64b1" class="outline-4">
+<h4 id="orga7a64b1">Livebook</h4>
+<div class="outline-text-4" id="text-orga7a64b1">
+<p>
+Run using nix <code>HOME=$PWD LIVEBOOK_IP=0.0.0.0 LIVEBOOK_NODE=local ELIXIR_ERL_OPTIONS="+fnu" LIVEBOOK_PORT=8071 LIVEBOOK_IFRAME_PORT=8070 nix run nixpkgs#livebook -- start</code>
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgc19e0f7" class="outline-3">
+<h3 id="orgc19e0f7">Erlang</h3>
+</div>
+<div id="outline-container-orgaa88958" class="outline-3">
+<h3 id="orgaa88958"><span class="todo TODO">TODO</span> <a href="https://github.com/happi/theBeamBook">happi/theBeamBook: A description of the Erlang Runtime System ERTS and the virtual Machine BEAM.</a></h3>
+</div>
+</div>
+<div id="outline-container-org9a25ac7" class="outline-2">
+<h2 id="org9a25ac7">Lean</h2>
+</div>
+
+<div id="outline-container-org909ab59" class="outline-2">
+<h2 id="org909ab59">Lisp</h2>
+<div class="outline-text-2" id="text-org909ab59">
+</div>
+<div id="outline-container-org1f376e1" class="outline-3">
+<h3 id="org1f376e1">Closure</h3>
+<div class="outline-text-3" id="text-org1f376e1">
+<p>
+Developed in 2000s for the goal of having a modern lisp to run on the
+java virtual machine with emphasis on concurrency.
+</p>
+<ul class="org-ul">
+<li>no tail recursion</li>
+<li>uses different data structurs with dedicated syntax</li>
+<li>all the data structures are immutable. Supports run time polymorphism</li>
+</ul>
+</div>
+<div id="outline-container-orgbebe077" class="outline-4">
+<h4 id="orgbebe077">Usage</h4>
+<div class="outline-text-4" id="text-orgbebe077">
+<ul class="org-ul">
+<li>Atomist a container security and automation company acquired by docker</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org76ce224" class="outline-3">
+<h3 id="org76ce224">Common Lisp</h3>
+<div class="outline-text-3" id="text-org76ce224">
+<p>
+Starte in 1981 initiated to develop single community standard
+dialect. The language is standradized, the language has been finalized
+in 1994. There are many implmenentations Steel bank common lisp, C
+lisp and many other commercial implementations and embedded
+implementations. Because the standard is finalized making it very
+stable. It has rich type system allowing introspection abilities.
+</p>
+<ul class="org-ul">
+<li>Good support for object orientation</li>
+<li>Programmable conditions relatated to exception allowing error
+handling to be on three phases: signaling, capture, and restarting.</li>
+<li>extensive macros</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org7769ac4" class="outline-3">
+<h3 id="org7769ac4">Racket</h3>
+<div class="outline-text-3" id="text-org7769ac4">
+<p>
+Developed in 1995 for pedagogical purposes to teach Scheme. It was
+also designed for programming language design and implementation. It
+support logical programming similar to prologe. It support many
+programming paradigms.
+</p>
+<ul class="org-ul">
+<li>powerful macro system</li>
+<li>logical programming</li>
+<li>multi-paradiagm</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org3b6c550" class="outline-3">
+<h3 id="org3b6c550">Scheme</h3>
+<div class="outline-text-3" id="text-org3b6c550">
+<p>
+Created in the 70th at MIT AI lab in attempt to understand the actor
+model. The wrote series of paper AI papers collectvely knows as the
+lambda papers. It is on of the list languages to use lexical scoping.
+</p>
+<ul class="org-ul">
+<li>pionered First class continuation</li>
+<li>tail recursion</li>
+<li>power numerical data types</li>
+<li>delayed evaluation</li>
+<li>powerful macro system</li>
+<li>emphasis on minimilisim</li>
+</ul>
+<p>
+It is a standradized language, and there are many implementations of
+it Shay scheme, Guile, MIT gnu scheme, and racket.
+</p>
+</div>
+</div>
+<div id="outline-container-org7c733ae" class="outline-3">
+<h3 id="org7c733ae">Emacs Lisp</h3>
+<div class="outline-text-3" id="text-org7c733ae">
+<p>
+Developed in 1985 as an efficient language for the Emacs text
+editor. Its not standradized, it doesn't have tail recursion as it
+uses a different work around (????), it uses dynamic scoping by
+default but it support lexical scoping.
+</p>
+</div>
+<div id="outline-container-orgf0220ca" class="outline-4">
+<h4 id="orgf0220ca"><span class="todo TODO">TODO</span> <a href="https://github.com/alhassy/emacs.d">alhassy/emacs.d: My Emacs configuration, literately :smile:</a></h4>
+</div>
+</div>
+</div>
+<div id="outline-container-org7449136" class="outline-2">
+<h2 id="org7449136">Nix</h2>
+<div class="outline-text-2" id="text-org7449136">
+<p>
+<a href="https://github.com/ryantm/agenix">https://github.com/ryantm/agenix</a>
+<a href="https://talks.nixcon.org/nixcon-2023/talk/BAVND7/">https://talks.nixcon.org/nixcon-2023/talk/BAVND7/</a>
+</p>
+</div>
+<div id="outline-container-org870a433" class="outline-3">
+<h3 id="org870a433"><a href="https://mynixos.com/">https://mynixos.com/</a></h3>
+</div>
+<div id="outline-container-orgde7d5cf" class="outline-3">
+<h3 id="orgde7d5cf"><a href="https://talks.nixcon.org/nixcon-2023/talk/BAVND7/">Finding things in nixpkgs and nixos source code</a></h3>
+<div class="outline-text-3" id="text-orgde7d5cf">
+<p>
+<a href="https://www.youtube.com/watch?v=mVAzsFfoT5c&amp;ab_channel=NixCon">https://www.youtube.com/watch?v=mVAzsFfoT5c&amp;ab_channel=NixCon</a>
+&lt;[Recording]&gt;
+&lt;yt-url&gt;
+<a href="https://guix.gnu.org/en/manual/en/guix.html#Managing-Software-the-Guix-Way">https://guix.gnu.org/en/manual/en/guix.html#Managing-Software-the-Guix-Way</a>
+</p>
+</div>
+</div>
+<div id="outline-container-orgfa013d5" class="outline-3">
+<h3 id="orgfa013d5">Modules</h3>
+<div class="outline-text-3" id="text-orgfa013d5">
+<p>
+<code>imports</code> allow to define other modules as dependecies
+</p>
+<div class="org-src-container">
+<pre class="src src-nix">{lib, config, ...}:
+
+</pre>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #b22222;">#</span><span style="color: #b22222;">!/usr/bin/</span><span style="color: #a020f0;">env</span><span style="color: #b22222;"> bash</span>
+<span style="color: #483d8b;">set</span> -euo pipefail
+
+<span style="color: #a0522d;">SCRIPT_DIR</span>=<span style="color: #8b2252;">"$( cd "$( dirname "${BASH_SOURCE[0]}" )" &amp;&gt; /dev/null &amp;&amp; pwd )"</span>
+
+<span style="color: #0000ff;">update</span>() {
+    <span style="color: #b22222;">#</span><span style="color: #b22222;">echo "Updating.."</span>
+    <span style="color: #a020f0;">if</span> <span style="color: #a0522d;">json</span>=$(nix-instantiate --eval --strict --json <span style="color: #8b2252;">"$SCRIPT_DIR/../config.generate.script"</span>); <span style="color: #a020f0;">then</span>
+          <span style="color: #a0522d;">script</span>=$(jq -r . &lt;&lt;&lt; <span style="color: #8b2252;">"$json"</span>)
+          <span style="color: #483d8b;">eval</span> <span style="color: #8b2252;">"$script"</span>
+    <span style="color: #a020f0;">fi</span>
+    <span style="color: #b22222;">#</span><span style="color: #b22222;">sleep 3</span>
+    <span style="color: #b22222;">#</span><span style="color: #b22222;">echo "Finished updating"</span>
+}
+
+update
+
+<span style="color: #a0522d;">changed</span>=
+<span style="color: #a020f0;">while</span> [[ -n <span style="color: #8b2252;">"$changed"</span> ]] || <span style="color: #483d8b;">read</span> -u 3 mainevent; <span style="color: #a020f0;">do</span>
+    <span style="color: #a020f0;">if</span> [[ -n <span style="color: #8b2252;">"$changed"</span> ]]; <span style="color: #a020f0;">then</span>
+          <span style="color: #b22222;">#</span><span style="color: #b22222;">echo "Got some follow-up events, cooldown for 3 sec"</span>
+          <span style="color: #a0522d;">changed</span>=
+          sleep 3
+    <span style="color: #a020f0;">else</span>
+          <span style="color: #b22222;">#</span><span style="color: #b22222;">echo "Event is $mainevent"</span>
+    <span style="color: #a020f0;">fi</span>
+    <span style="color: #b22222;">#</span><span style="color: #b22222;">echo "Waiting for 0.1 sec to see if any further events arrive in just a bit"</span>
+    sleep 0.1
+    <span style="color: #a020f0;">while </span><span style="color: #483d8b;">read</span> -u 3 -t 0; <span style="color: #a020f0;">do</span>
+          <span style="color: #483d8b;">read</span> -u 3 event
+          <span style="color: #b22222;">#</span><span style="color: #b22222;">echo "Got further event $event"</span>
+    <span style="color: #a020f0;">done</span>
+<span style="color: #a020f0;">done</span>
+
+update
+
+<span style="color: #a020f0;">while </span><span style="color: #483d8b;">read</span> -u 3 -t 0; <span style="color: #a020f0;">do</span>
+    <span style="color: #483d8b;">read</span> -u 3 event
+    <span style="color: #b22222;">#</span><span style="color: #b22222;">echo "Follow-up event is $event"</span>
+    <span style="color: #a0522d;">changed</span>=1
+<span style="color: #a020f0;">done</span> 3&lt; &lt;(inotifywait -q -r -m -e create -e modify -e delete <span style="color: #8b2252;">"$SCRIPT_DIR/.."</span>)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org2375de7" class="outline-3">
+<h3 id="org2375de7">Darwin</h3>
+<div class="outline-text-3" id="text-org2375de7">
+<p>
+&lt;[Darwin configuration options]&gt;
+&lt;www-url "<a href="https://daiderd.com/nix-darwin/manual/index.html">https://daiderd.com/nix-darwin/manual/index.html</a>"&gt;
+<a href="https://nix-community.github.io/home-manager/">https://nix-community.github.io/home-manager/</a>
+</p>
+</div>
+</div>
+<div id="outline-container-org2d3528f" class="outline-3">
+<h3 id="org2d3528f">callPackage <a href="https://summer.nixos.org/blog/callpackage-a-tool-for-the-lazy/">https://summer.nixos.org/blog/callpackage-a-tool-for-the-lazy/</a></h3>
+</div>
+<div id="outline-container-orgf6037c1" class="outline-3">
+<h3 id="orgf6037c1"><code>breakpoint</code> provide it as native build input allowing us to intercept the packages</h3>
+<div class="outline-text-3" id="text-orgf6037c1">
+<p>
+<a href="https://github.com/Mic92/cntr">https://github.com/Mic92/cntr</a> you will need this to change the environment
+</p>
+</div>
+</div>
+<div id="outline-container-org399b51f" class="outline-3">
+<h3 id="org399b51f">On nixpkgs repository</h3>
+</div>
+
+
+<div id="outline-container-orgb4082fb" class="outline-3">
+<h3 id="orgb4082fb">Misc</h3>
+<div class="outline-text-3" id="text-orgb4082fb">
+<p>
+<a href="https://github.com/ryantm/agenix">https://github.com/ryantm/agenix</a>
+<a href="https://talks.nixcon.org/nixcon-2023/talk/BAVND7/">https://talks.nixcon.org/nixcon-2023/talk/BAVND7/</a>
+</p>
+</div>
+</div>
+<div id="outline-container-orga6d8bd9" class="outline-3">
+<h3 id="orga6d8bd9"><a href="https://mynixos.com/">https://mynixos.com/</a></h3>
+</div>
+<div id="outline-container-org438a4b5" class="outline-3">
+<h3 id="org438a4b5"><a href="https://talks.nixcon.org/nixcon-2023/talk/BAVND7/">Finding things in nixpkgs and nixos source code</a></h3>
+<div class="outline-text-3" id="text-org438a4b5">
+<p>
+<a href="https://www.youtube.com/watch?v=mVAzsFfoT5c&amp;ab_channel=NixCon">https://www.youtube.com/watch?v=mVAzsFfoT5c&amp;ab_channel=NixCon</a>
+&lt;[Recording]&gt;
+&lt;yt-url&gt;
+</p>
+
+<p>
+<a href="https://guix.gnu.org/en/manual/en/guix.html#Managing-Software-the-Guix-Way">https://guix.gnu.org/en/manual/en/guix.html#Managing-Software-the-Guix-Way</a>
+</p>
+</div>
+</div>
+<div id="outline-container-org360a8ab" class="outline-3">
+<h3 id="org360a8ab"><span class="todo TODO">TODO</span> nix debugging unsafeGetAttrPos</h3>
+</div>
+<div id="outline-container-org8b93759" class="outline-3">
+<h3 id="org8b93759">Other people configs</h3>
+<div class="outline-text-3" id="text-org8b93759">
+</div>
+<div id="outline-container-org83945ec" class="outline-4">
+<h4 id="org83945ec"><span class="todo TODO">TODO</span> <a href="https://github.com/mitchellh/nixos-config/tree/main">mitchellh/nixos-config: My NixOS configurations.</a></h4>
+</div>
+<div id="outline-container-org869626b" class="outline-4">
+<h4 id="org869626b"><span class="todo TODO">TODO</span> <a href="https://github.com/jwiegley/nix-config/blob/master/config/darwin.nix">nix-config/config/darwin.nix at master · jwiegley/nix-config</a></h4>
+</div>
+<div id="outline-container-org5ad8aa1" class="outline-4">
+<h4 id="org5ad8aa1"><span class="todo TODO">TODO</span> <a href="https://github.com/MatthiasBenaets/nixos-config/tree/333d151ea784dabfd3260cabff01c090cb275a8e">MatthiasBenaets/nixos-config at 333d151ea784dabfd3260cabff01c090cb275a8e</a></h4>
+</div>
+<div id="outline-container-org617d758" class="outline-4">
+<h4 id="org617d758"><span class="todo TODO">TODO</span> <a href="https://github.com/infinisil/system/tree/master">infinisil/system: My system configuration</a></h4>
+</div>
+</div>
+<div id="outline-container-org8399989" class="outline-3">
+<h3 id="org8399989"><span class="todo TODO">TODO</span> <a href="https://samuel.dionne-riel.com/blog/2023/09/06/flakes-is-an-experiment-that-did-too-much-at-once.html">Nix Flakes is an experiment that did too much at once… — Samuel Dionne-Riel</a></h3>
+</div>
+<div id="outline-container-org22e0bde" class="outline-3">
+<h3 id="org22e0bde"><span class="todo TODO">TODO</span> <a href="https://zimbatm.com/notes/1000-instances-of-nixpkgs">1000 instances of nixpkgs</a></h3>
+</div>
+<div id="outline-container-orgbe34e9e" class="outline-3">
+<h3 id="orgbe34e9e">Nix remote build</h3>
+<div class="outline-text-3" id="text-orgbe34e9e">
+<p>
+Use the following command to run the build on a remote host:
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">nix-build --verbose --eval-store auto --store ssh-ng://$<span style="color: #a0522d;">REMOTE</span> $<span style="color: #a0522d;">NIX_FILE</span> -A $<span style="color: #a0522d;">attribute</span>
+</pre>
+</div>
+
+<p>
+Then copy the results from the remote nix store to the local one using:
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">nix copy --from ssg-ng://$<span style="color: #a0522d;">REMOTE</span> $<span style="color: #a0522d;">RESULTING_BUILD_PATH</span> 
+</pre>
+</div>
+
+<p>
+An example to build nix documentation
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">nix-build --verbose --eval-store auto --store ssh-ng://aziz@c1.s1.black.hole nixos/release.nix -A manual.x86_64-linux
+</pre>
+</div>
+</div>
+<div id="outline-container-orgca11a62" class="outline-4">
+<h4 id="orgca11a62">Siging</h4>
+<div class="outline-text-4" id="text-orgca11a62">
+<p>
+Use the following command to generate keys
+#+begin<sub>src</sub> bash
+</p>
+</div>
+<div id="outline-container-org038df52" class="outline-5">
+<h5 id="org038df52">nix-store &#x2013;generate-binary-cache-key $HOSTNAME $PRIVATE<sub>FILE</sub><sub>NAME</sub> $PUBLIC<sub>FILE</sub><sub>NAME</sub></h5>
+<div class="outline-text-5" id="text-org038df52">
+<p>
+#+end<sub>src</sub>
+Then sign the path using:
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">nix store sign -k secret /nix/store/1iqx50wjbhjwxzy7dzisiwxv4rb2bdbh-nixos-manual-html
+</pre>
+</div>
+
+<p>
+Then copy the results to the target host using:
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">nix-copy-closure --from c1.s1.black.hole /nix/store/1iqx50wjbhjwxzy7dzisiwxv4rb2bdbh-nixos-manual-html
+</pre>
+</div>
+
+<p>
+nix-store(9) - nix store
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orge35cd0c" class="outline-2">
+<h2 id="orge35cd0c">Ocaml</h2>
+</div>
+
+<div id="outline-container-org7fec295" class="outline-2">
+<h2 id="org7fec295">Python</h2>
+</div>
+
+<div id="outline-container-orgce97815" class="outline-2">
+<h2 id="orgce97815">Rust</h2>
+</div>
+
+<div id="outline-container-org85b861b" class="outline-2">
+<h2 id="org85b861b">Zig</h2>
+</div>
+
 <div id="outline-container-orgb5849ae" class="outline-2">
 <h2 id="orgb5849ae">Books</h2>
 </div>
