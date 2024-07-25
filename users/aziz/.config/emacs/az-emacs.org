@@ -918,8 +918,8 @@ Org is the main component of knowledge management
   ;; (load "other_importers.el")
 #+end_src
 
-*** COMMENT Publishing
-#+begin_src emacs-lisp
+*** Publishing
+#+begin_src emacs-lisp :tangle "init.el"
   (require 'ox-publish)
   (require 'ox-html)
 

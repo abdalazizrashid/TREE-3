@@ -645,6 +645,73 @@
 
 ;; (load "other_importers.el")
 
+(require 'ox-publish)
+(require 'ox-html)
+
+(setq org-global-properties
+      '(("PUBLISH" . "yes no")))
+
+;; (defun blog/org-publish-headline-filter (backend)
+;;   "Filter headlines based on the PUBLISH property before publishing.
+;; Only publish headlines with the property :PUBLISH: set to 'yes'."
+;;   (org-map-entries
+;;    (lambda ()
+;;      (let ((publish (org-entry-get (point) "PUBLISH")))
+;;        (unless (and publish (string= publish "yes"))
+;;          (org-cut-subtree))))
+;;    nil 'file))
+;; (remove-hook 'org-export-before-processing-hook #'blog/org-publish-headline-filter)
+
+(defun blog/org-publish-after-publish (plist)
+  "Open the browser to the published site after publishing."
+  (browse-url (concat "file://" (expand-file-name "public/index.html" site-dir))))
+
+(setq org-html-head
+      "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\" />")
+(setq org-html-validation-link nil)
+(setq org-html-head-include-scripts "<script data-goatcounter=\"https://aziz.goatcounter.com/count\" async src=\"//gc.zgo.at/count.js\"> </script>")
+;; Use our own scripts
+;; org-html-head-include-default-style nil ;; Use our own styles
+;;  org-html-head "<link rel=\"stylesheet\" href=\"https://cdn.simplecss.org/simple.min.css\" />"
+
+
+
+(defvar site-dir "~/Documents/org/")
+(defvar publish-dir "~/tree-3/users/aziz/blog/")
+
+(setq org-publish-project-alist
+      `(("blog-org-files"
+	 :base-directory ,site-dir
+	 :base-extension "org"
+	 :publishing-directory ,publish-dir
+	 :recursive t
+	 :publishing-function org-html-publish-to-html
+	 :headline-levels 4
+	 :auto-preamble t
+	 :auto-sitemap t
+	 :exclude ".*.org"
+	 :include ("pkg.org" "az-emacs.org", "dft.org")
+	 :html-postamble nil
+	 :section-numbers nil
+	 :sitemap-filename "index.org"
+	 ;;:sitemap-sort-files 'anti-chronologically
+	 :sitemap-title "Site map"
+	 :with-author t
+	 :with-date t
+	 :with-title t
+	 :with-toc t
+	 :makeindex t
+	 :completion-function blog/org-publish-after-publish)
+
+	("blog-static"
+	 :base-directory ,site-dir
+	 :base-extension "css\\|js\\|png\\|jpg\\|gif"
+	 :publishing-directory ,publish-dir ;;,(concat publish-dir "html/")
+	 :recursive t
+	 :publishing-function org-publish-attachment)
+
+	("blog" :components ("blog-org-files" "blog-static"))))
+
 (use-package bibtex
   :straight t
   :custom
