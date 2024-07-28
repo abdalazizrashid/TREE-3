@@ -3,11 +3,11 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-07-28 Sun 15:34 -->
+<!-- 2024-07-28 Sun 15:36 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>&lrm;</title>
-<meta name="author" content="A.R.M" />
+<title>Congruent Infrastructure</title>
+<meta name="author" content="Abdalaziz (Aziz) R. Al-Maeeni" />
 <meta name="generator" content="Org Mode" />
 <style type="text/css">
   #content { max-width: 60em; margin: auto; }
@@ -214,173 +214,78 @@
      }
 // @license-end
 </script>
-<script>
-  window.MathJax = {
-    tex: {
-      ams: {
-        multlineWidth: '85%'
-      },
-      tags: 'ams',
-      tagSide: 'right',
-      tagIndent: '.8em'
-    },
-    chtml: {
-      scale: 1.0,
-      displayAlign: 'center',
-      displayIndent: '0em'
-    },
-    svg: {
-      scale: 1.0,
-      displayAlign: 'center',
-      displayIndent: '0em'
-    },
-    output: {
-      font: 'mathjax-modern',
-      displayOverflow: 'overflow'
-    }
-  };
-</script>
-
-<script
-  id="MathJax-script"
-  async
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-</script>
 </head>
 <body>
 <div id="content" class="content">
+<h1 class="title">Congruent Infrastructure</h1>
 <div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org568a0a4">Introduction to DFT</a>
+<li><a href="#orge768108">1. Introduction</a>
 <ul>
-<li><a href="#org92e5db9">Time depenedent Schrödinger equation</a>
+<li><a href="#org038e4a0">1.1. Infrastructure taxonomy</a>
 <ul>
-<li><a href="#orgfc5f6eb"><span class="todo TODO">TODO</span> describe missing variables</a></li>
+<li><a href="#orga226e5a">1.1.1. Divergent</a></li>
+<li><a href="#org2b86d76">1.1.2. Convergent</a></li>
+<li><a href="#org4f3924b">1.1.3. Congruent</a></li>
 </ul>
 </li>
-<li><a href="#org93d20f3">Time independent potential</a></li>
 </ul>
 </li>
+<li><a href="#org4dffc71">2. Security and secrets management</a>
+<ul>
+<li><a href="#org69d44f9">2.1. Hardware security modules</a></li>
+<li><a href="#org2a6f50e">2.2. SOPS</a></li>
+</ul>
+</li>
+<li><a href="#org82e46d7">3. Domain name servers (DNS)</a></li>
+<li><a href="#org7c17385">4. Dynamic Host Configuration Protocol (DHCP)</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org568a0a4" class="outline-2">
-<h2 id="org568a0a4">Introduction to DFT</h2>
-<div class="outline-text-2" id="text-org568a0a4">
+<div id="outline-container-orge768108" class="outline-2">
+<h2 id="orge768108"><span class="section-number-2">1.</span> Introduction</h2>
+<div class="outline-text-2" id="text-1">
 <p>
-When particle act as a wave, as you get lighter the momentum decrease
-and the wavelength increases.
-</p>
-
-<p>
-\[
-\lambda p = \hbar 
-\]
-</p>
-
-<p>
-Where \(\lambda\) is the wavelength \(p\) is the momemntum, and
-\(\hbar=6.6\times 10^{-34}\) is planck constants and the system of atomic units \(2\pi a.u\).
+This [WIP] book aims to be a reference for implementing modern cost
+effective enterprise grade computer infrastructure, with emphasis on
+reproducibility and determinisim.
 </p>
 </div>
-<div id="outline-container-org92e5db9" class="outline-3">
-<h3 id="org92e5db9">Time depenedent Schrödinger equation</h3>
-<div class="outline-text-3" id="text-org92e5db9">
-\begin{equation}
-\label{eq:1}
-- \frac{\hbar^2}{2m} \nabla \Psi(r,t) + V(r,t) \Psi(r,t) =
- i\hbar \frac{\partial\Psi(r,t)}{\partial t}
-\end{equation}
-
-<p>
-The wave function is \(\Psi:\mathbb{R}^{r} \mapsto \mathbb{C}^{r}\) and to
-be evaluated at every point and every isntant \(r\) is the coordinates.
-</p>
+<div id="outline-container-org038e4a0" class="outline-3">
+<h3 id="org038e4a0"><span class="section-number-3">1.1.</span> Infrastructure taxonomy</h3>
+<div class="outline-text-3" id="text-1-1">
 </div>
-<div id="outline-container-orgfc5f6eb" class="outline-4">
-<h4 id="orgfc5f6eb"><span class="todo TODO">TODO</span> describe missing variables</h4>
+<div id="outline-container-orga226e5a" class="outline-4">
+<h4 id="orga226e5a"><span class="section-number-4">1.1.1.</span> Divergent</h4>
 </div>
+<div id="outline-container-org2b86d76" class="outline-4">
+<h4 id="org2b86d76"><span class="section-number-4">1.1.2.</span> Convergent</h4>
 </div>
-<div id="outline-container-org93d20f3" class="outline-3">
-<h3 id="org93d20f3">Time independent potential</h3>
-<div class="outline-text-3" id="text-org93d20f3">
-<p>
-Or very slow change of time \(\lim_{\partial t \to 0}\)
-</p>
-\begin{equation}
-\label{eq:2}
-\left[ -\frac{\hbar^2}{2m}\nabla^2+V(r) \right] \Phi(r) = E\Phi(r)
-\end{equation}
-\begin{equation}
-\label{eq:3}
-i\hbar \frac{d}{dt}f(t) = Ef(t)
-\end{equation}
-<p>
-The time independent formulation is already an approximation as we
-treat electrons as quantom particles in the time field of the
-fixed or slowly moving nuclei \(E(\vec{R_\imath}) =
-\min_{\Psi}E(\vec{R_\imath}, \Psi)\). This approximation is
-generally known as Born-Oppenheimer or Adiabatic<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>
-</p>
-
-<p>
-Energy of a collection of atoms (electrons, nuclei):
-</p>
-\begin{equation}
-\label{eq:4}
-\widehat{H} = \widehat{T}_e + \widehat{V}_\textit{e-N} +
-\widehat{V}_\textit{e-e} + T_N + V_{\textit{N-N}}
-\end{equation}
-<ul class="org-ul">
-<li>Quantom kinetic energy of the electrons (1 body</li>
-</ul>
-<p>
-operator):
-</p>
-\begin{equation*}
- \widehat{T}_e = \frac{-1}{2} \sum \nabla^2
-\end{equation*}
-<ul class="org-ul">
-<li><p>
-Electrons in the field of nuclei (1 body):
-</p>
-\begin{equation*}
-  \widehat{V}_{\textit{e-N}} = \underbrace{\sum_{i}}_{\text{electron}} \left[
-    \underbrace{\sum_{I}}_{\text{nuclei}} V(\vec{R}_I - \vec{r}_i) \right]$
-\end{equation*}</li>
-<li><p>
-Electron-electron interaction (2 body) is the hardest part:
-</p>
-\begin{equation*}
-  \widehat{V}_{\textit{e-e}}=\sum_i\sum_{j>i}\frac{1}{|\widehat{r}_i-r_j|}
-\end{equation*}</li>
-<li>\(T_N\) classical kinetic energy of the nuclei.</li>
-<li>\(V_{\textit{N-N}}\) classical electrostatic nucleus-nucleus repulsion.</li>
-</ul>
-
-<p>
-The electronic wave function becomes informational challenge \(
-\Psi(\vec{r}_{1}, \cdots, \vec{r}_n) \). The full specification of the
-wave function for the Iron atom is afunction of 78 varibale \(26\times
-3\), and if we limit each of those variables to 10 points for each. We
-will have a table of \(10^{78}\) entries.
-</p>
+<div id="outline-container-org4f3924b" class="outline-4">
+<h4 id="org4f3924b"><span class="section-number-4">1.1.3.</span> Congruent</h4>
 </div>
 </div>
 </div>
-<div id="footnotes">
-<h2 class="footnotes">Footnotes: </h2>
-<div id="text-footnotes">
-
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-Adiabatic means that there is no coupling between different
-electronic surface.
-</p></div></div>
-
-
+<div id="outline-container-org4dffc71" class="outline-2">
+<h2 id="org4dffc71"><span class="section-number-2">2.</span> Security and secrets management</h2>
+<div class="outline-text-2" id="text-2">
 </div>
-</div></div>
+<div id="outline-container-org69d44f9" class="outline-3">
+<h3 id="org69d44f9"><span class="section-number-3">2.1.</span> Hardware security modules</h3>
+</div>
+<div id="outline-container-org2a6f50e" class="outline-3">
+<h3 id="org2a6f50e"><span class="section-number-3">2.2.</span> SOPS</h3>
+</div>
+</div>
+<div id="outline-container-org82e46d7" class="outline-2">
+<h2 id="org82e46d7"><span class="section-number-2">3.</span> Domain name servers (DNS)</h2>
+</div>
+
+<div id="outline-container-org7c17385" class="outline-2">
+<h2 id="org7c17385"><span class="section-number-2">4.</span> Dynamic Host Configuration Protocol (DHCP)</h2>
+</div>
+</div>
 </body>
 </html>
