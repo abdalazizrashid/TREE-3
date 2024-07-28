@@ -4,31 +4,16 @@ let
   # TODO consider using DNS nix dsl
   # https://github.com/nix-community/dns.nix
   zonesDir = "/var/lib/bind/";
-
+ 
+  checkZone = zone: file: pkgs.runCommand "${zone}-check" { }
+    ''
+      ${pkgs.bind}/bin/named-checkzone -i local ${zone} ${file} | tee $out
+    '';
+    
   aziz = {
     name = "aziz.fyi";
     master = true;
-    file = pkgs.writeText aziz.name ''
-       $TTL    86400
-       @       IN      SOA     ns1.aziz.fyi. admin.aziz.fyi. (
-                               2024010101 ; Serial
-                               604800     ; Refresh
-                               86400      ; Retry
-                               2419200    ; Expire
-                               604800 )   ; Negative Cache TTL
-       ;
-       @       IN      NS      ns1.aziz.fyi.
-       @       IN      NS      ns2.aziz.fyi.
-
-       ns1     IN      A       127.0.0.1
-       ns2     IN      A       192.168.1.64
-
-       www     IN      A       185.199.110.153
-       @       IN      A       185.199.110.153
-       @       IN      A       185.199.108.153
-       @       IN      A       185.199.109.153
-       @       IN      A       185.199.111.153
-     '';
+    file = checkZone aziz.name ../../infra/zones/aziz.fyi.zone;
     masters = [ ];
     slaves = [ ];
     extraConfig = "";
@@ -94,7 +79,9 @@ in
     "z ${hostsZone} 0644 named named - -"
   ];
 
-  
+  environment.systemPackages = [
+    pkgs.bind
+  ];
 }
 # aziz.fyi.		600	IN	A	185.199.110.153
 # aziz.fyi.		600	IN	A	185.199.108.153
