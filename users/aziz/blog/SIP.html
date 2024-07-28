@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-07-28 Sun 19:12 -->
+<!-- 2024-07-28 Sun 19:15 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>System Integrity Protection</title>
@@ -222,11 +222,6 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org7bef432">Keys</a>
-<ul>
-<li><a href="#orgecaeaf6">SSH</a></li>
-</ul>
-</li>
 <li><a href="#org630d17a">System Integrity Protection</a>
 <ul>
 <li><a href="#org0103435">Modifying the SIP system</a>
@@ -239,25 +234,12 @@
 </ul>
 </div>
 </div>
-<div id="outline-container-org7bef432" class="outline-2">
-<h2 id="org7bef432">Keys</h2>
-<div class="outline-text-2" id="text-org7bef432">
-</div>
-<div id="outline-container-orgecaeaf6" class="outline-3">
-<h3 id="orgecaeaf6">SSH</h3>
-<div class="outline-text-3" id="text-orgecaeaf6">
-<p>
-<code>ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICX8KUmbAs2AcWar9cji61/+6R8m4aqoHaTKW1kcqg9D aziz@w375262.staff.corp.local</code>
-</p>
-</div>
-</div>
-</div>
 <div id="outline-container-org630d17a" class="outline-2">
 <h2 id="org630d17a">System Integrity Protection</h2>
 <div class="outline-text-2" id="text-org630d17a">
 <p>
 SIP is another layer of security used in MacOS to prevent the
-uncontrained powers of the root user. This means with SIP the root
+unconstrained powers of the root user. This means with SIP the root
 user can no longer perform certain actions such as modifying special
 file or add kernel extension modules. Those files will only be
 modifible by Apple itself and techincally should be considered Apple
