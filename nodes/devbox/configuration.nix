@@ -8,7 +8,9 @@
   imports =
     [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ../modules/bind.nix
+    #../modules/bind.nix
+    ../modules/knot-dns.nix
+    #../modules/kea.nix
     #./tailscale.nix
     #./acme.nix
     #./gnome.nix
@@ -65,11 +67,11 @@
     systemd.targets.hybrid-sleep.enable = false;
 
     # Enable the X11 windowing system.
-    services.xserver.enable = true;
+    services.xserver.enable = false;
 
     # Enable the GNOME Desktop Environment.
-    services.xserver.displayManager.gdm.enable = true;
-    services.xserver.desktopManager.gnome.enable = true;
+    services.xserver.displayManager.gdm.enable = false;
+    services.xserver.desktopManager.gnome.enable = false;
 
     # Configure keymap in X11
     services.xserver = {
@@ -111,6 +113,7 @@
       packages = with pkgs; [
     	  emacs
         #  thunderbird
+        dnsutils
       ];
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICX8KUmbAs2AcWar9cji61/+6R8m4aqoHaTKW1kcqg9D aziz@w375262.staff.corp.local"
@@ -134,9 +137,11 @@
       git
       nix-output-monitor
 
+      dnsutils
+
     ] ++ [
       config.services.headscale.package 
-    ] ++ [ import ../common.nix ];
+    ] ++ [ pkgs.dnsutils ];
 
     # # Activation script to set permissions and ownership
     # system.activationScripts.nixosEditorsPermissions = ''
