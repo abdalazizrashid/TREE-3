@@ -965,7 +965,7 @@ Org is the main component of knowledge management
   	 :auto-preamble t
   	 :auto-sitemap t
   	 :exclude ".*.org"
-  	 :include ("pkg.org" "az-emacs.org", "dft.org")
+  	 :include ("pkg.org" "az-emacs.org", "dft.org" "infra.org" "SIP.org")
   	 :html-postamble nil
   	 :section-numbers nil
   	 :sitemap-filename "index.org"
