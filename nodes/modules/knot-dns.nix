@@ -3,10 +3,10 @@
 let
   cfg = config.services.knot;
   knot.enable = true;
-  zonesDir = "/var/lib/knot/zones/";
-  zones."aziz.fyi" = pkgs.writeTextDir "aziz.fyi.zone"
-  zones."hosts.aziz.fyi" = pkgs.writeTextDir  "hosts.aziz.fyi.zone" 
-  knotZonesEnv = pkgs.buildEnv {
+  zonesDir = ../../infra/zones;
+  zones."aziz.fyi" = pkgs.writeTextDir "aziz.fyi.zone" (builtins.readFile "${zonesDir}/aziz.fyi.zone");
+  zones."hosts.aziz.fyi" = pkgs.writeTextDir "hosts.aziz.fyi.zone" (builtins.readFile "${zonesDir}/hosts.aziz.fyi.zone");
+  ZonesEnv = pkgs.buildEnv {
     name = "knot-zones";
     paths = [ zones."aziz.fyi" zones."hosts.aziz.fyi" ];
   };
@@ -20,12 +20,6 @@ key:
   '';
 in
 {
-  # systemd.tmpfiles.rules = [
-  #   "R ${zonesDir}   -     -      -   -" # Remove old zones
-  #   "C+ ${zonesDir} - - - - ${../../infra/zones}" # Copy the zones file
-  #   "z ${zonesDir} 0644 knot knot - -"  # Change permissions
-  # ];
-      
   services.knot = {
     enable = true;
     extraArgs = [ "-v" ];
@@ -47,7 +41,7 @@ in
 
       template:
           - id: default
-            storage: ${knotZonesEnv}
+            storage: ${ZonesEnv}
             semantic-checks: on
             dnssec-signing: on
             dnssec-policy: ececc

@@ -6,7 +6,9 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+    "${(import ../../nix/sources.nix).sops-nix}/modules/sops"
+    # Include the results of the hardware scan.
     ./hardware-configuration.nix
     #../modules/bind.nix
     ../modules/knot-dns.nix
@@ -66,6 +68,10 @@
     systemd.targets.hibernate.enable = false;
     systemd.targets.hybrid-sleep.enable = false;
 
+
+    services.emacs = {
+      enable = true;
+    };
     # Enable the X11 windowing system.
     services.xserver.enable = false;
 
@@ -142,7 +148,7 @@
     ] ++ [
       config.services.headscale.package 
     ] ++ [ pkgs.dnsutils ];
-
+    nix.trustedUsers = [ "root" "@wheel" ];
     # # Activation script to set permissions and ownership
     # system.activationScripts.nixosEditorsPermissions = ''
     #   # Ensure the /etc/nixos directory and its files have the correct permissions
