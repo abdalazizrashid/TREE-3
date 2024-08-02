@@ -1,199 +1,45 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
-<head>
-<!-- 2024-07-28 Sun 15:36 -->
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Congruent Infrastructure</title>
-<meta name="author" content="Abdalaziz (Aziz) R. Al-Maeeni" />
-<meta name="generator" content="Org Mode" />
-<style type="text/css">
-  #content { max-width: 60em; margin: auto; }
-  .title  { text-align: center;
-             margin-bottom: .2em; }
-  .subtitle { text-align: center;
-              font-size: medium;
-              font-weight: bold;
-              margin-top:0; }
-  .todo   { font-family: monospace; color: red; }
-  .done   { font-family: monospace; color: green; }
-  .priority { font-family: monospace; color: orange; }
-  .tag    { background-color: #eee; font-family: monospace;
-            padding: 2px; font-size: 80%; font-weight: normal; }
-  .timestamp { color: #bebebe; }
-  .timestamp-kwd { color: #5f9ea0; }
-  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
-  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
-  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
-  .underline { text-decoration: underline; }
-  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
-  p.verse { margin-left: 3%; }
-  pre {
-    border: 1px solid #e6e6e6;
-    border-radius: 3px;
-    background-color: #f2f2f2;
-    padding: 8pt;
-    font-family: monospace;
-    overflow: auto;
-    margin: 1.2em;
-  }
-  pre.src {
-    position: relative;
-    overflow: auto;
-  }
-  pre.src:before {
-    display: none;
-    position: absolute;
-    top: -8px;
-    right: 12px;
-    padding: 3px;
-    color: #555;
-    background-color: #f2f2f299;
-  }
-  pre.src:hover:before { display: inline; margin-top: 14px;}
-  /* Languages per Org manual */
-  pre.src-asymptote:before { content: 'Asymptote'; }
-  pre.src-awk:before { content: 'Awk'; }
-  pre.src-authinfo::before { content: 'Authinfo'; }
-  pre.src-C:before { content: 'C'; }
-  /* pre.src-C++ doesn't work in CSS */
-  pre.src-clojure:before { content: 'Clojure'; }
-  pre.src-css:before { content: 'CSS'; }
-  pre.src-D:before { content: 'D'; }
-  pre.src-ditaa:before { content: 'ditaa'; }
-  pre.src-dot:before { content: 'Graphviz'; }
-  pre.src-calc:before { content: 'Emacs Calc'; }
-  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
-  pre.src-fortran:before { content: 'Fortran'; }
-  pre.src-gnuplot:before { content: 'gnuplot'; }
-  pre.src-haskell:before { content: 'Haskell'; }
-  pre.src-hledger:before { content: 'hledger'; }
-  pre.src-java:before { content: 'Java'; }
-  pre.src-js:before { content: 'Javascript'; }
-  pre.src-latex:before { content: 'LaTeX'; }
-  pre.src-ledger:before { content: 'Ledger'; }
-  pre.src-lisp:before { content: 'Lisp'; }
-  pre.src-lilypond:before { content: 'Lilypond'; }
-  pre.src-lua:before { content: 'Lua'; }
-  pre.src-matlab:before { content: 'MATLAB'; }
-  pre.src-mscgen:before { content: 'Mscgen'; }
-  pre.src-ocaml:before { content: 'Objective Caml'; }
-  pre.src-octave:before { content: 'Octave'; }
-  pre.src-org:before { content: 'Org mode'; }
-  pre.src-oz:before { content: 'OZ'; }
-  pre.src-plantuml:before { content: 'Plantuml'; }
-  pre.src-processing:before { content: 'Processing.js'; }
-  pre.src-python:before { content: 'Python'; }
-  pre.src-R:before { content: 'R'; }
-  pre.src-ruby:before { content: 'Ruby'; }
-  pre.src-sass:before { content: 'Sass'; }
-  pre.src-scheme:before { content: 'Scheme'; }
-  pre.src-screen:before { content: 'Gnu Screen'; }
-  pre.src-sed:before { content: 'Sed'; }
-  pre.src-sh:before { content: 'shell'; }
-  pre.src-sql:before { content: 'SQL'; }
-  pre.src-sqlite:before { content: 'SQLite'; }
-  /* additional languages in org.el's org-babel-load-languages alist */
-  pre.src-forth:before { content: 'Forth'; }
-  pre.src-io:before { content: 'IO'; }
-  pre.src-J:before { content: 'J'; }
-  pre.src-makefile:before { content: 'Makefile'; }
-  pre.src-maxima:before { content: 'Maxima'; }
-  pre.src-perl:before { content: 'Perl'; }
-  pre.src-picolisp:before { content: 'Pico Lisp'; }
-  pre.src-scala:before { content: 'Scala'; }
-  pre.src-shell:before { content: 'Shell Script'; }
-  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
-  /* additional language identifiers per "defun org-babel-execute"
-       in ob-*.el */
-  pre.src-cpp:before  { content: 'C++'; }
-  pre.src-abc:before  { content: 'ABC'; }
-  pre.src-coq:before  { content: 'Coq'; }
-  pre.src-groovy:before  { content: 'Groovy'; }
-  /* additional language identifiers from org-babel-shell-names in
-     ob-shell.el: ob-shell is the only babel language using a lambda to put
-     the execution function name together. */
-  pre.src-bash:before  { content: 'bash'; }
-  pre.src-csh:before  { content: 'csh'; }
-  pre.src-ash:before  { content: 'ash'; }
-  pre.src-dash:before  { content: 'dash'; }
-  pre.src-ksh:before  { content: 'ksh'; }
-  pre.src-mksh:before  { content: 'mksh'; }
-  pre.src-posh:before  { content: 'posh'; }
-  /* Additional Emacs modes also supported by the LaTeX listings package */
-  pre.src-ada:before { content: 'Ada'; }
-  pre.src-asm:before { content: 'Assembler'; }
-  pre.src-caml:before { content: 'Caml'; }
-  pre.src-delphi:before { content: 'Delphi'; }
-  pre.src-html:before { content: 'HTML'; }
-  pre.src-idl:before { content: 'IDL'; }
-  pre.src-mercury:before { content: 'Mercury'; }
-  pre.src-metapost:before { content: 'MetaPost'; }
-  pre.src-modula-2:before { content: 'Modula-2'; }
-  pre.src-pascal:before { content: 'Pascal'; }
-  pre.src-ps:before { content: 'PostScript'; }
-  pre.src-prolog:before { content: 'Prolog'; }
-  pre.src-simula:before { content: 'Simula'; }
-  pre.src-tcl:before { content: 'tcl'; }
-  pre.src-tex:before { content: 'TeX'; }
-  pre.src-plain-tex:before { content: 'Plain TeX'; }
-  pre.src-verilog:before { content: 'Verilog'; }
-  pre.src-vhdl:before { content: 'VHDL'; }
-  pre.src-xml:before { content: 'XML'; }
-  pre.src-nxml:before { content: 'XML'; }
-  /* add a generic configuration mode; LaTeX export needs an additional
-     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
-  pre.src-conf:before { content: 'Configuration File'; }
-
-  table { border-collapse:collapse; }
-  caption.t-above { caption-side: top; }
-  caption.t-bottom { caption-side: bottom; }
-  td, th { vertical-align:top;  }
-  th.org-right  { text-align: center;  }
-  th.org-left   { text-align: center;   }
-  th.org-center { text-align: center; }
-  td.org-right  { text-align: right;  }
-  td.org-left   { text-align: left;   }
-  td.org-center { text-align: center; }
-  dt { font-weight: bold; }
-  .footpara { display: inline; }
-  .footdef  { margin-bottom: 1em; }
-  .figure { padding: 1em; }
-  .figure p { text-align: center; }
-  .equation-container {
-    display: table;
-    text-align: center;
-    width: 100%;
-  }
-  .equation {
-    vertical-align: middle;
-  }
-  .equation-label {
-    display: table-cell;
-    text-align: right;
-    vertical-align: middle;
-  }
-  .inlinetask {
-    padding: 10px;
-    border: 2px solid gray;
-    margin: 10px;
-    background: #ffffcc;
-  }
-  #org-div-home-and-up
-   { text-align: right; font-size: 70%; white-space: nowrap; }
-  textarea { overflow-x: auto; }
-  .linenr { font-size: smaller }
-  .code-highlighted { background-color: #ffff00; }
-  .org-info-js_info-navigation { border-style: none; }
-  #org-info-js_console-label
-    { font-size: 10px; font-weight: bold; white-space: nowrap; }
-  .org-info-js_search-highlight
-    { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { }
+<!DOCTYPE html><html lang="en" dir="ltr"><head>
+<meta charset="utf-8">
+<meta name="generator" content="ReSpec 35.1.1">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<style>
+.issue-label{text-transform:initial}
+.warning>p:first-child{margin-top:0}
+.warning{padding:.5em;border-left-width:.5em;border-left-style:solid}
+span.warning{padding:.1em .5em .15em}
+.issue.closed span.issue-number{text-decoration:line-through}
+.issue.closed span.issue-number::after{content:" (Closed)";font-size:smaller}
+.warning{border-color:#f11;border-color:var(--warning-border,#f11);border-width:.2em;border-style:solid;background:#fbe9e9;background:var(--warning-bg,#fbe9e9);color:#000;color:var(--text,#000)}
+.warning-title:before{content:"⚠";font-size:1.3em;float:left;padding-right:.3em;margin-top:-.3em}
+li.task-list-item{list-style:none}
+input.task-list-item-checkbox{margin:0 .35em .25em -1.6em;vertical-align:middle}
+.issue a.respec-gh-label{padding:5px;margin:0 2px 0 2px;font-size:10px;text-transform:none;text-decoration:none;font-weight:700;border-radius:4px;position:relative;bottom:2px;border:none;display:inline-block}
 </style>
-<link rel="stylesheet" type="text/css" href="style.css" />
+<style>
+dfn{cursor:pointer}
+.dfn-panel{position:absolute;z-index:35;min-width:300px;max-width:500px;padding:.5em .75em;margin-top:.6em;font-family:"Helvetica Neue",sans-serif;font-size:small;background:#fff;background:var(--indextable-hover-bg,#fff);color:#000;color:var(--text,#000);box-shadow:0 1em 3em -.4em rgba(0,0,0,.3),0 0 1px 1px rgba(0,0,0,.05);box-shadow:0 1em 3em -.4em var(--tocsidebar-shadow,rgba(0,0,0,.3)),0 0 1px 1px var(--tocsidebar-shadow,rgba(0,0,0,.05));border-radius:2px}
+.dfn-panel:not(.docked)>.caret{position:absolute;top:-9px}
+.dfn-panel:not(.docked)>.caret::after,.dfn-panel:not(.docked)>.caret::before{content:"";position:absolute;border:10px solid transparent;border-top:0;border-bottom:10px solid #fff;border-bottom-color:var(--indextable-hover-bg,#fff);top:0}
+.dfn-panel:not(.docked)>.caret::before{border-bottom:9px solid #a2a9b1;border-bottom-color:var(--indextable-hover-bg,#a2a9b1)}
+.dfn-panel *{margin:0}
+.dfn-panel b{display:block;color:#000;color:var(--text,#000);margin-top:.25em}
+.dfn-panel ul a[href]{color:#333;color:var(--text,#333)}
+.dfn-panel>div{display:flex}
+.dfn-panel a.self-link{font-weight:700;margin-right:auto}
+.dfn-panel .marker{padding:.1em;margin-left:.5em;border-radius:.2em;text-align:center;white-space:nowrap;font-size:90%;color:#040b1c}
+.dfn-panel .marker.dfn-exported{background:#d1edfd;box-shadow:0 0 0 .125em #1ca5f940}
+.dfn-panel .marker.idl-block{background:#8ccbf2;box-shadow:0 0 0 .125em #0670b161}
+.dfn-panel a:not(:hover){text-decoration:none!important;border-bottom:none!important}
+.dfn-panel a[href]:hover{border-bottom-width:1px}
+.dfn-panel ul{padding:0}
+.dfn-panel li{margin-left:1em}
+.dfn-panel.docked{position:fixed;left:.5em;top:unset;bottom:2em;margin:0 auto;max-width:calc(100vw - .75em * 2 - .5em - .2em * 2);max-height:30vh;overflow:auto}
+</style>
+
+
+
+<meta name="generator" content="Org-mode">
+
 <script>
 // @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&amp;dn=gpl-3.0.txt GPL-v3-or-Later
      function CodeHighlightOn(elem, id)
@@ -214,78 +60,820 @@
      }
 // @license-end
 </script>
-</head>
-<body>
-<div id="content" class="content">
-<h1 class="title">Congruent Infrastructure</h1>
-<div id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents" role="doc-toc">
-<ul>
-<li><a href="#orge768108">1. Introduction</a>
-<ul>
-<li><a href="#org038e4a0">1.1. Infrastructure taxonomy</a>
-<ul>
-<li><a href="#orga226e5a">1.1.1. Divergent</a></li>
-<li><a href="#org2b86d76">1.1.2. Convergent</a></li>
-<li><a href="#org4f3924b">1.1.3. Congruent</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#org4dffc71">2. Security and secrets management</a>
-<ul>
-<li><a href="#org69d44f9">2.1. Hardware security modules</a></li>
-<li><a href="#org2a6f50e">2.2. SOPS</a></li>
-</ul>
-</li>
-<li><a href="#org82e46d7">3. Domain name servers (DNS)</a></li>
-<li><a href="#org7c17385">4. Dynamic Host Configuration Protocol (DHCP)</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orge768108" class="outline-2">
-<h2 id="orge768108"><span class="section-number-2">1.</span> Introduction</h2>
-<div class="outline-text-2" id="text-1">
+
+<style id="respec-mainstyle">
+@keyframes pop{
+0%{transform:scale(1,1)}
+25%{transform:scale(1.25,1.25);opacity:.75}
+100%{transform:scale(1,1)}
+}
+a.internalDFN{color:inherit;border-bottom:1px solid #99c;text-decoration:none}
+a.externalDFN{color:inherit;border-bottom:1px dotted #ccc;text-decoration:none}
+a.bibref{text-decoration:none}
+.respec-offending-element:target{animation:pop .25s ease-in-out 0s 1}
+.respec-offending-element,a[href].respec-offending-element{text-decoration:red wavy underline}
+@supports not (text-decoration:red wavy underline){
+.respec-offending-element:not(pre){display:inline-block}
+.respec-offending-element{background:url(data:image/gif;base64,R0lGODdhBAADAPEAANv///8AAP///wAAACwAAAAABAADAEACBZQjmIAFADs=) bottom repeat-x}
+}
+#references :target{background:#eaf3ff;animation:pop .4s ease-in-out 0s 1}
+cite .bibref{font-style:normal}
+a[href].orcid{padding-left:4px;padding-right:4px}
+a[href].orcid>svg{margin-bottom:-2px}
+ol.tof,ul.tof{list-style:none outside none}
+.caption{margin-top:.5em;font-style:italic}
+#issue-summary>ul{column-count:2}
+#issue-summary li{list-style:none;display:inline-block}
+details.respec-tests-details{margin-left:1em;display:inline-block;vertical-align:top}
+details.respec-tests-details>*{padding-right:2em}
+details.respec-tests-details[open]{z-index:999999;position:absolute;border:thin solid #cad3e2;border-radius:.3em;background-color:#fff;padding-bottom:.5em}
+details.respec-tests-details[open]>summary{border-bottom:thin solid #cad3e2;padding-left:1em;margin-bottom:1em;line-height:2em}
+details.respec-tests-details>ul{width:100%;margin-top:-.3em}
+details.respec-tests-details>li{padding-left:1em}
+.self-link:hover{opacity:1;text-decoration:none;background-color:transparent}
+aside.example .marker>a.self-link{color:inherit}
+.header-wrapper{display:flex;align-items:baseline}
+:is(h2,h3,h4,h5,h6):not(#toc>h2,#abstract>h2,#sotd>h2,.head>h2){position:relative;left:-.5em}
+:is(h2,h3,h4,h5,h6):not(#toch2)+a.self-link{color:inherit;order:-1;position:relative;left:-1.1em;font-size:1rem;opacity:.5}
+:is(h2,h3,h4,h5,h6)+a.self-link::before{content:"§";text-decoration:none;color:var(--heading-text)}
+:is(h2,h3)+a.self-link{top:-.2em}
+:is(h4,h5,h6)+a.self-link::before{color:#000}
+@media (max-width:767px){
+dd{margin-left:0}
+}
+@media print{
+.removeOnSave{display:none}
+}
+</style>
+<meta name="color-scheme" content="light">
+<style>
+var{position:relative;cursor:pointer}
+var[data-type]::after,var[data-type]::before{position:absolute;left:50%;top:-6px;opacity:0;transition:opacity .4s;pointer-events:none}
+var[data-type]::before{content:"";transform:translateX(-50%);border-width:4px 6px 0 6px;border-style:solid;border-color:transparent;border-top-color:#222}
+var[data-type]::after{content:attr(data-type);transform:translateX(-50%) translateY(-100%);background:#222;text-align:center;font-family:"Dank Mono","Fira Code",monospace;font-style:normal;padding:6px;border-radius:3px;color:#daca88;text-indent:0;font-weight:400}
+var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
+</style>
+<script id="initialUserConfig" type="application/json">{
+  "license": "bean",
+  "highlightVars": true,
+  "specStatus": "unofficial",
+  "xref": "kek",
+  "authors": [
+    {
+      "name": "Abdalaziz Al-Maeeni",
+      "url": "https://aziz.fyi/",
+      "orcid": "https://orcid.org/0000-0002-3299-7293",
+      "company": "Probabilistic Solutions, PyMC Labs, Higher School of Economics"
+    }
+  ],
+  "github": "abdalazizrashid/tree-3",
+  "shortName": "Aziz",
+  "publishISODate": "2024-08-02T00:00:00.000Z",
+  "generatedSubtitle": "Unofficial Draft 02 August 2024"
+}</script>
+<link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2021/W3C-UD"></head>
+<body class="h-entry informative"><div class="head">
+    
+    <h1 id="title" class="title">Modern Congruent Infrastructure</h1> 
+    <p id="w3c-state">Unofficial Draft <time class="dt-published" datetime="2024-08-02">02 August 2024</time></p>
+    <details open="">
+      <summary>More details about this document</summary>
+      <dl>
+        
+        <dt>Latest published version:</dt><dd>
+                <a href="https://www.w3.org/Aziz/">https://www.w3.org/Aziz/</a>
+              </dd>
+        <dt>Latest editor's draft:</dt><dd><a href="https://abdalazizrashid.github.io/tree-3/">https://abdalazizrashid.github.io/tree-3/</a></dd>
+        <dt>History:</dt><dd>
+                    <a href="https://github.com/abdalazizrashid/tree-3/commits/">Commit history</a>
+                  </dd>
+        
+        
+        
+        
+        
+        
+        
+        <dt>Author:</dt><dd class="editor p-author h-card vcard">
+    <a class="u-url url p-name fn" href="https://aziz.fyi/">Abdalaziz Al-Maeeni</a><a class="p-name orcid" href="https://orcid.org/0000-0002-3299-7293"><svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+    <style>
+
+      .st1 {
+        fill: #fff;
+      }
+    
+</style>
+    <path d="M256 128c0 70.7-57.3 128-128 128S0 198.7 0 128 57.3 0 128 0s128 57.3 128 128z" fill="#a6ce39"></path>
+    <path class="st1" d="M86.3 186.2H70.9V79.1h15.4v107.1zM108.9 79.1h41.6c39.6 0 57 28.3 57 53.6 0 27.5-21.5 53.6-56.8 53.6h-41.8V79.1zm15.4 93.3h24.5c34.9 0 42.9-26.5 42.9-39.7C191.7 111.2 178 93 148 93h-23.7v79.4zM88.7 56.8c0 5.5-4.5 10.1-10.1 10.1s-10.1-4.6-10.1-10.1c0-5.6 4.5-10.1 10.1-10.1s10.1 4.6 10.1 10.1z"></path>
+  </svg></a> (<span class="p-org org h-org">Probabilistic Solutions, PyMC Labs, Higher School of Economics</span>)
+  </dd>
+        <dt>Feedback:</dt><dd>
+        <a href="https://github.com/abdalazizrashid/tree-3/">GitHub abdalazizrashid/tree-3</a>
+        (<a href="https://github.com/abdalazizrashid/tree-3/pulls/">pull requests</a>,
+        <a href="https://github.com/abdalazizrashid/tree-3/issues/new/choose">new issue</a>,
+        <a href="https://github.com/abdalazizrashid/tree-3/issues/">open issues</a>)
+      </dd>
+        
+        
+      </dl>
+    </details>
+    
+    
+    <p class="copyright">
+      Copyright ©
+      2024
+      the document editors/authors.
+      Text is available under the
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/legalcode">Creative Commons Attribution 4.0 International Public License</a>; additional terms may apply.
+    </p>
+    <hr title="Separator for header">
+  </div>
+<title>Modern Congruent Infrastructure</title>
+
+    <meta charset="utf-8">
+    <title>Modern Congruent Infrastructure</title>
+    
+    
+    <meta content="dark light" name="color-scheme">
+    <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="" rel="stylesheet" type="text/css" disabled="">
+
+
 <p>
+<a href="https://github.com/speced/respec">https://github.com/speced/respec</a>
+<a href="https://www.gnu.org/software/emacs/manual/html_node/org/HTML-doctypes.html">https://www.gnu.org/software/emacs/manual/html_node/org/HTML-doctypes.html</a>
+<a href="https://orgmode.org/manual/Publishing-options.html#HTML-specific-properties-1">https://orgmode.org/manual/Publishing-options.html#HTML-specific-properties-1</a>
+<a href="https://github.com/jwiegley/org-mode/blob/master/lisp/ox-html.el#L1826">https://github.com/jwiegley/org-mode/blob/master/lisp/ox-html.el#L1826</a>
+</p>
+
+<p>
+</p><section id="abstract" class="introductory"><h2>Abstract</h2>
 This [WIP] book aims to be a reference for implementing modern cost
 effective enterprise grade computer infrastructure, with emphasis on
 reproducibility and determinisim.
-</p>
+</section><nav id="toc"><h2 class="introductory" id="table-of-contents">Table of Contents</h2><ol class="toc"><li class="tocline"><a class="tocxref" href="#abstract">Abstract</a></li><li class="tocline"><a class="tocxref" href="#org4e8826e"><bdi class="secno">1. </bdi><span class="section-number-2">1.</span> Introduction</a></li><li class="tocline"><a class="tocxref" href="#org7e164db"><bdi class="secno">2. </bdi><span class="section-number-2">2.</span> Nix</a></li><li class="tocline"><a class="tocxref" href="#orge0d1d6c"><bdi class="secno">3. </bdi><span class="section-number-2">3.</span> Scheduling and timers</a></li><li class="tocline"><a class="tocxref" href="#org039609d"><bdi class="secno">4. </bdi><span class="section-number-2">4.</span> Security and secrets management</a></li><li class="tocline"><a class="tocxref" href="#org03e4aca"><bdi class="secno">5. </bdi><span class="section-number-2">5.</span> Privacy</a></li><li class="tocline"><a class="tocxref" href="#org6f65e90"><bdi class="secno">6. </bdi><span class="section-number-2">6.</span> Domain name servers (DNS)</a></li><li class="tocline"><a class="tocxref" href="#org31e7870"><bdi class="secno">7. </bdi><span class="section-number-2">7.</span> Dynamic Host Configuration Protocol (DHCP)</a></li><li class="tocline"><a class="tocxref" href="#org9973430"><bdi class="secno">8. </bdi><span class="section-number-2">8.</span> Connectivity</a></li><li class="tocline"><a class="tocxref" href="#orgba9fb46"><bdi class="secno">9. </bdi><span class="section-number-2">9.</span> Compartmentalization</a></li><li class="tocline"><a class="tocxref" href="#org42ccf0b"><bdi class="secno">10. </bdi><span class="section-number-2">10.</span> Compliance and Standards</a></li></ol></nav>
+<p></p>
+<section id="outline-container-org4e8826e" class="outline-2"><div class="header-wrapper"><h2 id="org4e8826e"><bdi class="secno">1. </bdi><span class="section-number-2">1.</span> Introduction</h2><a class="self-link" href="#org4e8826e" aria-label="Permalink for Section 1."></a></div>
+
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>Software and timelessness</li>
+</ul>
 </div>
-<div id="outline-container-org038e4a0" class="outline-3">
-<h3 id="org038e4a0"><span class="section-number-3">1.1.</span> Infrastructure taxonomy</h3>
+<div id="outline-container-orge37e135" class="outline-3">
+<div class="header-wrapper"><h2 id="orge37e135"><span class="section-number-3">1.1.</span> How does the internet work?</h2><a class="self-link" href="#orge37e135" aria-label="Permalink for this Section"></a></div>
 <div class="outline-text-3" id="text-1-1">
-</div>
-<div id="outline-container-orga226e5a" class="outline-4">
-<h4 id="orga226e5a"><span class="section-number-4">1.1.1.</span> Divergent</h4>
-</div>
-<div id="outline-container-org2b86d76" class="outline-4">
-<h4 id="org2b86d76"><span class="section-number-4">1.1.2.</span> Convergent</h4>
-</div>
-<div id="outline-container-org4f3924b" class="outline-4">
-<h4 id="org4f3924b"><span class="section-number-4">1.1.3.</span> Congruent</h4>
+<ul class="org-ul">
+<li>IETF</li>
+<li>IANA</li>
+<li>ICANN</li>
+</ul>
 </div>
 </div>
+<div id="outline-container-org63e0f74" class="outline-3">
+<div class="header-wrapper"><h2 id="org63e0f74"><span class="section-number-3">1.2.</span> Infrastructure taxonomy</h2><a class="self-link" href="#org63e0f74" aria-label="Permalink for this Section"></a></div>
+<div class="outline-text-3" id="text-1-2">
 </div>
-<div id="outline-container-org4dffc71" class="outline-2">
-<h2 id="org4dffc71"><span class="section-number-2">2.</span> Security and secrets management</h2>
-<div class="outline-text-2" id="text-2">
-</div>
-<div id="outline-container-org69d44f9" class="outline-3">
-<h3 id="org69d44f9"><span class="section-number-3">2.1.</span> Hardware security modules</h3>
-</div>
-<div id="outline-container-org2a6f50e" class="outline-3">
-<h3 id="org2a6f50e"><span class="section-number-3">2.2.</span> SOPS</h3>
-</div>
-</div>
-<div id="outline-container-org82e46d7" class="outline-2">
-<h2 id="org82e46d7"><span class="section-number-2">3.</span> Domain name servers (DNS)</h2>
+<div id="outline-container-org27c05a2" class="outline-4">
+<div class="header-wrapper"><h2 id="org27c05a2"><span class="section-number-4">1.2.1.</span> Divergent</h2><a class="self-link" href="#org27c05a2" aria-label="Permalink for this Section"></a></div>
 </div>
 
-<div id="outline-container-org7c17385" class="outline-2">
-<h2 id="org7c17385"><span class="section-number-2">4.</span> Dynamic Host Configuration Protocol (DHCP)</h2>
+<div id="outline-container-orgcf349a2" class="outline-4">
+<div class="header-wrapper"><h2 id="orgcf349a2"><span class="section-number-4">1.2.2.</span> Convergent</h2><a class="self-link" href="#orgcf349a2" aria-label="Permalink for this Section"></a></div>
+</div>
+
+<div id="outline-container-org28a6a48" class="outline-4">
+<div class="header-wrapper"><h2 id="org28a6a48"><span class="section-number-4">1.2.3.</span> Congruent</h2><a class="self-link" href="#org28a6a48" aria-label="Permalink for this Section"></a></div>
 </div>
 </div>
-</body>
-</html>
+</section>
+<section id="outline-container-org7e164db" class="outline-2"><div class="header-wrapper"><h2 id="org7e164db"><bdi class="secno">2. </bdi><span class="section-number-2">2.</span> Nix</h2><a class="self-link" href="#org7e164db" aria-label="Permalink for Section 2."></a></div>
+
+<div class="outline-text-2" id="text-2">
+<p>
+</p><div class="note" id="issue-container-generatedID"><div role="heading" class="ednote-title marker" id="h-ednote" aria-level="3"><span>Editor's note</span><span class="issue-label">: This section will be reformatted</span></div><p class=""> We are aware that the formatting of this section isn't great. We will fix it in the next revision!</p></div>
+<p></p>
+</div>
+<div id="outline-container-orgf7ceb42" class="outline-3">
+<div class="header-wrapper"><h2 id="orgf7ceb42"><span class="section-number-3">2.1.</span> Debugging</h2><a class="self-link" href="#orgf7ceb42" aria-label="Permalink for this Section"></a></div>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Naively, builtins.break is not very easy to use. Because of laziness,
+writing break a often will not expose the value of a, or any of the
+things you might want to look at that are in scope where you put the
+call to break. This happens because break a gets triggered only when
+when it actually needs to be evaluated, which often times is inside
+the body of some function, not in the scope you actually wanted to
+inspect. Recently, I have discovered a trick that makes debugging so
+much nicer:
+</p>
+
+<p>
+Instead of using
+</p>
+
+<p>
+break &lt;expr&gt;
+</p>
+
+<p>
+use
+</p>
+
+<p>
+(_: break _) &lt;expr&gt;
+</p>
+
+<p>
+(the _ is an arbitrary argument name and can be replaced with whatever
+you like)
+</p>
+
+<p>
+Because Nix uses closures, this little lambda exposes everything that
+was in scope in the place it was defined, no matter where it’s being
+evaluated, and _ will give you the value of &lt;expr&gt;.
+</p>
+
+<p>
+{ inputs.nixpkgs.url = “github:NixOS/nixpkgs/nixpkgs-unstable”;
+</p>
+
+<p>
+outputs = { nixpkgs, … }@inputs:
+  with builtins;
+  let pkgs = nixpkgs.legacyPackages.x86<sub>64</sub>-linux; in
+  { packages.x86<sub>64</sub>-linux.a =
+      let a = 1; in
+      pkgs.writeText “foo” (break “bar”);
+</p>
+
+<p>
+      packages.x86<sub>64</sub>-linux.b =
+        let a = 1; in
+        pkgs.writeText “foo” ((_: break _) “bar”);
+    };
+}
+</p>
+</div>
+</div>
+<div id="outline-container-org8914bd6" class="outline-3">
+<div class="header-wrapper"><h2 id="org8914bd6"><span class="section-number-3">2.2.</span> Module system</h2><a class="self-link" href="#org8914bd6" aria-label="Permalink for this Section"></a></div>
+<div class="outline-text-3" id="text-2-2">
+<p>
+Passing individual arguments to modules is generally an anti-pattern
+because those arguments can’t be overridden anymore and aren’t type
+checked.
+</p>
+
+<p>
+Instead it’s better for modules to expose options to customise their
+behavior, e.g.
+</p>
+
+<p>
+{
+  imports = [ ./myModule.nix ];
+</p>
+
+<p>
+  myModule.argA = 1;
+  myModule.argB = 2;
+}
+</p>
+
+<p>
+where in module.nix you have
+</p>
+
+<p>
+{ lib, config, … }: {
+  options.myModule.argA = lib.mkOption {
+    type = lib.types.int;
+  };
+  options.myModule.argB = lib.mkOption {
+    type = lib.types.int;
+  };
+</p>
+
+<p>
+  config = {
+    environment.etc.a.text = toString config.myModule.argA;
+    environment.etc.b.text = toString config.myModule.argB;
+  };
+}
+</p>
+</div>
+</div>
+<div id="outline-container-orga91d081" class="outline-3">
+<div class="header-wrapper"><h2 id="orga91d081"><span class="section-number-3">2.3.</span> Tutorials</h2><a class="self-link" href="#orga91d081" aria-label="Permalink for this Section"></a></div>
+<div class="outline-text-3" id="text-2-3">
+<ul class="org-ul">
+<li><a href="https://nix.dev/tutorials/nixos/nixos-configuration-on-vm">https://nix.dev/tutorials/nixos/nixos-configuration-on-vm</a></li>
+<li><a href="https://github.com/spacekookie/learning-nix">https://github.com/spacekookie/learning-nix</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org942fc6c" class="outline-3">
+<div class="header-wrapper"><h2 id="org942fc6c"><span class="section-number-3">2.4.</span> Software</h2><a class="self-link" href="#org942fc6c" aria-label="Permalink for this Section"></a></div>
+<div class="outline-text-3" id="text-2-4">
+<ul class="org-ul">
+<li><a href="https://github.com/serokell/deploy-rs">https://github.com/serokell/deploy-rs</a></li>
+<li><a href="https://github.com/nix-community/nix-melt">Nix flake lock file viewer</a></li>
+<li><a href="https://github.com/nix-community/nurl">Generate Nix fetcher calls from repository</a></li>
+<li><a href="https://github.com/NixOS/nixos-hardware">NixOS profiles to optimize settings for different hardware</a></li>
+<li></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="outline-container-orge0d1d6c" class="outline-2"><div class="header-wrapper"><h2 id="orge0d1d6c"><bdi class="secno">3. </bdi><span class="section-number-2">3.</span> Scheduling and timers</h2><a class="self-link" href="#orge0d1d6c" aria-label="Permalink for Section 3."></a></div>
+
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>systemd timers</li>
+<li>cron</li>
+</ul>
+</div>
+</section>
+<section id="outline-container-org039609d" class="outline-2"><div class="header-wrapper"><h2 id="org039609d"><bdi class="secno">4. </bdi><span class="section-number-2">4.</span> Security and secrets management</h2><a class="self-link" href="#org039609d" aria-label="Permalink for Section 4."></a></div>
+
+<div class="outline-text-2" id="text-4">
+<p>
+Files are the safest method of delivering a secret to a
+process. Almost every other method (cli args, env vars, …) will leak
+the key somewhere easily read by processes that shouldn’t have access
+to it.
+</p>
+
+<p>
+systemd’s LoadCredential
+<a href="https://systemd.io/CREDENTIALS/">https://systemd.io/CREDENTIALS/</a>
+<a href="https://systemd.io/HOME_DIRECTORY/">https://systemd.io/HOME_DIRECTORY/</a>
+</p>
+
+<p>
+TODO: need to check creds for user units
+</p>
+
+<p>
+IDEA: It kind of needs a good
+nix module to help deploy the encrypted keys to the host. Wouldn’t be
+very complicated, but someone needs to work out a nice workflow and
+publish something to make it easy to use.
+</p>
+
+<ul class="org-ul">
+<li>secrets added to the repo in plain text</li>
+<li>secrets not commited to the repo but fetched from a local or remote
+store during build time making them globally readable in nix-store</li>
+<li>fetched from a private store using systemd service</li>
+<li><p>
+secrets are encrypted and store in the repo
+</p>
+
+<p>
+<a href="https://github.com/ryantm/agenix">https://github.com/ryantm/agenix</a>
+</p></li>
+</ul>
+</div>
+<div id="outline-container-orgd99a535" class="outline-3">
+<div class="header-wrapper"><h2 id="orgd99a535"><span class="section-number-3">4.1.</span> Hardware security modules</h2><a class="self-link" href="#orgd99a535" aria-label="Permalink for this Section"></a></div>
+</div>
+<div id="outline-container-org97cf238" class="outline-3">
+<div class="header-wrapper"><h2 id="org97cf238"><span class="section-number-3">4.2.</span> Secure shell</h2><a class="self-link" href="#org97cf238" aria-label="Permalink for this Section"></a></div>
+<div class="outline-text-3" id="text-4-2">
+<p>
+ssh-keyscan is a utility for gathering the public SSH host keys of a
+number of hosts.  It was designed to aid in building and
+verifying ssh<sub>known</sub><sub>hosts</sub> files, the format of which is
+documented in sshd(8).  ssh-keyscan provides a minimal
+interface suitable for use by shell and perl scripts.
+</p>
+</div>
+</div>
+<div id="outline-container-org001b55d" class="outline-3">
+<div class="header-wrapper"><h2 id="org001b55d"><span class="section-number-3">4.3.</span> SOPS</h2><a class="self-link" href="#org001b55d" aria-label="Permalink for this Section"></a></div>
+</div>
+<div id="outline-container-org6aa5042" class="outline-3">
+<div class="header-wrapper"><h2 id="org6aa5042"><span class="section-number-3">4.4.</span> Clevis and Tang</h2><a class="self-link" href="#org6aa5042" aria-label="Permalink for this Section"></a></div>
+<div class="outline-text-3" id="text-4-4">
+<p>
+<a href="https://wiki.archlinux.org/title/Clevis">https://wiki.archlinux.org/title/Clevis</a>
+</p>
+</div>
+</div>
+<div id="outline-container-orgebcf974" class="outline-3">
+<div class="header-wrapper"><h2 id="orgebcf974"><span class="section-number-3">4.5.</span> Shamir’s secret sharing</h2><a class="self-link" href="#orgebcf974" aria-label="Permalink for this Section"></a></div>
+</div>
+<div id="outline-container-orga5823d5" class="outline-3">
+<div class="header-wrapper"><h2 id="orga5823d5"><span class="section-number-3">4.6.</span> Public key infrastructure</h2><a class="self-link" href="#orga5823d5" aria-label="Permalink for this Section"></a></div>
+<div class="outline-text-3" id="text-4-6">
+<p>
+Resource Public Key Infrastructure
+<a href="https://en.wikipedia.org/wiki/Resource_Public_Key_Infrastructure">https://en.wikipedia.org/wiki/Resource_Public_Key_Infrastructure</a>
+</p>
+</div>
+</div>
+</section>
+<section id="outline-container-org03e4aca" class="outline-2"><div class="header-wrapper"><h2 id="org03e4aca"><bdi class="secno">5. </bdi><span class="section-number-2">5.</span> Privacy</h2><a class="self-link" href="#org03e4aca" aria-label="Permalink for Section 5."></a></div>
+
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-org87242e3" class="outline-3">
+<div class="header-wrapper"><h2 id="org87242e3"><span class="section-number-3">5.1.</span> Homomorphic encryption</h2><a class="self-link" href="#org87242e3" aria-label="Permalink for this Section"></a></div>
+<div class="outline-text-3" id="text-5-1">
+<p>
+A cryptographic method enables computation on encrypted data without
+the need to decrypt or reveal the raw data.  Brakerski-Fan-Vercauteren
+(BFV) HE scheme (<a href="https://eprint.iacr.org/2012/078">https://eprint.iacr.org/2012/078</a>,
+<a href="https://eprint.iacr.org/2012/144">https://eprint.iacr.org/2012/144</a>). BFV is based on the ring learning
+with errors (RLWE) hardness problem, which is quantum resistant.
+<a href="https://security.apple.com/blog/imessage-pq3/">https://security.apple.com/blog/imessage-pq3/</a>
+<a href="https://security.apple.com/">https://security.apple.com/</a>
+<a href="https://eprint.iacr.org/2012/144.pdf">https://eprint.iacr.org/2012/144.pdf</a>
+</p>
+</div>
+</div>
+</section>
+<section id="outline-container-org6f65e90" class="outline-2"><div class="header-wrapper"><h2 id="org6f65e90"><bdi class="secno">6. </bdi><span class="section-number-2">6.</span> Domain name servers (DNS)</h2><a class="self-link" href="#org6f65e90" aria-label="Permalink for Section 6."></a></div>
+
+<div class="outline-text-2" id="text-6">
+</div>
+<div id="outline-container-orgf16aaef" class="outline-3">
+<div class="header-wrapper"><h2 id="orgf16aaef"><span class="section-number-3">6.1.</span> The Registrant/Registrar/Registry model</h2><a class="self-link" href="#orgf16aaef" aria-label="Permalink for this Section"></a></div>
+</div>
+<div id="outline-container-org1177f2a" class="outline-3">
+<div class="header-wrapper"><h2 id="org1177f2a"><span class="section-number-3">6.2.</span> <span class="todo TODO">TODO</span> Importance of DNSSEC</h2><a class="self-link" href="#org1177f2a" aria-label="Permalink for this Section"></a></div>
+<div class="outline-text-3" id="text-6-2">
+<ul class="org-ul">
+<li>dnsec sign your zone with signature with a TTL</li>
+<li>keys and propegating keys to parent zone</li>
+<li>Most softwares handle signiature updates</li>
+<li>DNSSE maintenance keys is the problem due to multiple parties, you
+the owner of the zone and zone operator webhosting and the registry
+(no contractal relationship between registry and the zone owner)
+Standards introduced
+<ul class="org-ul">
+<li>RFC 7433 autmating DNSSES delegation trust maintennance</li>
+<li>RFC 8078 Managing DS Records from the parent via CDS/CDNSKEY</li>
+<li>draft ietf regext dnsoperator to rrr protocol thir party DNS
+operator to registars/registries protocol
+<a href="https://datatracker.ietf.org/doc/draft-ietf-regext-dnsoperator-to-rrr-protocol/">https://datatracker.ietf.org/doc/draft-ietf-regext-dnsoperator-to-rrr-protocol/</a>
+<a href="https://datatracker.ietf.org/wg/regext/about/">https://datatracker.ietf.org/wg/regext/about/</a></li>
+</ul></li>
+</ul>
+</div>
+<div id="outline-container-orgc418468" class="outline-4">
+<div class="header-wrapper"><h2 id="orgc418468"><span class="section-number-4">6.2.1.</span> <span class="todo TODO">TODO</span> insert standard to the rescue image in notes</h2><a class="self-link" href="#orgc418468" aria-label="Permalink for this Section"></a></div>
+<div class="outline-text-4" id="text-6-2-1">
+<p>
+<a href="https://archive.fosdem.org/2019/schedule/event/dns_dnssec_security_without_maintenance/attachments/slides/3141/export/events/attachments/dns_dnssec_security_without_maintenance/slides/3141/DNSSEC_20190203_PS_FOSDEM_automated_key_management.pdf">https://archive.fosdem.org/2019/schedule/event/dns_dnssec_security_without_maintenance/attachments/slides/3141/export/events/attachments/dns_dnssec_security_without_maintenance/slides/3141/DNSSEC_20190203_PS_FOSDEM_automated_key_management.pdf</a>
+</p>
+
+
+<p>
+FYI
+IDN Supported ??
+</p>
+
+<p>
+DNSSEC supported
+</p>
+
+
+<p>
+How registries operate since the first key is not signed step number
+3 in figure (check for CDS for domain) in the case is done (.cz) with
+TCP request for one week and if its there then its good enough.
+</p>
+
+
+
+
+
+
+<p>
+<a href="https://fred.nic.cz/en/try-out/">https://fred.nic.cz/en/try-out/</a>
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orge76738a" class="outline-3">
+<div class="header-wrapper"><h2 id="orge76738a"><span class="section-number-3">6.3.</span> <span class="todo TODO">TODO</span> <a href="https://datatracker.ietf.org/doc/html/rfc1034">https://datatracker.ietf.org/doc/html/rfc1034</a></h2><a class="self-link" href="#orge76738a" aria-label="Permalink for this Section"></a></div>
+<div class="outline-text-3" id="text-6-3">
+<p>
+Using DNS SSHFP record to provide out-of-band verification by SSHFP
+DNS record lookup C.f.<a href="eww:https://datatracker.ietf.org/doc/html/rfc4255">RFC 4255</a>.
+</p>
+
+<p>
+Resource record types A, NS, CNAME, SOA, PTR, HINFO,
+MINFO, MX, TXT, RP, AFSDB, RT, KEY, AAAA, LOC, SRV, NAPTR, KX, CERT,
+DNAME, APL, DS, SSHFP, IPSECKEY, RRSIG, NSEC, DNSKEY, DHCID, NSEC3,
+NSEC3PARAM, TLSA, SMIMEA, CDS, CDNSKEY, OPENPGPKEY, CSYNC, ZONEMD,
+SVCB, HTTPS, SPF, NID, L32, L64, LP, EUI48, EUI64, URI, CAA, WALLET
+</p>
+</div>
+</div>
+</section>
+<section id="outline-container-org31e7870" class="outline-2"><div class="header-wrapper"><h2 id="org31e7870"><bdi class="secno">7. </bdi><span class="section-number-2">7.</span> Dynamic Host Configuration Protocol (DHCP)</h2><a class="self-link" href="#org31e7870" aria-label="Permalink for Section 7."></a></div>
+
+</section>
+
+
+<section id="outline-container-org9973430" class="outline-2"><div class="header-wrapper"><h2 id="org9973430"><bdi class="secno">8. </bdi><span class="section-number-2">8.</span> Connectivity</h2><a class="self-link" href="#org9973430" aria-label="Permalink for Section 8."></a></div>
+
+<div class="outline-text-2" id="text-8">
+</div>
+<div id="outline-container-org48bb2b5" class="outline-3">
+<div class="header-wrapper"><h2 id="org48bb2b5"><span class="section-number-3">8.1.</span> Introduction</h2><a class="self-link" href="#org48bb2b5" aria-label="Permalink for this Section"></a></div>
+<div class="outline-text-3" id="text-8-1">
+</div>
+<div id="outline-container-org5bd763d" class="outline-4">
+<div class="header-wrapper"><h2 id="org5bd763d"><span class="section-number-4">8.1.1.</span> Open Systems Interconnection model</h2><a class="self-link" href="#org5bd763d" aria-label="Permalink for this Section"></a></div>
+</div>
+</div>
+<div id="outline-container-org221643f" class="outline-3">
+<div class="header-wrapper"><h2 id="org221643f"><span class="section-number-3">8.2.</span> ipsec</h2><a class="self-link" href="#org221643f" aria-label="Permalink for this Section"></a></div>
+</div>
+
+<div id="outline-container-orgae1252a" class="outline-3">
+<div class="header-wrapper"><h2 id="orgae1252a"><span class="section-number-3">8.3.</span> wireguard</h2><a class="self-link" href="#orgae1252a" aria-label="Permalink for this Section"></a></div>
+</div>
+</section>
+<section id="outline-container-orgba9fb46" class="outline-2"><div class="header-wrapper"><h2 id="orgba9fb46"><bdi class="secno">9. </bdi><span class="section-number-2">9.</span> Compartmentalization</h2><a class="self-link" href="#orgba9fb46" aria-label="Permalink for Section 9."></a></div>
+
+<div class="outline-text-2" id="text-9">
+</div>
+<div id="outline-container-org9e7490d" class="outline-3">
+<div class="header-wrapper"><h2 id="org9e7490d"><span class="section-number-3">9.1.</span> Containerization</h2><a class="self-link" href="#org9e7490d" aria-label="Permalink for this Section"></a></div>
+</div>
+
+<div id="outline-container-orgb141cec" class="outline-3">
+<div class="header-wrapper"><h2 id="orgb141cec"><span class="section-number-3">9.2.</span> Virtulization</h2><a class="self-link" href="#orgb141cec" aria-label="Permalink for this Section"></a></div>
+</div>
+</section>
+<section id="outline-container-org42ccf0b" class="outline-2"><div class="header-wrapper"><h2 id="org42ccf0b"><bdi class="secno">10. </bdi><span class="section-number-2">10.</span> Compliance and Standards</h2><a class="self-link" href="#org42ccf0b" aria-label="Permalink for Section 10."></a></div>
+
+<div class="outline-text-2" id="text-10">
+<p>
+Automatic update of W3C, WICG, WHATWG, WG21, IETF, and Unicode references. 
+Compliance, Auditing, Reliability
+</p>
+
+
+<p>
+Why do we depend on $X?
+Why did build of $Y fail?
+</p>
+
+<p>
+nix why-depends /run/current-system /nix/store/fdj4b4jp0p2b45djgwj2gwv37va67zrz-perl-5.34.1/bin/perl
+/nix/store/0g0k2j6k0jnpyc5m7qx2vra0vhkm50wk-nixos-system-hyperion-22.11pre-git
+└───/nix/store/30ljg6zlkp9gkvqjnd4b2s1p2z5kkzcn-perl-5.34.1-env
+    └───/nix/store/fdj4b4jp0p2b45djgwj2gwv37va67zrz-perl-5.34.1
+</p>
+</div>
+<div id="outline-container-org23abb42" class="outline-3">
+<div class="header-wrapper"><h2 id="org23abb42"><span class="section-number-3">10.1.</span> SOC</h2><a class="self-link" href="#org23abb42" aria-label="Permalink for this Section"></a></div>
+</div>
+<div id="outline-container-org71b034b" class="outline-3">
+<div class="header-wrapper"><h2 id="org71b034b"><span class="section-number-3">10.2.</span> ISO</h2><a class="self-link" href="#org71b034b" aria-label="Permalink for this Section"></a></div>
+</div>
+<div id="outline-container-org4a9d23c" class="outline-3">
+<div class="header-wrapper"><h2 id="org4a9d23c"><span class="section-number-3">10.3.</span> FIPS</h2><a class="self-link" href="#org4a9d23c" aria-label="Permalink for this Section"></a></div>
+</div>
+<div id="outline-container-org49d884a" class="outline-3">
+<div class="header-wrapper"><h2 id="org49d884a"><span class="section-number-3">10.4.</span> FAPI</h2><a class="self-link" href="#org49d884a" aria-label="Permalink for this Section"></a></div>
+</div>
+</section>
+<div id="postamble" class="status">
+<p class="date">Created: 2024-08-02 Fri 22:18</p>
+</div>
+
+
+<p role="navigation" id="back-to-top">
+    <a href="#title"><abbr title="Back to Top">↑</abbr></a>
+  </p><script id="respec-dfn-panel">(() => {
+// @ts-check
+if (document.respec) {
+  document.respec.ready.then(setupPanel);
+} else {
+  setupPanel();
+}
+
+function setupPanel() {
+  const listener = panelListener();
+  document.body.addEventListener("keydown", listener);
+  document.body.addEventListener("click", listener);
+}
+
+function panelListener() {
+  /** @type {HTMLElement} */
+  let panel = null;
+  return event => {
+    const { target, type } = event;
+
+    if (!(target instanceof HTMLElement)) return;
+
+    // For keys, we only care about Enter key to activate the panel
+    // otherwise it's activated via a click.
+    if (type === "keydown" && event.key !== "Enter") return;
+
+    const action = deriveAction(event);
+
+    switch (action) {
+      case "show": {
+        hidePanel(panel);
+        /** @type {HTMLElement} */
+        const dfn = target.closest("dfn, .index-term");
+        panel = document.getElementById(`dfn-panel-for-${dfn.id}`);
+        const coords = deriveCoordinates(event);
+        displayPanel(dfn, panel, coords);
+        break;
+      }
+      case "dock": {
+        panel.style.left = null;
+        panel.style.top = null;
+        panel.classList.add("docked");
+        break;
+      }
+      case "hide": {
+        hidePanel(panel);
+        panel = null;
+        break;
+      }
+    }
+  };
+}
+
+/**
+ * @param {MouseEvent|KeyboardEvent} event
+ */
+function deriveCoordinates(event) {
+  const target = /** @type HTMLElement */ (event.target);
+
+  // We prevent synthetic AT clicks from putting
+  // the dialog in a weird place. The AT events sometimes
+  // lack coordinates, so they have clientX/Y = 0
+  const rect = target.getBoundingClientRect();
+  if (
+    event instanceof MouseEvent &&
+    event.clientX >= rect.left &&
+    event.clientY >= rect.top
+  ) {
+    // The event probably happened inside the bounding rect...
+    return { x: event.clientX, y: event.clientY };
+  }
+
+  // Offset to the middle of the element
+  const x = rect.x + rect.width / 2;
+  // Placed at the bottom of the element
+  const y = rect.y + rect.height;
+  return { x, y };
+}
+
+/**
+ * @param {Event} event
+ */
+function deriveAction(event) {
+  const target = /** @type {HTMLElement} */ (event.target);
+  const hitALink = !!target.closest("a");
+  if (target.closest("dfn:not([data-cite]), .index-term")) {
+    return hitALink ? "none" : "show";
+  }
+  if (target.closest(".dfn-panel")) {
+    if (hitALink) {
+      return target.classList.contains("self-link") ? "hide" : "dock";
+    }
+    const panel = target.closest(".dfn-panel");
+    return panel.classList.contains("docked") ? "hide" : "none";
+  }
+  if (document.querySelector(".dfn-panel:not([hidden])")) {
+    return "hide";
+  }
+  return "none";
+}
+
+/**
+ * @param {HTMLElement} dfn
+ * @param {HTMLElement} panel
+ * @param {{ x: number, y: number }} clickPosition
+ */
+function displayPanel(dfn, panel, { x, y }) {
+  panel.hidden = false;
+  // distance (px) between edge of panel and the pointing triangle (caret)
+  const MARGIN = 20;
+
+  const dfnRects = dfn.getClientRects();
+  // Find the `top` offset when the `dfn` can be spread across multiple lines
+  let closestTop = 0;
+  let minDiff = Infinity;
+  for (const rect of dfnRects) {
+    const { top, bottom } = rect;
+    const diffFromClickY = Math.abs((top + bottom) / 2 - y);
+    if (diffFromClickY < minDiff) {
+      minDiff = diffFromClickY;
+      closestTop = top;
+    }
+  }
+
+  const top = window.scrollY + closestTop + dfnRects[0].height;
+  const left = x - MARGIN;
+  panel.style.left = `${left}px`;
+  panel.style.top = `${top}px`;
+
+  // Find if the panel is flowing out of the window
+  const panelRect = panel.getBoundingClientRect();
+  const SCREEN_WIDTH = Math.min(window.innerWidth, window.screen.width);
+  if (panelRect.right > SCREEN_WIDTH) {
+    const newLeft = Math.max(MARGIN, x + MARGIN - panelRect.width);
+    const newCaretOffset = left - newLeft;
+    panel.style.left = `${newLeft}px`;
+    /** @type {HTMLElement} */
+    const caret = panel.querySelector(".caret");
+    caret.style.left = `${newCaretOffset}px`;
+  }
+
+  // As it's a dialog, we trap focus.
+  // TODO: when <dialog> becomes a implemented, we should really
+  // use that.
+  trapFocus(panel, dfn);
+}
+
+/**
+ * @param {HTMLElement} panel
+ * @param {HTMLElement} dfn
+ * @returns
+ */
+function trapFocus(panel, dfn) {
+  /** @type NodeListOf<HTMLAnchorElement> elements */
+  const anchors = panel.querySelectorAll("a[href]");
+  // No need to trap focus
+  if (!anchors.length) return;
+
+  // Move focus to first anchor element
+  const first = anchors.item(0);
+  first.focus();
+
+  const trapListener = createTrapListener(anchors, panel, dfn);
+  panel.addEventListener("keydown", trapListener);
+
+  // Hiding the panel releases the trap
+  const mo = new MutationObserver(records => {
+    const [record] = records;
+    const target = /** @type HTMLElement */ (record.target);
+    if (target.hidden) {
+      panel.removeEventListener("keydown", trapListener);
+      mo.disconnect();
+    }
+  });
+  mo.observe(panel, { attributes: true, attributeFilter: ["hidden"] });
+}
+
+/**
+ *
+ * @param {NodeListOf<HTMLAnchorElement>} anchors
+ * @param {HTMLElement} panel
+ * @param {HTMLElement} dfn
+ * @returns
+ */
+function createTrapListener(anchors, panel, dfn) {
+  const lastIndex = anchors.length - 1;
+  let currentIndex = 0;
+  return event => {
+    switch (event.key) {
+      // Hitting "Tab" traps us in a nice loop around elements.
+      case "Tab": {
+        event.preventDefault();
+        currentIndex += event.shiftKey ? -1 : +1;
+        if (currentIndex < 0) {
+          currentIndex = lastIndex;
+        } else if (currentIndex > lastIndex) {
+          currentIndex = 0;
+        }
+        anchors.item(currentIndex).focus();
+        break;
+      }
+
+      // Hitting "Enter" on an anchor releases the trap.
+      case "Enter":
+        hidePanel(panel);
+        break;
+
+      // Hitting "Escape" returns focus to dfn.
+      case "Escape":
+        hidePanel(panel);
+        dfn.focus();
+        return;
+    }
+  };
+}
+
+/** @param {HTMLElement} panel */
+function hidePanel(panel) {
+  if (!panel) return;
+  panel.hidden = true;
+  panel.classList.remove("docked");
+}
+})()</script><script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script></body><div style="display: block; opacity: 1; color-scheme: light;"></div></html>

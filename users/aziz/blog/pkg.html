@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-07-28 Sun 19:15 -->
+<!-- 2024-08-02 Fri 15:54 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -267,16 +267,16 @@
 </li>
 <li><a href="#org7449136">Nix</a>
 <ul>
-<li><a href="#org50ebd5d">https://mynixos.com/</a></li>
-<li><a href="#org0699aa3">Finding things in nixpkgs and nixos source code</a></li>
+<li><a href="#org22ae858">https://mynixos.com/</a></li>
+<li><a href="#orgede22e0">Finding things in nixpkgs and nixos source code</a></li>
 <li><a href="#orgfa013d5">Modules</a></li>
 <li><a href="#org2375de7">Darwin</a></li>
 <li><a href="#org2d3528f">callPackage https://summer.nixos.org/blog/callpackage-a-tool-for-the-lazy/</a></li>
 <li><a href="#orgf6037c1"><code>breakpoint</code> provide it as native build input allowing us to intercept the packages</a></li>
 <li><a href="#org399b51f">On nixpkgs repository</a></li>
 <li><a href="#orgb4082fb">Misc</a></li>
-<li><a href="#org22ae858">https://mynixos.com/</a></li>
-<li><a href="#orgede22e0">Finding things in nixpkgs and nixos source code</a></li>
+<li><a href="#orgb7ca214">https://mynixos.com/</a></li>
+<li><a href="#org0b9d3f3">Finding things in nixpkgs and nixos source code</a></li>
 <li><a href="#org360a8ab"><span class="todo TODO">TODO</span> nix debugging unsafeGetAttrPos</a></li>
 <li><a href="#org8b93759">Other people configs</a>
 <ul>
@@ -320,6 +320,7 @@
 <li><a href="#org840b033"><span class="todo TODO">TODO</span> &lt;[emacs-rocks]&gt; - &lt;www-url "https://emacsrocks.com/"&gt;</a></li>
 </ul>
 </li>
+<li><a href="#orgb60c08f">HyperLogLog</a></li>
 <li><a href="#orge6e088b">WHEN DO INSIGHTS COME!</a>
 <ul>
 <li><a href="#org7fd17a1">A FLY IN THE COORDINATE SYSTEM</a></li>
@@ -547,12 +548,12 @@ default but it support lexical scoping.
 <a href="https://talks.nixcon.org/nixcon-2023/talk/BAVND7/">https://talks.nixcon.org/nixcon-2023/talk/BAVND7/</a>
 </p>
 </div>
-<div id="outline-container-org50ebd5d" class="outline-3">
-<h3 id="org50ebd5d"><a href="https://mynixos.com/">https://mynixos.com/</a></h3>
+<div id="outline-container-org22ae858" class="outline-3">
+<h3 id="org22ae858"><a href="https://mynixos.com/">https://mynixos.com/</a></h3>
 </div>
-<div id="outline-container-org0699aa3" class="outline-3">
-<h3 id="org0699aa3"><a href="https://talks.nixcon.org/nixcon-2023/talk/BAVND7/">Finding things in nixpkgs and nixos source code</a></h3>
-<div class="outline-text-3" id="text-org0699aa3">
+<div id="outline-container-orgede22e0" class="outline-3">
+<h3 id="orgede22e0"><a href="https://talks.nixcon.org/nixcon-2023/talk/BAVND7/">Finding things in nixpkgs and nixos source code</a></h3>
+<div class="outline-text-3" id="text-orgede22e0">
 <p>
 <a href="https://www.youtube.com/watch?v=mVAzsFfoT5c&amp;ab_channel=NixCon">https://www.youtube.com/watch?v=mVAzsFfoT5c&amp;ab_channel=NixCon</a>
 &lt;[Recording]&gt;
@@ -655,12 +656,12 @@ update
 </p>
 </div>
 </div>
-<div id="outline-container-org22ae858" class="outline-3">
-<h3 id="org22ae858"><a href="https://mynixos.com/">https://mynixos.com/</a></h3>
+<div id="outline-container-orgb7ca214" class="outline-3">
+<h3 id="orgb7ca214"><a href="https://mynixos.com/">https://mynixos.com/</a></h3>
 </div>
-<div id="outline-container-orgede22e0" class="outline-3">
-<h3 id="orgede22e0"><a href="https://talks.nixcon.org/nixcon-2023/talk/BAVND7/">Finding things in nixpkgs and nixos source code</a></h3>
-<div class="outline-text-3" id="text-orgede22e0">
+<div id="outline-container-org0b9d3f3" class="outline-3">
+<h3 id="org0b9d3f3"><a href="https://talks.nixcon.org/nixcon-2023/talk/BAVND7/">Finding things in nixpkgs and nixos source code</a></h3>
+<div class="outline-text-3" id="text-org0b9d3f3">
 <p>
 <a href="https://www.youtube.com/watch?v=mVAzsFfoT5c&amp;ab_channel=NixCon">https://www.youtube.com/watch?v=mVAzsFfoT5c&amp;ab_channel=NixCon</a>
 &lt;[Recording]&gt;
@@ -836,6 +837,79 @@ are better ways to navigate than line numbers.
 Steve yegge blog post about emacs <a href="https://sites.google.com/site/steveyegge2/effective-emacs?authuser=0">https://sites.google.com/site/steveyegge2/effective-emacs?authuser=0</a>
 </p>
 </div>
+</div>
+</div>
+<div id="outline-container-orgb60c08f" class="outline-2">
+<h2 id="orgb60c08f">HyperLogLog</h2>
+<div class="outline-text-2" id="text-orgb60c08f">
+<p>
+HyperLogLog (HLL) is a probabilistic data structure used for
+estimating the cardinality of large datasets efficiently.  Linear
+Counting, HLL can encounter issues with accuracy when the dataset's
+cardinality is low. The granularity of 2n2n means the relative error
+can be high with small nn. To mitigate this, many implementations use
+a "linear counting" approach for small datasets, typically employing a
+sorted list or hashmap to accurately count elements up to a certain
+threshold (e.g., 50,000 unique elements). Beyond this threshold, the
+counts are transferred to an HLL for estimation, often reusing the
+same memory segment to avoid reallocations.
+</p>
+
+<p>
+HLL++ introduces empirical constants and optimizations to reduce
+relative error, particularly at very low and high cardinalities. These
+improvements, added by Google, enhance the algorithm's accuracy and
+efficiency.
+</p>
+
+<p>
+Memory Efficiency, HLL is compact, typically ranging from a
+few kilobytes to a few hundred kilobytes. When registers are
+compressed, tens of thousands of scorecards can track the runs
+efficiently. In contrast, traditional data structures like hashmaps
+can require significantly more memory. For example, storing 500
+million unique 64-bit integers would require approximately 4GB of
+memory. When dealing with multiple partitions and instances, this can
+quickly escalate to hundreds of gigabytes, whereas HLL sketches
+provide a much more space-efficient solution.
+</p>
+
+<p>
+Performance Considerations, although hashmaps do not allocate all
+memory upfront, their space-performance trade-off results in
+performance costs due to memory reallocations, especially for large
+datasets. HLL, in contrast, has a runtime cost comparable to hashmaps
+or sets but without the memory reallocation overhead. Modern hash
+functions, like MurmurHash, are highly optimized and contribute to
+HLL's efficiency. Additionally, most processors support instructions
+for counting leading or trailing zeros, further enhancing HLL's
+performance.
+</p>
+
+<p>
+Use Cases and Suitability: HLL is most effective for estimating
+cardinality in environments with millions of unique elements spread
+across distributed datasets (e.g., terabytes of data on multiple
+servers). For smaller datasets that fit on a single machine, exact
+counting is typically more efficient. However, at scale, cardinality
+metrics such as distinct session IDs or IP addresses become invaluable
+for reporting, analytics, and forensic investigations.
+</p>
+
+<p>
+Hash Functions: The choice of hash function in HLL is flexible, as
+long as it provides good pseudorandom output and speed. MurmurHash
+with 64 or 128-bit outputs is commonly used.
+</p>
+
+<p>
+Merging HLLs: HLLs merge by taking the maximum value from each
+respective values. For example, merging two sketches with
+scorecards. This merging process is efficient due to the commutative
+and associative properties of the maximum operation, allowing data
+from different sources to be combined seamlessly.
+<a href="https://oertl.github.io/hyperloglog-sketch-estimation-paper/paper/paper.pdf">https://oertl.github.io/hyperloglog-sketch-estimation-paper/paper/paper.pdf</a>
+</p>
 </div>
 </div>
 <div id="outline-container-orge6e088b" class="outline-2">
