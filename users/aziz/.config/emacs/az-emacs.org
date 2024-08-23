@@ -838,6 +838,22 @@ I use hyperbole to control multiple aspects of emacs
 Org is the main component of knowledge management
 #+begin_src emacs-lisp :tangle "init.el"
   ;;;; Org-mode
+  (setq org-drill-template
+     "* %^{Topic|Noun|Verb|Adjective|Phrase}                                    :drill:
+      :PROPERTIES:
+      :DRILL_CARD_TYPE: %^{Card Type|twosided|hide1cloze|multisided}
+      :END:
+
+       ,**** Russian
+       %^{Russian word}
+       ,**** English
+       %^{English translation}
+
+       ,**** Example sentence (optional)
+       %^{Russian example sentence}
+       %^{English example sentence}
+       ")
+
   (use-package org
     :init
     ;;;; org babel support for nix
@@ -869,7 +885,11 @@ Org is the main component of knowledge management
              "* TODO [[%:link][%:description]]\n\n %i" :immediate-finish t)
             ("u" "URL capture from Safari" entry (
                                                   file+olp+datetree ,(concat org-directory "/links.org"))
-             "* %i    :safari:url:\n%U\n\n")))
+             "* %i    :safari:url:\n%U\n\n")
+  	  ("d" "Drill Entry" entry
+             (file+headline ,(concat org-directory "inbox.org") "Drill cards")
+             ,org-drill-template)
+  	  ))
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((nix . t)
