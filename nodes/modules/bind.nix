@@ -47,6 +47,12 @@ let
     @       IN      A       203.0.113.10
     www     IN      A       203.0.113.10
     t1      IN      A       95.165.26.135
+    sig1._domainkey IN CNAME sig1.dkim.aziz.fyi.at.icloudmailadmin.com.
+    @       IN      MX      mx01.mail.icloud.com.
+    @       IN      MX      mx02.mail.icloud.com.
+    @       IN      TXT     apple-domain=ScWBcm5aHDykHIeV
+    @       IN      TXT     "v=spf1 include:icloud.com ~all"
+    _github-pages-challenge-abdalazizrashid. IN   TXT  1bff295337e8c74175c6a32014bcd9
   '';
 
 in

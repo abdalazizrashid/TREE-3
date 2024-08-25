@@ -2,44 +2,28 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, ... }:
 
 {
   imports =
     [
-    (inputs.sops-nix + "/modules/sops")
+    "${(import ../../nix/sources.nix).sops-nix}/modules/sops"
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ../modules/bind.nix
+    #../modules/bind.nix
     ../modules/knot-dns.nix
     #../modules/kea.nix
     #./tailscale.nix
     #./acme.nix
     #./gnome.nix
     #./misc.nix
-    ./probabilistic.ru.nix
     ];
-
-    sops.defaultSopsFile = ./secrets/default.yaml;
-    sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-
-    programs.nix-ld.enable = true;
-
-    nix.settings = {
-      experimental-features = [
-        "ca-derivations"
-        "cgroups"
-        "flakes"
-        "impure-derivations"
-        "nix-command"
-      ];
-    };
 
     # Bootloader.
     boot.loader.systemd-boot.enable = true;
     boot.loader.efi.canTouchEfiVariables = true;
 
-    networking.hostName = "d1"; # Define your hostname.
+    networking.hostName = "devbox"; # Define your hostname.
     # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
     # Configure network proxy if necessary
@@ -141,36 +125,12 @@
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICX8KUmbAs2AcWar9cji61/+6R8m4aqoHaTKW1kcqg9D aziz@w375262.staff.corp.local"
       ];
     };
+    users.users.serge = {
+      isNormalUser = true;
+      openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM8oas+5PADHvsYSEYq2Dy9jPHe6KOeL2q3KVr6gwXU8 someone/prob solutions" ];
+    };
     # Install firefox.
     programs.firefox.enable = true;
-    programs.neovim = {
-        enable = true;
-        defaultEditor = true;
-        configure = {
-            customRC = ''
-                :set smartindent
-                :set expandtab
-                :set tabstop=4
-                :set shiftwidth=4
-                :set numberwidth=4
-                :set number
-                '';
-        };
-    };
-    programs.tmux = {
-        enable = true;
-        clock24 = true;
-        escapeTime = 100;
-        keyMode = "vi";
-        newSession = true;
-        plugins = with pkgs.tmuxPlugins; [
-            sensible
-            pain-control
-            gruvbox
-        ];
-    };
-    programs.mosh.enable = true;
-    programs.mosh.openFirewall = true;
 
     # Allow unfree packages
     nixpkgs.config.allowUnfree = true;
@@ -185,29 +145,13 @@
       headscale
       git
       nix-output-monitor
-      npins
-      silver-searcher
-      fd
-      nixfmt-rfc-style
 
       dnsutils
-      nmap
 
     ] ++ [
       config.services.headscale.package 
     ] ++ [ pkgs.dnsutils ];
     nix.trustedUsers = [ "root" "@wheel" ];
-
-    systemd.network.enable = true;
-    services.resolved.enable = false; # FIXME
-
-    # These have been handled by networkmanager so far, let's not touch them yet
-    systemd.network.networks."20-unmanaged" = {
-      matchConfig.Name = [ "enp6s0" "enp4s0" ];
-      linkConfig.Unmanaged = true;
-    };
-    systemd.network.wait-online.enable = false; # Enable when migrating from NM
-
     # # Activation script to set permissions and ownership
     # system.activationScripts.nixosEditorsPermissions = ''
     #   # Ensure the /etc/nixos directory and its files have the correct permissions
@@ -226,7 +170,13 @@
 
       # List services that you want to enable:
 
-      # FIXME: enable; also use nftables
+      # Enable the OpenSSH daemon.
+      # services.openssh.enable = true;
+
+      # Open ports in the firewall.
+      # networking.firewall.allowedTCPPorts = [ ... ];
+      # networking.firewall.allowedUDPPorts = [ ... ];
+      # Or disable the firewall altogether.
       networking.firewall.enable = false;
 
       # This value determines the NixOS release from which the default
