@@ -571,6 +571,22 @@
                                              (list org-directory))))))
 
 ;;;; Org-mode
+(setq org-drill-template
+   "* %^{Topic|Noun|Verb|Adjective|Phrase}                                    :drill:
+    :PROPERTIES:
+    :DRILL_CARD_TYPE: %^{Card Type|twosided|hide1cloze|multisided}
+    :END:
+
+     **** Russian
+     %^{Russian word}
+     **** English
+     %^{English translation}
+
+     **** Example sentence (optional)
+     %^{Russian example sentence}
+     %^{English example sentence}
+     ")
+
 (use-package org
   :init
   ;;;; org babel support for nix
@@ -602,7 +618,11 @@
            "* TODO [[%:link][%:description]]\n\n %i" :immediate-finish t)
           ("u" "URL capture from Safari" entry (
                                                 file+olp+datetree ,(concat org-directory "/links.org"))
-           "* %i    :safari:url:\n%U\n\n")))
+           "* %i    :safari:url:\n%U\n\n")
+	  ("d" "Drill Entry" entry
+           (file+headline ,(concat org-directory "inbox.org") "Drill cards")
+           ,org-drill-template)
+	  ))
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((nix . t)
@@ -690,7 +710,7 @@
 	 :auto-preamble t
 	 :auto-sitemap t
 	 :exclude ".*.org"
-	 :include ("pkg.org" "az-emacs.org", "dft.org")
+	 :include ("pkg.org" "az-emacs.org", "dft.org" "infra.org" "SIP.org")
 	 :html-postamble nil
 	 :section-numbers nil
 	 :sitemap-filename "index.org"
@@ -921,6 +941,10 @@
  (add-hook 'terraform-mode-hook 'my-terraform-mode-init))
 
 (add-to-list 'auto-mode-alist '("\\.ts\\(x\\)?\\'" . tsx-ts-mode))
+
+(use-package rust-mode
+      :straight t
+      :defer t)
 
 (use-package yasnippet
   :config

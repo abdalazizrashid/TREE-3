@@ -326,6 +326,12 @@ Used by other packages such as org-ref
      '(("\\`\\(.+\\)\\'" "\\1~"))))
 #+end_src
 
+** Vterm
+#+begin_src emacs-lisp :tange "init.el"
+  (use-package vterm
+    :straight t
+    :defer t)
+#+end_src
 * Font configuration
 I use ~fontaine~ a package allows the user to define detailed font
 configurations and set them on demand. For example, one can have a
@@ -1254,6 +1260,13 @@ https://github.com/NixOS/nix-mode?tab=readme-ov-filelsp
 #+begin_src emacs-lisp :tangle "init.el"
   (add-to-list 'auto-mode-alist '("\\.ts\\(x\\)?\\'" . tsx-ts-mode))
 #+end_src
+*** Rust
+#+begin_src emacs-lisp :tangle "init.el"
+  (use-package rust-mode
+        :straight t
+        :defer t)
+#+end_src
+
 ** Snippets
 #+begin_src emacs-lisp :tangle "init.el"
   (use-package yasnippet
@@ -1576,16 +1589,6 @@ https://github.com/NixOS/nix-mode?tab=readme-ov-filelsp
 
   ;; Project management
   ;;;; projectile
-
-
-
-  ;; Terminal emulator
-  ;;;; vterm
-  (use-package vterm
-    :disabled
-    :straight t
-    :defer t)
-
 
 
   ;; Manuals and Docs
