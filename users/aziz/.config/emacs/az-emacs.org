@@ -36,7 +36,7 @@ count of {{{word-count}}}.*
 
   ;; Disable the tool bar
   (tool-bar-mode -1)
-  (menu-bar-mode 1)
+  (menu-bar-mode -1)
   (toggle-scroll-bar -1) 
   (scroll-bar-mode -1)
 #+end_src
@@ -314,6 +314,13 @@ Used by other packages such as org-ref
   				     (projectile-mode 1)
   				     ;;(editorconfig-mode 1)
   				     ))
+
+    (add-to-list 'tramp-connection-properties
+             (list (regexp-quote "/ssh:aziz@t1.hosts.aziz.fyi")
+                   "login-args"
+                   '(("-A") ("-l" "%u") ("-p" "%p") ("%c")
+                     ("-e" "none") ("%h"))))
+
     (setq make-backup-files nil)
     (setq create-lockfiles nil)
     :custom
@@ -327,7 +334,7 @@ Used by other packages such as org-ref
 #+end_src
 
 ** Vterm
-#+begin_src emacs-lisp :tange "init.el"
+#+begin_src emacs-lisp :tangle "init.el"
   (use-package vterm
     :straight t
     :defer t)

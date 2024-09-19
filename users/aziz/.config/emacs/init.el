@@ -213,6 +213,10 @@
 
 (use-package async)
 
+(use-package vterm
+  :straight t
+  :defer t)
+
 (use-package fontaine
   :config
   (setq fontaine-presets
