@@ -15,7 +15,7 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     (inputs.nixos-apple-silicon + "/apple-silicon-support/modules")
-    <home-manager/nixos>
+    (inputs.home-manager + "/nixos")
     ./../modules/emacs.nix
   ];
 
@@ -124,6 +124,7 @@
   home-manager.users.afdee1c =
     { pkgs, ... }:
     {
+      home.enableNixpkgsReleaseCheck = false;
       home.packages = with pkgs; [
         tree
         htop
@@ -137,6 +138,7 @@
         jq
         rustup
         nixfmt-rfc-style
+        signal
       ];
       programs.bash.enable = true;
       programs.git = {
