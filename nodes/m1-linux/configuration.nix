@@ -11,7 +11,6 @@
 }:
 
 {
- 
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -121,21 +120,34 @@
   users.users.afdee1c = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-    packages = with pkgs; [
-      tree
-      htop
-      eaglemode
-      bc # using it to calculate battery
-      fd
-      ripgrep
-      fzf
-      kitty
-      zathura
-      jq
-      rustup
-      nixfmt-rfc-style
-    ];
   };
+  home-manager.users.afdee1c =
+    { pkgs, ... }:
+    {
+      home.packages = with pkgs; [
+        tree
+        htop
+        eaglemode
+        bc # using it to calculate battery
+        fd
+        ripgrep
+        fzf
+        kitty
+        zathura
+        jq
+        rustup
+        nixfmt-rfc-style
+      ];
+      programs.bash.enable = true;
+      programs.git = {
+        enable = true;
+        userEmail = "ping@aziz.fyi";
+        userName = "Aziz";
+      };
+      # The state version is required and should stay at the version you
+      # originally installed.
+      home.stateVersion = "24.05";
+    };
 
   environment = {
     shellAliases = {
@@ -143,11 +155,11 @@
       sw = "sudo ~/Sources/tree-3/result/bin/switch-to-configuration switch";
     };
     etc = {
-    "libinput/local-overrides.quirks".text = ''
-      [Apple Keyboard]
-      MatchUdevType=touchpad
-      MatchDeviceTree=*apple*
-      AttrPressureRange=1100:1000'';
+      "libinput/local-overrides.quirks".text = ''
+        [Apple Keyboard]
+        MatchUdevType=touchpad
+        MatchDeviceTree=*apple*
+        AttrPressureRange=1100:1000'';
     };
   };
   # List packages installed in system profile. To search, run:
@@ -190,7 +202,6 @@
   networking.wireless.iwd = {
     enable = true;
     settings.General.EnableNetworkConfiguration = true;
-    
   };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
