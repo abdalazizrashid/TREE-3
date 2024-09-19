@@ -1,0 +1,28 @@
+$TTL    86400
+@       IN      SOA     ns1.aziz.fyi. admin.aziz.fyi. (
+                        2024091700 ; Serial
+                        604800     ; Refresh
+                        86400      ; Retry
+                        2419200    ; Expire
+                        604800 )   ; Negative Cache TTL
+
+@       IN      NS      ns1.aziz.fyi.
+@       IN      NS      ns2.aziz.fyi.
+
+ns1     IN      A       127.0.0.1
+ns2     IN      A       192.168.1.64
+
+www     IN      A       185.199.110.153
+@       IN      A       185.199.110.153
+@       IN      A       185.199.108.153
+@       IN      A       185.199.109.153
+@       IN      A       185.199.111.153
+
+
+sig1._domainkey IN CNAME sig1.dkim.aziz.fyi.at.icloudmailadmin.com.
+@       IN      MX      100 mx01.mail.icloud.com.
+@       IN      MX      100  mx02.mail.icloud.com.
+@       IN      TXT     "apple-domain=ScWBcm5aHDykHIeV"
+@       IN      TXT     v=spf1 include:icloud.com ~all
+_github-pages-challenge-abdalazizrashid. IN   TXT  1bff295337e8c74175c6a32014bcd9
+

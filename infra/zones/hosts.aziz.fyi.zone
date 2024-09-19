@@ -1,0 +1,17 @@
+$TTL 86400
+@       IN      SOA     ns1.hosts.aziz.fyi. admin.hosts.aziz.fyi. (
+                            2024072502 ; Serial
+                            3600       ; Refresh
+                            1800       ; Retry
+                            1209600    ; Expire
+                            86400 )    ; Minimum TTL
+
+        IN      NS      ns1.hosts.aziz.fyi.
+        IN      NS      ns2.hosts.aziz.fyi.
+
+ns1     IN      A       127.0.0.1
+ns2     IN      A       127.0.0.1
+
+@       IN      A       203.0.113.10
+www     IN      A       203.0.113.10
+t1      IN      A       95.165.26.135
