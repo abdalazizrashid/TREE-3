@@ -13,5 +13,12 @@
     };
     modules = [ ./nodes/devbox/configuration.nix ];
   };
+  nodes.m1-linux = nixosSystem {
+    system = [ "arch64-linux" ];
+    specialArgs = {
+      inputs = npins;
+    };
+    modules = [ ./nodes/m1-linux/configuration.nix ];
+  };
   inherit pkgs;
 }

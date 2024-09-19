@@ -12,6 +12,18 @@
       "url": "https://github.com/astro/microvm.nix/archive/69e8ac63a7a4d40bb65e73af41ba60df2eba0419.tar.gz",
       "hash": "1jpxn0mm7c9qrlb0anim16p8z8k2ss2kmk6d6h21k1rddqnb3gjv"
     },
+    "nixos-apple-silicon": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "tpwrules",
+        "repo": "nixos-apple-silicon"
+      },
+      "branch": "main",
+      "revision": "c5f944f49a052232015bb3c03524b69e3fdd2aa4",
+      "url": "https://github.com/tpwrules/nixos-apple-silicon/archive/c5f944f49a052232015bb3c03524b69e3fdd2aa4.tar.gz",
+      "hash": "0zz8a836ipxid3cbmjwnn23p2zh9hb5malwwh1qr7fs4zwyg6cyv"
+    },
     "nixpkgs": {
       "type": "Channel",
       "name": "nixpkgs-unstable",
