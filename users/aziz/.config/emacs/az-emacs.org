@@ -824,7 +824,7 @@ The package embark-consult should be installed if you use both Embark and Consul
     :config
     (avy-setup-default)
     :bind
-    (("C-:" . avy-goto-char)
+    (("C-:" . avy-goto-char-timer)
      ("C-'" . avy-goto-char-2)
      ("M-g f" . avy-goto-line)
      ("M-g w" . avy-goto-word-1)
