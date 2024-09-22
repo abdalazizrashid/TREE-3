@@ -173,6 +173,7 @@
         rustup
         nixfmt-rfc-style
         signal-desktop
+        libreoffice
       ];
       programs.bash.enable = true;
       programs.git = {
@@ -219,6 +220,7 @@
     mpv
     qrscan
     yggdrasil
+    dnsutils
   ];
 
   networking.hosts = {

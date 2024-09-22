@@ -8,15 +8,16 @@ let
   python3 =
     let
       env = (
-        pkgs.python3.withPackages (
+        pkgs.python311.withPackages (
           pythonPackages: with pythonPackages; [
             ipykernel
             pip
             numpy
-        #    pymc
+            pymc
             pandas
             scikit-learn
-            jupyter-lsp
+            jax
+            jaxlib
           ]
         )
       );
