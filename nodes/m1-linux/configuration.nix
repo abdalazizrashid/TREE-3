@@ -17,6 +17,8 @@
     (inputs.nixos-apple-silicon + "/apple-silicon-support/modules")
     (inputs.home-manager + "/nixos")
     ./../modules/emacs.nix
+    ./../modules/sway.nix
+    ./../modules/jupyter.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -100,6 +102,40 @@
       # don’t shutdown when power button is short-pressed
       HandlePowerKey=sleep
     '';
+
+    # Enable touchpad support (enabled default in most desktopManager).
+    libinput.enable = true;
+
+    pipewire = {
+      wireplumber = {
+        enable = true;
+        configPackages = [
+                         (pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/10-bluez.conf" ''
+                           monitor.bluez.properties = {
+                             bluez5.roles = [ a2dp_sink a2dp_source bap_sink bap_source hsp_hs hsp_ag hfp_hf hfp_ag ]
+                             bluez5.codecs = [ sbc sbc_xq aac ]
+                             bluez5.enable-sbc-xq = true
+                             bluez5.hfphsp-backend = "native"
+                           }
+                         '')
+                       ];
+
+      };
+    };
+    
+    yggdrasil = {
+      enable = true;
+      group = "wheel";
+      settings = {
+        # Find public peers here
+        # https://publicpeers.neilalexander.dev/
+        Peers = [
+          "tls://vpn.itrus.su:7992"
+        ];
+      };
+    };
+   
+
   };
 
   # Configure keymap in X11
@@ -113,8 +149,6 @@
     enable = true;
     loadInNixShell = true;
   };
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.afdee1c = {
@@ -138,7 +172,7 @@
         jq
         rustup
         nixfmt-rfc-style
-        signal
+        signal-desktop
       ];
       programs.bash.enable = true;
       programs.git = {
@@ -184,6 +218,7 @@
     alsa-utils
     mpv
     qrscan
+    yggdrasil
   ];
 
   networking.hosts = {
@@ -209,7 +244,7 @@
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  # networking.firewall.enable = true;
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
