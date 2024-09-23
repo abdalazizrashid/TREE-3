@@ -19,6 +19,7 @@
     ./../modules/emacs.nix
     ./../modules/sway.nix
     ./../modules/jupyter.nix
+    ./../modules/users.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -149,43 +150,6 @@
     enable = true;
     loadInNixShell = true;
   };
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.afdee1c = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-  };
-  home-manager.users.afdee1c =
-    { pkgs, ... }:
-    {
-      home.enableNixpkgsReleaseCheck = false;
-      home.packages = with pkgs; [
-        tree
-        htop
-        eaglemode
-        bc # using it to calculate battery
-        fd
-        ripgrep
-        fzf
-        kitty
-        zathura
-        jq
-        rustup
-        nixfmt-rfc-style
-        signal-desktop
-        libreoffice
-      ];
-      programs.bash.enable = true;
-      programs.git = {
-        enable = true;
-        userEmail = "ping@aziz.fyi";
-        userName = "Aziz";
-      };
-      # The state version is required and should stay at the version you
-      # originally installed.
-      home.stateVersion = "24.05";
-    };
-
   environment = {
     shellAliases = {
       "nixos-build" = "cd ~/Sources/tree-3/ && nix-build -A nodes.m1-linux.config.system.build.toplevel";
@@ -221,6 +185,13 @@
     qrscan
     yggdrasil
     dnsutils
+    htop
+    tree
+    bc # using it to calculate battery
+    kitty
+    zathura
+    jq
+    rustup
   ];
 
   networking.hosts = {

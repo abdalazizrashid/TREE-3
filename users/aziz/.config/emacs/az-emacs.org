@@ -349,6 +349,7 @@ pleasant to read at comfortable point sizes.
 
 #+begin_src emacs-lisp :tangle "init.el"
   (use-package fontaine
+    :disabled
     :config
     (setq fontaine-presets
           '((small
@@ -985,7 +986,7 @@ Org is the main component of knowledge management
 
 
   (defvar site-dir "~/Documents/org/")
-  (defvar publish-dir "~/tree-3/users/aziz/blog/")
+  (defvar publish-dir "~/Sources/tree-3/users/aziz/blog/")
 
   (setq org-publish-project-alist
         `(("blog-org-files"
@@ -1102,6 +1103,7 @@ Org is the main component of knowledge management
 
 
   (use-package combobulate
+    :disabled
     :straight (combobulate :type git :host github :repo "mickeynp/combobulate")
     :preface
     (setq combobulate-key-prefix "C-c o")
@@ -1282,7 +1284,7 @@ https://github.com/NixOS/nix-mode?tab=readme-ov-filelsp
     ;; get more snippets from here
     ;; https://github.com/AndreaCrotti/yasnippet-snippets/tree/master/snippets
     (setq yas-snippet-dirs
-        '("~/.emacs.d/snippets")))
+        '("./snippets")))
 #+end_src
 
 ** Mathematics

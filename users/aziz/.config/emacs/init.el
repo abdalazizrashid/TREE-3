@@ -218,6 +218,7 @@
   :defer t)
 
 (use-package fontaine
+  :disabled
   :config
   (setq fontaine-presets
         '((small
@@ -555,7 +556,7 @@
   :config
   (avy-setup-default)
   :bind
-  (("C-:" . avy-goto-char)
+  (("C-:" . avy-goto-char-timer)
    ("C-'" . avy-goto-char-2)
    ("M-g f" . avy-goto-line)
    ("M-g w" . avy-goto-word-1)
@@ -701,7 +702,7 @@
 
 
 (defvar site-dir "~/Documents/org/")
-(defvar publish-dir "~/tree-3/users/aziz/blog/")
+(defvar publish-dir "~/Sources/tree-3/users/aziz/blog/")
 
 (setq org-publish-project-alist
       `(("blog-org-files"
@@ -804,6 +805,7 @@
 
 
 (use-package combobulate
+  :disabled
   :straight (combobulate :type git :host github :repo "mickeynp/combobulate")
   :preface
   (setq combobulate-key-prefix "C-c o")
@@ -956,7 +958,7 @@
   ;; get more snippets from here
   ;; https://github.com/AndreaCrotti/yasnippet-snippets/tree/master/snippets
   (setq yas-snippet-dirs
-      '("~/.emacs.d/snippets")))
+	'("./snippets")))
 
 ;; Auctex
 (use-package auctex)
