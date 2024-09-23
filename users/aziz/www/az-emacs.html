@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-08-02 Fri 15:54 -->
+<!-- 2024-09-23 Mon 12:08 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>GNU emacs literate configuration</title>
@@ -219,11 +219,11 @@
 <div id="content" class="content">
 <h1 class="title">GNU emacs literate configuration</h1>
 <p>
-<b>Last revised and exported on 2024-08-02 15:54:25 +0300 with a word
-count of 7402.</b>
+<b>Last revised and exported on 2024-09-23 12:08:08 +0300 with a word
+count of 7404.</b>
 </p>
-<div id="outline-container-orgae8ad8d" class="outline-2">
-<h2 id="orgae8ad8d"><span class="section-number-2">1.</span> Early init configurations</h2>
+<div id="outline-container-orge2d5c52" class="outline-2">
+<h2 id="orge2d5c52"><span class="section-number-2">1.</span> Early init configurations</h2>
 <div class="outline-text-2" id="text-1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #b22222;">;; </span><span style="color: #b22222;">Set it to big number(100mb) like most of the popular starter kits</span>
@@ -273,8 +273,8 @@ count of 7402.</b>
 </div>
 </div>
 </div>
-<div id="outline-container-org51c6747" class="outline-2">
-<h2 id="org51c6747"><span class="section-number-2">2.</span> Main emacs configs</h2>
+<div id="outline-container-org06e1e0d" class="outline-2">
+<h2 id="org06e1e0d"><span class="section-number-2">2.</span> Main emacs configs</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Packages customizations are defined here
@@ -504,8 +504,8 @@ Emacs configurations
 </pre>
 </div>
 </div>
-<div id="outline-container-org3865e1f" class="outline-3">
-<h3 id="org3865e1f"><span class="section-number-3">2.1.</span> String processing</h3>
+<div id="outline-container-org59dc7d8" class="outline-3">
+<h3 id="org59dc7d8"><span class="section-number-3">2.1.</span> String processing</h3>
 <div class="outline-text-3" id="text-2-1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #a020f0;">use-package</span> <span style="color: #008b8b;">s</span>)
@@ -513,8 +513,8 @@ Emacs configurations
 </div>
 </div>
 </div>
-<div id="outline-container-orgb9a3226" class="outline-3">
-<h3 id="orgb9a3226"><span class="section-number-3">2.2.</span> Asyn</h3>
+<div id="outline-container-orgcb3ea4b" class="outline-3">
+<h3 id="orgcb3ea4b"><span class="section-number-3">2.2.</span> Asyn</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 Used by other packages such as org-ref
@@ -525,8 +525,8 @@ Used by other packages such as org-ref
 </div>
 </div>
 </div>
-<div id="outline-container-org52c2b62" class="outline-3">
-<h3 id="org52c2b62"><span class="section-number-3">2.3.</span> Tramp</h3>
+<div id="outline-container-org1460ee7" class="outline-3">
+<h3 id="org1460ee7"><span class="section-number-3">2.3.</span> Tramp</h3>
 <div class="outline-text-3" id="text-2-3">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #b22222;">;; </span><span style="color: #b22222;">Tramp</span>
@@ -562,14 +562,14 @@ Used by other packages such as org-ref
   (debug-ignored-errors
    (cons 'remote-file-error debug-ignored-errors))
   (tramp-lock-file-name-transforms
-   '((<span style="color: #8b2252;">"\\`</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">(</span><span style="color: #8b2252;">.+</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">)</span><span style="color: #8b2252;">\\'"</span> <span style="color: #8b2252;">"\\1~"</span>))))
+   '((<span style="color: #8b2252;">"\\`</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">(</span><span style="color: #8b2252;">.+</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">)</span><span style="color: #8b2252;">\\'"</span> <span style="color: #8b2252;">"\\1~"</span>))))
 </pre>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-orgb2f6885" class="outline-2">
-<h2 id="orgb2f6885"><span class="section-number-2">3.</span> Font configuration</h2>
+<div id="outline-container-org485f3fc" class="outline-2">
+<h2 id="org485f3fc"><span class="section-number-2">3.</span> Font configuration</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 I use <code>fontaine</code> a package allows the user to define detailed font
@@ -637,12 +637,12 @@ pleasant to read at comfortable point sizes.
 </div>
 </div>
 </div>
-<div id="outline-container-orga9564e5" class="outline-2">
-<h2 id="orga9564e5"><span class="section-number-2">4.</span> Completion</h2>
+<div id="outline-container-org4254609" class="outline-2">
+<h2 id="org4254609"><span class="section-number-2">4.</span> Completion</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org6edc700" class="outline-3">
-<h3 id="org6edc700"><span class="section-number-3">4.1.</span> vetico</h3>
+<div id="outline-container-org48e866a" class="outline-3">
+<h3 id="org48e866a"><span class="section-number-3">4.1.</span> vetico</h3>
 <div class="outline-text-3" id="text-4-1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">  <span style="color: #b22222;">;; </span><span style="color: #b22222;">Enable vertico</span>
@@ -676,7 +676,7 @@ pleasant to read at comfortable point sizes.
   (<span style="color: #a020f0;">defun</span> <span style="color: #0000ff;">crm-indicator</span> (args)
     (cons (format <span style="color: #8b2252;">"[CRM%s] %s"</span>
                   (replace-regexp-in-string
-                   <span style="color: #8b2252;">"\\`\\[</span><span style="color: #008b8b;">.*?</span><span style="color: #8b2252;">]\\*</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">|</span><span style="color: #8b2252;">\\[</span><span style="color: #008b8b;">.*?</span><span style="color: #8b2252;">]\\*\\'"</span> <span style="color: #8b2252;">""</span>
+                   <span style="color: #8b2252;">"\\`\\[</span><span style="color: #008b8b;">.*?</span><span style="color: #8b2252;">]\\*</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">|</span><span style="color: #8b2252;">\\[</span><span style="color: #008b8b;">.*?</span><span style="color: #8b2252;">]\\*\\'"</span> <span style="color: #8b2252;">""</span>
                    crm-separator)
                   (car args))
           (cdr args)))
@@ -698,8 +698,8 @@ pleasant to read at comfortable point sizes.
 </div>
 </div>
 </div>
-<div id="outline-container-org34cee77" class="outline-3">
-<h3 id="org34cee77"><span class="section-number-3">4.2.</span> corfu</h3>
+<div id="outline-container-orgbf298c6" class="outline-3">
+<h3 id="orgbf298c6"><span class="section-number-3">4.2.</span> corfu</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 Corfu enhances in-buffer completion with a small completion popup. The
@@ -755,8 +755,8 @@ minibuffer UI.
 </div>
 </div>
 </div>
-<div id="outline-container-orgbe58c29" class="outline-3">
-<h3 id="orgbe58c29"><span class="section-number-3">4.3.</span> orderless</h3>
+<div id="outline-container-orgeb65b83" class="outline-3">
+<h3 id="orgeb65b83"><span class="section-number-3">4.3.</span> orderless</h3>
 <div class="outline-text-3" id="text-4-3">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #b22222;">;;;; </span><span style="color: #b22222;">Orderless</span>
@@ -782,8 +782,8 @@ minibuffer UI.
 </div>
 </div>
 </div>
-<div id="outline-container-orge40f847" class="outline-3">
-<h3 id="orge40f847"><span class="section-number-3">4.4.</span> embark</h3>
+<div id="outline-container-org7cf67c2" class="outline-3">
+<h3 id="org7cf67c2"><span class="section-number-3">4.4.</span> embark</h3>
 <div class="outline-text-3" id="text-4-4">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #a020f0;">use-package</span> <span style="color: #008b8b;">embark</span>
@@ -810,15 +810,15 @@ minibuffer UI.
 
   <span style="color: #b22222;">;; </span><span style="color: #b22222;">Hide the mode line of the Embark live/completions buffers</span>
   (add-to-list 'display-buffer-alist
-               '(<span style="color: #8b2252;">"\\`\\*Embark Collect </span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">(</span><span style="color: #8b2252;">Live</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">|</span><span style="color: #8b2252;">Completions</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">)</span><span style="color: #8b2252;">\\*"</span>
+               '(<span style="color: #8b2252;">"\\`\\*Embark Collect </span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">(</span><span style="color: #8b2252;">Live</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">|</span><span style="color: #8b2252;">Completions</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">)</span><span style="color: #8b2252;">\\*"</span>
                  nil
                  (window-parameters (mode-line-format . none)))))
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orge25b7e6" class="outline-3">
-<h3 id="orge25b7e6"><span class="section-number-3">4.5.</span> Marginalia</h3>
+<div id="outline-container-org087b269" class="outline-3">
+<h3 id="org087b269"><span class="section-number-3">4.5.</span> Marginalia</h3>
 <div class="outline-text-3" id="text-4-5">
 <p>
 Enable rich annotations using the Marginalia package
@@ -842,11 +842,11 @@ Enable rich annotations using the Marginalia package
 </div>
 </div>
 </div>
-<div id="outline-container-org0ab5da5" class="outline-3">
-<h3 id="org0ab5da5"><span class="section-number-3">4.6.</span> <span class="todo TODO">TODO</span> ivy</h3>
+<div id="outline-container-orgbc26fdc" class="outline-3">
+<h3 id="orgbc26fdc"><span class="section-number-3">4.6.</span> <span class="todo TODO">TODO</span> ivy</h3>
 </div>
-<div id="outline-container-orge7ad08b" class="outline-3">
-<h3 id="orge7ad08b"><span class="section-number-3">4.7.</span> consult</h3>
+<div id="outline-container-org089617a" class="outline-3">
+<h3 id="org089617a"><span class="section-number-3">4.7.</span> consult</h3>
 <div class="outline-text-3" id="text-4-7">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #b22222;">;; </span><span style="color: #b22222;">Example configuration for Consult</span>
@@ -983,8 +983,8 @@ The package embark-consult should be installed if you use both Embark and Consul
 </div>
 </div>
 </div>
-<div id="outline-container-orga00864b" class="outline-3">
-<h3 id="orga00864b"><span class="section-number-3">4.8.</span> Helm</h3>
+<div id="outline-container-orgfc5693a" class="outline-3">
+<h3 id="orgfc5693a"><span class="section-number-3">4.8.</span> Helm</h3>
 <div class="outline-text-3" id="text-4-8">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #b22222;">;;;; </span><span style="color: #b22222;">Helm</span>
@@ -1090,8 +1090,8 @@ The package embark-consult should be installed if you use both Embark and Consul
 </div>
 </div>
 </div>
-<div id="outline-container-org566691c" class="outline-3">
-<h3 id="org566691c"><span class="section-number-3">4.9.</span> ido</h3>
+<div id="outline-container-orgd5fea94" class="outline-3">
+<h3 id="orgd5fea94"><span class="section-number-3">4.9.</span> ido</h3>
 <div class="outline-text-3" id="text-4-9">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #b22222;">;;;; </span><span style="color: #b22222;">ido</span>
@@ -1104,8 +1104,8 @@ The package embark-consult should be installed if you use both Embark and Consul
 </div>
 </div>
 </div>
-<div id="outline-container-orgaca3164" class="outline-3">
-<h3 id="orgaca3164"><span class="section-number-3">4.10.</span> Avy</h3>
+<div id="outline-container-org2fdb26a" class="outline-3">
+<h3 id="org2fdb26a"><span class="section-number-3">4.10.</span> Avy</h3>
 <div class="outline-text-3" id="text-4-10">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #a020f0;">use-package</span> <span style="color: #008b8b;">avy</span>
@@ -1124,12 +1124,12 @@ The package embark-consult should be installed if you use both Embark and Consul
 </div>
 </div>
 </div>
-<div id="outline-container-org6a24392" class="outline-2">
-<h2 id="org6a24392"><span class="section-number-2">5.</span> Knowledge management</h2>
+<div id="outline-container-org846a764" class="outline-2">
+<h2 id="org846a764"><span class="section-number-2">5.</span> Knowledge management</h2>
 <div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-orgaf3529e" class="outline-3">
-<h3 id="orgaf3529e"><span class="section-number-3">5.1.</span> Hyperbole</h3>
+<div id="outline-container-orgf00bb8b" class="outline-3">
+<h3 id="orgf00bb8b"><span class="section-number-3">5.1.</span> Hyperbole</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 I use hyperbole to control multiple aspects of emacs
@@ -1150,8 +1150,8 @@ I use hyperbole to control multiple aspects of emacs
 </div>
 </div>
 </div>
-<div id="outline-container-org45a9603" class="outline-3">
-<h3 id="org45a9603"><span class="section-number-3">5.2.</span> Org mode</h3>
+<div id="outline-container-orgd42f3b7" class="outline-3">
+<h3 id="orgd42f3b7"><span class="section-number-3">5.2.</span> Org mode</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 Org is the main component of knowledge management
@@ -1214,6 +1214,7 @@ Org is the main component of knowledge management
   (<span style="color: #a020f0;">require</span> '<span style="color: #008b8b;">org-ref-arxiv</span>)
   (<span style="color: #a020f0;">require</span> '<span style="color: #008b8b;">org-ref-scopus</span>)
   (<span style="color: #a020f0;">require</span> '<span style="color: #008b8b;">org-ref-wos</span>)
+  (<span style="color: #a020f0;">require</span> '<span style="color: #008b8b;">org-</span>
   <span style="color: #483d8b;">:custom</span>
   <span style="color: #b22222;">;;  </span><span style="color: #b22222;">(bibtex-completion-bibliography '("~/Documents/bibliography.bib"))</span>
   (bibtex-completion-bibliography '(<span style="color: #8b2252;">"~/Documents/library/inbox.bib"</span>))
@@ -1235,8 +1236,8 @@ Org is the main component of knowledge management
 </pre>
 </div>
 </div>
-<div id="outline-container-org83790ea" class="outline-4">
-<h4 id="org83790ea"><span class="section-number-4">5.2.1.</span> <span class="todo TODO">TODO</span> 3rd party importers</h4>
+<div id="outline-container-org048857c" class="outline-4">
+<h4 id="org048857c"><span class="section-number-4">5.2.1.</span> <span class="todo TODO">TODO</span> 3rd party importers</h4>
 <div class="outline-text-4" id="text-5-2-1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #b22222;">;; </span><span style="color: #b22222;">(load "other_importers.el")</span>
@@ -1244,8 +1245,8 @@ Org is the main component of knowledge management
 </div>
 </div>
 </div>
-<div id="outline-container-org9a77618" class="outline-4">
-<h4 id="org9a77618"><span class="section-number-4">5.2.2.</span> Publishing</h4>
+<div id="outline-container-org69aabf2" class="outline-4">
+<h4 id="org69aabf2"><span class="section-number-4">5.2.2.</span> Publishing</h4>
 <div class="outline-text-4" id="text-5-2-2">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #a020f0;">require</span> '<span style="color: #008b8b;">ox-publish</span>)
@@ -1308,7 +1309,7 @@ Org is the main component of knowledge management
 
         (<span style="color: #8b2252;">"blog-static"</span>
          <span style="color: #483d8b;">:base-directory</span> ,site-dir
-         <span style="color: #483d8b;">:base-extension</span> <span style="color: #8b2252;">"css</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">|</span><span style="color: #8b2252;">js</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">|</span><span style="color: #8b2252;">png</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">|</span><span style="color: #8b2252;">jpg</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">|</span><span style="color: #8b2252;">gif"</span>
+         <span style="color: #483d8b;">:base-extension</span> <span style="color: #8b2252;">"css</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">|</span><span style="color: #8b2252;">js</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">|</span><span style="color: #8b2252;">png</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">|</span><span style="color: #8b2252;">jpg</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">|</span><span style="color: #8b2252;">gif"</span>
          <span style="color: #483d8b;">:publishing-directory</span> ,publish-dir <span style="color: #b22222;">;;</span><span style="color: #b22222;">,(concat publish-dir "html/")</span>
          <span style="color: #483d8b;">:recursive</span> t
          <span style="color: #483d8b;">:publishing-function</span> org-publish-attachment)
@@ -1321,8 +1322,8 @@ Org is the main component of knowledge management
 </div>
 </div>
 </div>
-<div id="outline-container-org16dba7a" class="outline-3">
-<h3 id="org16dba7a"><span class="section-number-3">5.3.</span> Bibliography</h3>
+<div id="outline-container-org11f8775" class="outline-3">
+<h3 id="org11f8775"><span class="section-number-3">5.3.</span> Bibliography</h3>
 <div class="outline-text-3" id="text-5-3">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #a020f0;">use-package</span> <span style="color: #008b8b;">bibtex</span>
@@ -1351,8 +1352,8 @@ Org is the main component of knowledge management
 </div>
 </div>
 </div>
-<div id="outline-container-orgeeefb09" class="outline-2">
-<h2 id="orgeeefb09"><span class="section-number-2">6.</span> Document viewers</h2>
+<div id="outline-container-org9764292" class="outline-2">
+<h2 id="org9764292"><span class="section-number-2">6.</span> Document viewers</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 **PDF
@@ -1362,8 +1363,8 @@ Org is the main component of knowledge management
 </pre>
 </div>
 </div>
-<div id="outline-container-orgc5cb71d" class="outline-3">
-<h3 id="orgc5cb71d"><span class="section-number-3">6.1.</span> DJVU</h3>
+<div id="outline-container-org453feaa" class="outline-3">
+<h3 id="org453feaa"><span class="section-number-3">6.1.</span> DJVU</h3>
 <div class="outline-text-3" id="text-6-1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #a020f0;">use-package</span> <span style="color: #008b8b;">djvu</span>)
@@ -1371,8 +1372,8 @@ Org is the main component of knowledge management
 </div>
 </div>
 </div>
-<div id="outline-container-org130f7bb" class="outline-3">
-<h3 id="org130f7bb"><span class="section-number-3">6.2.</span> Markdown</h3>
+<div id="outline-container-org3733115" class="outline-3">
+<h3 id="org3733115"><span class="section-number-3">6.2.</span> Markdown</h3>
 <div class="outline-text-3" id="text-6-2">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #a020f0;">use-package</span> <span style="color: #008b8b;">markdown-mode</span>
@@ -1383,12 +1384,12 @@ Org is the main component of knowledge management
 </div>
 </div>
 </div>
-<div id="outline-container-org2fa087d" class="outline-2">
-<h2 id="org2fa087d"><span class="section-number-2">7.</span> Editing</h2>
+<div id="outline-container-org5651455" class="outline-2">
+<h2 id="org5651455"><span class="section-number-2">7.</span> Editing</h2>
 <div class="outline-text-2" id="text-7">
 </div>
-<div id="outline-container-org09d0b2f" class="outline-3">
-<h3 id="org09d0b2f"><span class="section-number-3">7.1.</span> Treesitter</h3>
+<div id="outline-container-org47aa189" class="outline-3">
+<h3 id="org47aa189"><span class="section-number-3">7.1.</span> Treesitter</h3>
 <div class="outline-text-3" id="text-7-1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #a020f0;">use-package</span> <span style="color: #008b8b;">treesit-auto</span>
@@ -1445,8 +1446,8 @@ Org is the main component of knowledge management
 </div>
 </div>
 </div>
-<div id="outline-container-org6df62fe" class="outline-3">
-<h3 id="org6df62fe"><span class="section-number-3">7.2.</span> Version control</h3>
+<div id="outline-container-org37fd1df" class="outline-3">
+<h3 id="org37fd1df"><span class="section-number-3">7.2.</span> Version control</h3>
 <div class="outline-text-3" id="text-7-2">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #a020f0;">use-package</span> <span style="color: #008b8b;">magit</span>
@@ -1457,12 +1458,12 @@ Org is the main component of knowledge management
 </div>
 </div>
 </div>
-<div id="outline-container-org7131623" class="outline-3">
-<h3 id="org7131623"><span class="section-number-3">7.3.</span> Navigation</h3>
+<div id="outline-container-orge74cc5a" class="outline-3">
+<h3 id="orge74cc5a"><span class="section-number-3">7.3.</span> Navigation</h3>
 <div class="outline-text-3" id="text-7-3">
 </div>
-<div id="outline-container-orgd8f0904" class="outline-4">
-<h4 id="orgd8f0904"><span class="section-number-4">7.3.1.</span> Eglot</h4>
+<div id="outline-container-orgd74c049" class="outline-4">
+<h4 id="orgd74c049"><span class="section-number-4">7.3.1.</span> Eglot</h4>
 <div class="outline-text-4" id="text-7-3-1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> <span style="color: #b22222;">;;;; </span><span style="color: #b22222;">eglot</span>
@@ -1527,8 +1528,8 @@ Org is the main component of knowledge management
 </div>
 </div>
 </div>
-<div id="outline-container-orgdcdb6cb" class="outline-4">
-<h4 id="orgdcdb6cb"><span class="section-number-4">7.3.2.</span> dumb-jump</h4>
+<div id="outline-container-org5d53fcb" class="outline-4">
+<h4 id="org5d53fcb"><span class="section-number-4">7.3.2.</span> dumb-jump</h4>
 <div class="outline-text-4" id="text-7-3-2">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #a020f0;">use-package</span> <span style="color: #008b8b;">dumb-jump</span>
@@ -1546,8 +1547,8 @@ Org is the main component of knowledge management
 </div>
 </div>
 </div>
-<div id="outline-container-orgf4385a0" class="outline-3">
-<h3 id="orgf4385a0"><span class="section-number-3">7.4.</span> Project management</h3>
+<div id="outline-container-orgfe79790" class="outline-3">
+<h3 id="orgfe79790"><span class="section-number-3">7.4.</span> Project management</h3>
 <div class="outline-text-3" id="text-7-4">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #b22222;">;; </span><span style="color: #b22222;">projectile</span>
@@ -1577,12 +1578,12 @@ Org is the main component of knowledge management
 </div>
 </div>
 </div>
-<div id="outline-container-org3a06f5c" class="outline-3">
-<h3 id="org3a06f5c"><span class="section-number-3">7.5.</span> Programming languages</h3>
+<div id="outline-container-org66c3635" class="outline-3">
+<h3 id="org66c3635"><span class="section-number-3">7.5.</span> Programming languages</h3>
 <div class="outline-text-3" id="text-7-5">
 </div>
-<div id="outline-container-org8cd2cc8" class="outline-4">
-<h4 id="org8cd2cc8"><span class="section-number-4">7.5.1.</span> Elixir</h4>
+<div id="outline-container-org781a346" class="outline-4">
+<h4 id="org781a346"><span class="section-number-4">7.5.1.</span> Elixir</h4>
 <div class="outline-text-4" id="text-7-5-1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #a020f0;">use-package</span> <span style="color: #008b8b;">elixir-mode</span>)
@@ -1590,8 +1591,8 @@ Org is the main component of knowledge management
 </div>
 </div>
 </div>
-<div id="outline-container-org53b5f57" class="outline-4">
-<h4 id="org53b5f57"><span class="section-number-4">7.5.2.</span> Nix</h4>
+<div id="outline-container-org3ea3182" class="outline-4">
+<h4 id="org3ea3182"><span class="section-number-4">7.5.2.</span> Nix</h4>
 <div class="outline-text-4" id="text-7-5-2">
 <p>
 <a href="https://github.com/NixOS/nix-mode?tab=readme-ov-filelsp">https://github.com/NixOS/nix-mode?tab=readme-ov-filelsp</a>
@@ -1617,8 +1618,8 @@ Org is the main component of knowledge management
 </div>
 </div>
 </div>
-<div id="outline-container-org74967d9" class="outline-4">
-<h4 id="org74967d9"><span class="section-number-4">7.5.3.</span> Terraform</h4>
+<div id="outline-container-orgc8240be" class="outline-4">
+<h4 id="orgc8240be"><span class="section-number-4">7.5.3.</span> Terraform</h4>
 <div class="outline-text-4" id="text-7-5-3">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #a020f0;">use-package</span> <span style="color: #008b8b;">terraform-mode</span>
@@ -1633,18 +1634,18 @@ Org is the main component of knowledge management
 </div>
 </div>
 </div>
-<div id="outline-container-org46ea4da" class="outline-4">
-<h4 id="org46ea4da"><span class="section-number-4">7.5.4.</span> Typescript</h4>
+<div id="outline-container-orga5acbc9" class="outline-4">
+<h4 id="orga5acbc9"><span class="section-number-4">7.5.4.</span> Typescript</h4>
 <div class="outline-text-4" id="text-7-5-4">
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(add-to-list 'auto-mode-alist '(<span style="color: #8b2252;">"\\.ts</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">(</span><span style="color: #8b2252;">x</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">)</span><span style="color: #8b2252;">?\\'"</span> . tsx-ts-mode))
+<pre class="src src-emacs-lisp">(add-to-list 'auto-mode-alist '(<span style="color: #8b2252;">"\\.ts</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">(</span><span style="color: #8b2252;">x</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">)</span><span style="color: #8b2252;">?\\'"</span> . tsx-ts-mode))
 </pre>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-orgdcaaa55" class="outline-3">
-<h3 id="orgdcaaa55"><span class="section-number-3">7.6.</span> Snippets</h3>
+<div id="outline-container-orgc32aaf8" class="outline-3">
+<h3 id="orgc32aaf8"><span class="section-number-3">7.6.</span> Snippets</h3>
 <div class="outline-text-3" id="text-7-6">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #a020f0;">use-package</span> <span style="color: #008b8b;">yasnippet</span>
@@ -1659,12 +1660,12 @@ Org is the main component of knowledge management
 </div>
 </div>
 </div>
-<div id="outline-container-org8c76c8b" class="outline-2">
-<h2 id="org8c76c8b"><span class="section-number-2">8.</span> Misc</h2>
+<div id="outline-container-org30e2375" class="outline-2">
+<h2 id="org30e2375"><span class="section-number-2">8.</span> Misc</h2>
 <div class="outline-text-2" id="text-8">
 </div>
-<div id="outline-container-orgbce0b54" class="outline-3">
-<h3 id="orgbce0b54"><span class="section-number-3">8.1.</span> Slurm</h3>
+<div id="outline-container-org2ae8bb5" class="outline-3">
+<h3 id="org2ae8bb5"><span class="section-number-3">8.1.</span> Slurm</h3>
 <div class="outline-text-3" id="text-8-1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #a020f0;">use-package</span> <span style="color: #008b8b;">slurm-mode</span>
@@ -1675,8 +1676,8 @@ Org is the main component of knowledge management
 </div>
 </div>
 </div>
-<div id="outline-container-org3956fb7" class="outline-2">
-<h2 id="org3956fb7"><span class="section-number-2">9.</span> Rest</h2>
+<div id="outline-container-org983503f" class="outline-2">
+<h2 id="org983503f"><span class="section-number-2">9.</span> Rest</h2>
 <div class="outline-text-2" id="text-9">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">  (<span style="color: #a020f0;">use-package</span> <span style="color: #008b8b;">auto-compile</span>
@@ -1780,7 +1781,7 @@ Org is the main component of knowledge management
   (add-hook 'emacs-lisp-mode-hook
             (<span style="color: #a020f0;">lambda</span> ()
               (<span style="color: #a020f0;">setq</span> imenu-generic-expression
-                    '((nil <span style="color: #8b2252;">"^\\s-*(use-package\\s-+</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">(</span><span style="color: #8b2252;">\\_&lt;.+?\\_&gt;</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">)</span><span style="color: #8b2252;">"</span> 1))))))
+                    '((nil <span style="color: #8b2252;">"^\\s-*(use-package\\s-+</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">(</span><span style="color: #8b2252;">\\_&lt;.+?\\_&gt;</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">)</span><span style="color: #8b2252;">"</span> 1))))))
 
 <span style="color: #b22222;">;;;; </span><span style="color: #b22222;">ibuffer</span>
 (<span style="color: #a020f0;">use-package</span> <span style="color: #008b8b;">ibuffer</span>
@@ -1830,7 +1831,7 @@ Org is the main component of knowledge management
         (mode . rust-mode)
         (mode . cargo-mode)
         (name . <span style="color: #8b2252;">"\\*Cargo"</span>)
-        (name . <span style="color: #8b2252;">"^\\*rls</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">(</span><span style="color: #8b2252;">::stderr</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">)</span><span style="color: #8b2252;">?\\*"</span>)
+        (name . <span style="color: #8b2252;">"^\\*rls</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">(</span><span style="color: #8b2252;">::stderr</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">)</span><span style="color: #8b2252;">?\\*"</span>)
         (name . <span style="color: #8b2252;">"eglot"</span>)))
       (<span style="color: #8b2252;">"Nix"</span>
        (mode . nix-mode))
@@ -1850,9 +1851,9 @@ Org is the main component of knowledge management
         (mode . gnus-summary-mode)
         (mode . gnus-article-mode)
         (name . <span style="color: #8b2252;">"^\\.newsrc-dribble"</span>)
-        (name . <span style="color: #8b2252;">"^\\*</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">(</span><span style="color: #8b2252;">sent</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">|</span><span style="color: #8b2252;">unsent</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">|</span><span style="color: #8b2252;">fetch</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">)</span><span style="color: #8b2252;">"</span>)
-        (name . <span style="color: #8b2252;">"^ \\*</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">(</span><span style="color: #8b2252;">nnimap</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">|</span><span style="color: #8b2252;">nntp</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">|</span><span style="color: #8b2252;">nnmail</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">|</span><span style="color: #8b2252;">gnus</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">|</span><span style="color: #8b2252;">server</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">|</span><span style="color: #8b2252;">mm\\*</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">)</span><span style="color: #8b2252;">"</span>)
-        (name . <span style="color: #8b2252;">"</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">(</span><span style="color: #8b2252;">Original Article</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">|</span><span style="color: #8b2252;">canonical address</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">|</span><span style="color: #8b2252;">extract address</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">)</span><span style="color: #8b2252;">"</span>)))
+        (name . <span style="color: #8b2252;">"^\\*</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">(</span><span style="color: #8b2252;">sent</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">|</span><span style="color: #8b2252;">unsent</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">|</span><span style="color: #8b2252;">fetch</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">)</span><span style="color: #8b2252;">"</span>)
+        (name . <span style="color: #8b2252;">"^ \\*</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">(</span><span style="color: #8b2252;">nnimap</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">|</span><span style="color: #8b2252;">nntp</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">|</span><span style="color: #8b2252;">nnmail</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">|</span><span style="color: #8b2252;">gnus</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">|</span><span style="color: #8b2252;">server</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">|</span><span style="color: #8b2252;">mm\\*</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">)</span><span style="color: #8b2252;">"</span>)
+        (name . <span style="color: #8b2252;">"</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">(</span><span style="color: #8b2252;">Original Article</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">|</span><span style="color: #8b2252;">canonical address</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">|</span><span style="color: #8b2252;">extract address</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">)</span><span style="color: #8b2252;">"</span>)))
       (<span style="color: #8b2252;">"Org"</span>
        (<span style="color: #a020f0;">or</span>
         (name . <span style="color: #8b2252;">"^\\*Calendar\\*$"</span>)
@@ -1864,8 +1865,8 @@ Org is the main component of knowledge management
        (<span style="color: #a020f0;">or</span>
         (name . <span style="color: #8b2252;">"^\\*scratch\\*$"</span>)
         (name . <span style="color: #8b2252;">"^\\*Messages\\*$"</span>)
-        (name . <span style="color: #8b2252;">"^\\*</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">(</span><span style="color: #8b2252;">Customize</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">|</span><span style="color: #8b2252;">Help</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">)</span><span style="color: #8b2252;">"</span>)
-        (name . <span style="color: #8b2252;">"\\*</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">(</span><span style="color: #8b2252;">Echo</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">|</span><span style="color: #8b2252;">Minibuf</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">)</span><span style="color: #8b2252;">"</span>))))))
+        (name . <span style="color: #8b2252;">"^\\*</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">(</span><span style="color: #8b2252;">Customize</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">|</span><span style="color: #8b2252;">Help</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">)</span><span style="color: #8b2252;">"</span>)
+        (name . <span style="color: #8b2252;">"\\*</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">(</span><span style="color: #8b2252;">Echo</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">|</span><span style="color: #8b2252;">Minibuf</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">)</span><span style="color: #8b2252;">"</span>))))))
   (ibuffer-show-empty-filter-groups nil)
   (ibuffer-shrink-to-minimum-size t t)
   (ibuffer-use-other-window t)
@@ -1923,10 +1924,10 @@ Org is the main component of knowledge management
          (<span style="color: #a020f0;">with-temp-buffer</span>
            (insert-file-contents-literally
             (executable-find (concat <span style="color: #8b2252;">"load-env-"</span> name)))
-           (<span style="color: #a020f0;">and</span> (re-search-forward <span style="color: #8b2252;">"^source </span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">(</span><span style="color: #8b2252;">.+</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">)</span><span style="color: #8b2252;">$"</span> nil t)
+           (<span style="color: #a020f0;">and</span> (re-search-forward <span style="color: #8b2252;">"^source </span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">(</span><span style="color: #8b2252;">.+</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">)</span><span style="color: #8b2252;">$"</span> nil t)
                 (match-string 1))))
-        (<span style="color: #a020f0;">and</span> (<span style="color: #a020f0;">or</span> (re-search-forward <span style="color: #8b2252;">"^  nativeBuildInputs=\"</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">(</span><span style="color: #8b2252;">.+?</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">)</span><span style="color: #8b2252;">\""</span> nil t)
-                 (re-search-forward <span style="color: #8b2252;">"^  buildInputs=\"</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">(</span><span style="color: #8b2252;">.+?</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">)</span><span style="color: #8b2252;">\""</span> nil t))
+        (<span style="color: #a020f0;">and</span> (<span style="color: #a020f0;">or</span> (re-search-forward <span style="color: #8b2252;">"^  nativeBuildInputs=\"</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">(</span><span style="color: #8b2252;">.+?</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">)</span><span style="color: #8b2252;">\""</span> nil t)
+                 (re-search-forward <span style="color: #8b2252;">"^  buildInputs=\"</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">(</span><span style="color: #8b2252;">.+?</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">)</span><span style="color: #8b2252;">\""</span> nil t))
              (split-string (match-string 1))))))
   <span style="color: #483d8b;">:init</span>
   (<span style="color: #a020f0;">defvar</span> <span style="color: #a0522d;">Info-directory-list</span>
@@ -1979,7 +1980,7 @@ Org is the main component of knowledge management
   (TeX-auto-save t)
   (TeX-auto-untabify t)
   (TeX-electric-escape t)
-  (TeX-electric-math '(<span style="color: #8b2252;">"</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">(</span><span style="color: #8b2252;">"</span> . <span style="color: #8b2252;">"</span><span style="color: #8b2252;">\\</span><span style="color: #8b2252;">)</span><span style="color: #8b2252;">"</span>))
+  (TeX-electric-math '(<span style="color: #8b2252;">"</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">(</span><span style="color: #8b2252;">"</span> . <span style="color: #8b2252;">"</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">)</span><span style="color: #8b2252;">"</span>))
   (TeX-engine 'xetex)
   (TeX-parse-self t)
   (TeX-master nil)

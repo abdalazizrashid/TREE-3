@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-08-02 Fri 15:54 -->
+<!-- 2024-09-23 Mon 12:08 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>&lrm;</title>
+<title>pkg</title>
 <meta name="author" content="A.R.M" />
 <meta name="generator" content="Org Mode" />
 <style type="text/css">
@@ -217,149 +217,154 @@
 </head>
 <body>
 <div id="content" class="content">
+<h1 class="title">pkg</h1>
 <div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgf04659a">Keys</a>
+<li><a href="#org4d63e51">Keys</a>
 <ul>
-<li><a href="#orged35c1e">SSH</a></li>
+<li><a href="#orgaecf3a1">SSH</a></li>
 </ul>
 </li>
-<li><a href="#orgd3e5ce8">Bash</a>
+<li><a href="#org9291ac1">Bash</a>
 <ul>
-<li><a href="#org73208b2">Bash useful flags</a></li>
-<li><a href="#orge0a0eb6"><span class="todo TODO">TODO</span> use <code>ps -afx</code> for showing hierarchical processes</a></li>
-<li><a href="#org6f53ffd">How does bash, zsh, and sh load the environment files</a></li>
+<li><a href="#org246d43f">Bash useful flags</a></li>
+<li><a href="#org2014588"><span class="todo TODO">TODO</span> use <code>ps -afx</code> for showing hierarchical processes</a></li>
+<li><a href="#org56503df">How does bash, zsh, and sh load the environment files</a></li>
 </ul>
 </li>
-<li><a href="#orgab20cf1">Beam VM</a>
+<li><a href="#org0728fb1">Beam VM</a>
 <ul>
-<li><a href="#org76fd648"><span class="todo TODO">TODO</span> lfe/lfe: Lisp Flavoured Erlang (LFE)</a></li>
-<li><a href="#orgcacb6bc"><span class="todo TODO">TODO</span> joxa/joxa: A Modern Lisp for the Erlang VM</a></li>
-<li><a href="#org4a72b7c">Elixir</a>
+<li><a href="#org34fd6cd"><span class="todo TODO">TODO</span> lfe/lfe: Lisp Flavoured Erlang (LFE)</a></li>
+<li><a href="#org1005514"><span class="todo TODO">TODO</span> joxa/joxa: A Modern Lisp for the Erlang VM</a></li>
+<li><a href="#org9259e44">Elixir</a>
 <ul>
-<li><a href="#orgce10a07"><span class="todo TODO">TODO</span> eglot elixir-ls configuration</a></li>
-<li><a href="#orga7a64b1">Livebook</a></li>
+<li><a href="#orgf37dbfa"><span class="todo TODO">TODO</span> eglot elixir-ls configuration</a></li>
+<li><a href="#orga2d8799">Livebook</a></li>
 </ul>
 </li>
-<li><a href="#orgc19e0f7">Erlang</a></li>
-<li><a href="#orgaa88958"><span class="todo TODO">TODO</span> happi/theBeamBook: A description of the Erlang Runtime System ERTS and the virtual Machine BEAM.</a></li>
+<li><a href="#orgdf44c7c">Erlang</a></li>
+<li><a href="#orge7a447f"><span class="todo TODO">TODO</span> happi/theBeamBook: A description of the Erlang Runtime System ERTS and the virtual Machine BEAM.</a></li>
 </ul>
 </li>
-<li><a href="#org9a25ac7">Lean</a></li>
-<li><a href="#org909ab59">Lisp</a>
+<li><a href="#org9697e97">Lean</a></li>
+<li><a href="#org6be229f">Lisp</a>
 <ul>
-<li><a href="#org1f376e1">Closure</a>
+<li><a href="#org2b1651f">Closure</a>
 <ul>
-<li><a href="#orgbebe077">Usage</a></li>
+<li><a href="#org2fb0bb2">Usage</a></li>
 </ul>
 </li>
-<li><a href="#org76ce224">Common Lisp</a></li>
-<li><a href="#org7769ac4">Racket</a></li>
-<li><a href="#org3b6c550">Scheme</a></li>
-<li><a href="#org7c733ae">Emacs Lisp</a>
+<li><a href="#org89c07cb">Common Lisp</a></li>
+<li><a href="#org2abc7e8">Racket</a></li>
+<li><a href="#org83c5d61">Scheme</a></li>
+<li><a href="#orgbf9af16">Emacs Lisp</a>
 <ul>
-<li><a href="#orgf0220ca"><span class="todo TODO">TODO</span> alhassy/emacs.d: My Emacs configuration, literately :smile:</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#org7449136">Nix</a>
-<ul>
-<li><a href="#org22ae858">https://mynixos.com/</a></li>
-<li><a href="#orgede22e0">Finding things in nixpkgs and nixos source code</a></li>
-<li><a href="#orgfa013d5">Modules</a></li>
-<li><a href="#org2375de7">Darwin</a></li>
-<li><a href="#org2d3528f">callPackage https://summer.nixos.org/blog/callpackage-a-tool-for-the-lazy/</a></li>
-<li><a href="#orgf6037c1"><code>breakpoint</code> provide it as native build input allowing us to intercept the packages</a></li>
-<li><a href="#org399b51f">On nixpkgs repository</a></li>
-<li><a href="#orgb4082fb">Misc</a></li>
-<li><a href="#orgb7ca214">https://mynixos.com/</a></li>
-<li><a href="#org0b9d3f3">Finding things in nixpkgs and nixos source code</a></li>
-<li><a href="#org360a8ab"><span class="todo TODO">TODO</span> nix debugging unsafeGetAttrPos</a></li>
-<li><a href="#org8b93759">Other people configs</a>
-<ul>
-<li><a href="#org83945ec"><span class="todo TODO">TODO</span> mitchellh/nixos-config: My NixOS configurations.</a></li>
-<li><a href="#org869626b"><span class="todo TODO">TODO</span> nix-config/config/darwin.nix at master · jwiegley/nix-config</a></li>
-<li><a href="#org5ad8aa1"><span class="todo TODO">TODO</span> MatthiasBenaets/nixos-config at 333d151ea784dabfd3260cabff01c090cb275a8e</a></li>
-<li><a href="#org617d758"><span class="todo TODO">TODO</span> infinisil/system: My system configuration</a></li>
-</ul>
-</li>
-<li><a href="#org8399989"><span class="todo TODO">TODO</span> Nix Flakes is an experiment that did too much at once… — Samuel Dionne-Riel</a></li>
-<li><a href="#org22e0bde"><span class="todo TODO">TODO</span> 1000 instances of nixpkgs</a></li>
-<li><a href="#orgbe34e9e">Nix remote build</a>
-<ul>
-<li><a href="#orgca11a62">Siging</a>
-<ul>
-<li><a href="#org038df52">nix-store &#x2013;generate-binary-cache-key $HOSTNAME $PRIVATE<sub>FILE</sub><sub>NAME</sub> $PUBLIC<sub>FILE</sub><sub>NAME</sub></a></li>
+<li><a href="#org0491407"><span class="todo TODO">TODO</span> alhassy/emacs.d: My Emacs configuration, literately :smile:</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li><a href="#orgb44e8f4">Nix</a>
+<ul>
+<li><a href="#org0113c69">https://mynixos.com/</a></li>
+<li><a href="#org8cd7617">Finding things in nixpkgs and nixos source code</a></li>
+<li><a href="#org2132243">Modules</a></li>
+<li><a href="#org1dfeef3">Darwin</a></li>
+<li><a href="#org9e51f82">callPackage https://summer.nixos.org/blog/callpackage-a-tool-for-the-lazy/</a></li>
+<li><a href="#org5a9ec45"><code>breakpoint</code> provide it as native build input allowing us to intercept the packages</a></li>
+<li><a href="#org0216594">On nixpkgs repository</a></li>
+<li><a href="#org70c9263">Misc</a></li>
+<li><a href="#org6c58198">https://mynixos.com/</a></li>
+<li><a href="#orga71d282">Finding things in nixpkgs and nixos source code</a></li>
+<li><a href="#org0aebf6e"><span class="todo TODO">TODO</span> nix debugging unsafeGetAttrPos</a></li>
+<li><a href="#org2a123fb">Other people configs</a>
+<ul>
+<li><a href="#org829e226"><span class="todo TODO">TODO</span> mitchellh/nixos-config: My NixOS configurations.</a></li>
+<li><a href="#org5585cac"><span class="todo TODO">TODO</span> nix-config/config/darwin.nix at master · jwiegley/nix-config</a></li>
+<li><a href="#orgb840915"><span class="todo TODO">TODO</span> MatthiasBenaets/nixos-config at 333d151ea784dabfd3260cabff01c090cb275a8e</a></li>
+<li><a href="#orgf620557"><span class="todo TODO">TODO</span> infinisil/system: My system configuration</a></li>
 </ul>
 </li>
-<li><a href="#orge35cd0c">Ocaml</a></li>
-<li><a href="#org7fec295">Python</a></li>
-<li><a href="#orgce97815">Rust</a></li>
-<li><a href="#org85b861b">Zig</a></li>
-<li><a href="#orgb5849ae">Books</a></li>
-<li><a href="#org96d3743">LLMs</a></li>
-<li><a href="#org8266c2d">Games</a></li>
-<li><a href="#org8f73d96">Linux</a>
+<li><a href="#org6e6ca07"><span class="todo TODO">TODO</span> Nix Flakes is an experiment that did too much at once… — Samuel Dionne-Riel</a></li>
+<li><a href="#org8831913"><span class="todo TODO">TODO</span> 1000 instances of nixpkgs</a></li>
+<li><a href="#orgd3bb23a">Nix remote build</a>
 <ul>
-<li><a href="#org97046d0"><span class="todo TODO">TODO</span> (184) Linux Plumbing — tips and tools for pipes, redirection and network connections - YouTube</a></li>
+<li><a href="#orgf76ef01">Siging</a>
+<ul>
+<li><a href="#org929ac01">nix-store &#x2013;generate-binary-cache-key $HOSTNAME $PRIVATE<sub>FILE</sub><sub>NAME</sub> $PUBLIC<sub>FILE</sub><sub>NAME</sub></a></li>
 </ul>
 </li>
-<li><a href="#org6829142">Emacs</a>
-<ul>
-<li><a href="#org8cfe626">Configs</a></li>
-<li><a href="#orgdd8e0bd"><span class="todo TODO">TODO</span> https://www.youtube.com/channel/UCNRwswKKpjOlOVfFTS73P9A/videos</a></li>
-<li><a href="#orgddb96a9"><span class="todo TODO">TODO</span> Creating EmacsClient.app on macOS - Help - NixOS Discourse</a></li>
-<li><a href="#org4b639cf">On search</a></li>
-<li><a href="#org840b033"><span class="todo TODO">TODO</span> &lt;[emacs-rocks]&gt; - &lt;www-url "https://emacsrocks.com/"&gt;</a></li>
 </ul>
 </li>
-<li><a href="#orgb60c08f">HyperLogLog</a></li>
-<li><a href="#orge6e088b">WHEN DO INSIGHTS COME!</a>
+</ul>
+</li>
+<li><a href="#orgb450a26">Ocaml</a></li>
+<li><a href="#org7b7ea5f">Python</a>
 <ul>
-<li><a href="#org7fd17a1">A FLY IN THE COORDINATE SYSTEM</a></li>
-<li><a href="#org65b3678">PING-PONG FOR THE BRAIN</a></li>
-<li><a href="#org4f018a1">ARCHIMEDES AND THE BATH</a></li>
-<li><a href="#org6ed72e5">ONCE UPON A TIME, ON THE TRAIN</a></li>
-<li><a href="#org5266259">FROM THE HIGH HORSE</a></li>
-<li><a href="#org9b629c2">THE DREAM ABOUT HOOLIGANS</a></li>
-<li><a href="#org707e238">THE DREAM ABOUT DOGS</a></li>
-<li><a href="#org0024472">THE DREAM ABOUT SAVAGES</a></li>
-<li><a href="#org4b28a6a">THE DREAM ABOUT SNAKES</a></li>
-<li><a href="#org02d8414">SLEEPING LIKE LEONARDO</a></li>
-<li><a href="#org76e7090">THE POMODORO TECHNIQUE</a></li>
-<li><a href="#org0f93ece">THE PLUM PUDDING MODEL OF THE ATOM</a></li>
+<li><a href="#org0e82ec8">Conda</a></li>
+</ul>
+</li>
+<li><a href="#orgd0cfd94">Rust</a></li>
+<li><a href="#org63d3fea">Zig</a></li>
+<li><a href="#org0b4e1dc">Books</a></li>
+<li><a href="#org06604ce">LLMs</a></li>
+<li><a href="#org99c0dda">Games</a></li>
+<li><a href="#org8acb703">Linux</a>
+<ul>
+<li><a href="#org73ae3d9"><span class="todo TODO">TODO</span> (184) Linux Plumbing — tips and tools for pipes, redirection and network connections - YouTube</a></li>
+</ul>
+</li>
+<li><a href="#org56776fd">Emacs</a>
+<ul>
+<li><a href="#orgff42ce3">Configs</a></li>
+<li><a href="#org0e5244a"><span class="todo TODO">TODO</span> https://www.youtube.com/channel/UCNRwswKKpjOlOVfFTS73P9A/videos</a></li>
+<li><a href="#org42231f7"><span class="todo TODO">TODO</span> Creating EmacsClient.app on macOS - Help - NixOS Discourse</a></li>
+<li><a href="#org7740b3d">On search</a></li>
+<li><a href="#org96d7372"><span class="todo TODO">TODO</span> &lt;[emacs-rocks]&gt; - &lt;www-url "https://emacsrocks.com/"&gt;</a></li>
+</ul>
+</li>
+<li><a href="#org85613f0">HyperLogLog</a></li>
+<li><a href="#org7eb1450">WHEN DO INSIGHTS COME!</a>
+<ul>
+<li><a href="#orgcb050b8">A FLY IN THE COORDINATE SYSTEM</a></li>
+<li><a href="#org7207c92">PING-PONG FOR THE BRAIN</a></li>
+<li><a href="#orgf1d8379">ARCHIMEDES AND THE BATH</a></li>
+<li><a href="#org5f753c9">ONCE UPON A TIME, ON THE TRAIN</a></li>
+<li><a href="#orgfbc63e8">FROM THE HIGH HORSE</a></li>
+<li><a href="#org3692c89">THE DREAM ABOUT HOOLIGANS</a></li>
+<li><a href="#orgb7cf922">THE DREAM ABOUT DOGS</a></li>
+<li><a href="#orgebd7aab">THE DREAM ABOUT SAVAGES</a></li>
+<li><a href="#org8ae370d">THE DREAM ABOUT SNAKES</a></li>
+<li><a href="#orgbf7de74">SLEEPING LIKE LEONARDO</a></li>
+<li><a href="#orga30ae89">THE POMODORO TECHNIQUE</a></li>
+<li><a href="#org6ccc353">THE PLUM PUDDING MODEL OF THE ATOM</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf04659a" class="outline-2">
-<h2 id="orgf04659a">Keys</h2>
-<div class="outline-text-2" id="text-orgf04659a">
+<div id="outline-container-org4d63e51" class="outline-2">
+<h2 id="org4d63e51">Keys</h2>
+<div class="outline-text-2" id="text-org4d63e51">
 </div>
-<div id="outline-container-orged35c1e" class="outline-3">
-<h3 id="orged35c1e">SSH</h3>
-<div class="outline-text-3" id="text-orged35c1e">
+<div id="outline-container-orgaecf3a1" class="outline-3">
+<h3 id="orgaecf3a1">SSH</h3>
+<div class="outline-text-3" id="text-orgaecf3a1">
 <p>
 <code>ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICX8KUmbAs2AcWar9cji61/+6R8m4aqoHaTKW1kcqg9D aziz@w375262.staff.corp.local</code>
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-orgd3e5ce8" class="outline-2">
-<h2 id="orgd3e5ce8">Bash</h2>
-<div class="outline-text-2" id="text-orgd3e5ce8">
+<div id="outline-container-org9291ac1" class="outline-2">
+<h2 id="org9291ac1">Bash</h2>
+<div class="outline-text-2" id="text-org9291ac1">
 </div>
-<div id="outline-container-org73208b2" class="outline-3">
-<h3 id="org73208b2">Bash useful flags</h3>
-<div class="outline-text-3" id="text-org73208b2">
+<div id="outline-container-org246d43f" class="outline-3">
+<h3 id="org246d43f">Bash useful flags</h3>
+<div class="outline-text-3" id="text-org246d43f">
 <p>
 figure out the equivlant flags for zsh and fish
 </p>
@@ -384,12 +389,12 @@ completion-ignore-case on
 </div>
 </div>
 </div>
-<div id="outline-container-orge0a0eb6" class="outline-3">
-<h3 id="orge0a0eb6"><span class="todo TODO">TODO</span> use <code>ps -afx</code> for showing hierarchical processes</h3>
+<div id="outline-container-org2014588" class="outline-3">
+<h3 id="org2014588"><span class="todo TODO">TODO</span> use <code>ps -afx</code> for showing hierarchical processes</h3>
 </div>
-<div id="outline-container-org6f53ffd" class="outline-3">
-<h3 id="org6f53ffd">How does bash, zsh, and sh load the environment files</h3>
-<div class="outline-text-3" id="text-org6f53ffd">
+<div id="outline-container-org56503df" class="outline-3">
+<h3 id="org56503df">How does bash, zsh, and sh load the environment files</h3>
+<div class="outline-text-3" id="text-org56503df">
 <ul class="org-ul">
 <li><a href="https://blog.flowblok.id.au/2013-02/shell-startup-scripts.html">https://blog.flowblok.id.au/2013-02/shell-startup-scripts.html</a></li>
 <li><a href="https://heptapod.host/flowblok/shell-startup">https://heptapod.host/flowblok/shell-startup</a></li>
@@ -397,23 +402,23 @@ completion-ignore-case on
 </div>
 </div>
 </div>
-<div id="outline-container-orgab20cf1" class="outline-2">
-<h2 id="orgab20cf1">Beam VM</h2>
-<div class="outline-text-2" id="text-orgab20cf1">
+<div id="outline-container-org0728fb1" class="outline-2">
+<h2 id="org0728fb1">Beam VM</h2>
+<div class="outline-text-2" id="text-org0728fb1">
 </div>
-<div id="outline-container-org76fd648" class="outline-3">
-<h3 id="org76fd648"><span class="todo TODO">TODO</span> <a href="https://github.com/lfe/lfe">lfe/lfe: Lisp Flavoured Erlang (LFE)</a></h3>
+<div id="outline-container-org34fd6cd" class="outline-3">
+<h3 id="org34fd6cd"><span class="todo TODO">TODO</span> <a href="https://github.com/lfe/lfe">lfe/lfe: Lisp Flavoured Erlang (LFE)</a></h3>
 </div>
-<div id="outline-container-orgcacb6bc" class="outline-3">
-<h3 id="orgcacb6bc"><span class="todo TODO">TODO</span> <a href="https://github.com/joxa/joxa">joxa/joxa: A Modern Lisp for the Erlang VM</a></h3>
+<div id="outline-container-org1005514" class="outline-3">
+<h3 id="org1005514"><span class="todo TODO">TODO</span> <a href="https://github.com/joxa/joxa">joxa/joxa: A Modern Lisp for the Erlang VM</a></h3>
 </div>
-<div id="outline-container-org4a72b7c" class="outline-3">
-<h3 id="org4a72b7c">Elixir</h3>
-<div class="outline-text-3" id="text-org4a72b7c">
+<div id="outline-container-org9259e44" class="outline-3">
+<h3 id="org9259e44">Elixir</h3>
+<div class="outline-text-3" id="text-org9259e44">
 </div>
-<div id="outline-container-orgce10a07" class="outline-4">
-<h4 id="orgce10a07"><span class="todo TODO">TODO</span> eglot elixir-ls configuration</h4>
-<div class="outline-text-4" id="text-orgce10a07">
+<div id="outline-container-orgf37dbfa" class="outline-4">
+<h4 id="orgf37dbfa"><span class="todo TODO">TODO</span> eglot elixir-ls configuration</h4>
+<div class="outline-text-4" id="text-orgf37dbfa">
 <p>
 ;; (elixir-ts-mode
 ;;  . (
@@ -422,33 +427,33 @@ completion-ignore-case on
 </p>
 </div>
 </div>
-<div id="outline-container-orga7a64b1" class="outline-4">
-<h4 id="orga7a64b1">Livebook</h4>
-<div class="outline-text-4" id="text-orga7a64b1">
+<div id="outline-container-orga2d8799" class="outline-4">
+<h4 id="orga2d8799">Livebook</h4>
+<div class="outline-text-4" id="text-orga2d8799">
 <p>
 Run using nix <code>HOME=$PWD LIVEBOOK_IP=0.0.0.0 LIVEBOOK_NODE=local ELIXIR_ERL_OPTIONS="+fnu" LIVEBOOK_PORT=8071 LIVEBOOK_IFRAME_PORT=8070 nix run nixpkgs#livebook -- start</code>
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-orgc19e0f7" class="outline-3">
-<h3 id="orgc19e0f7">Erlang</h3>
+<div id="outline-container-orgdf44c7c" class="outline-3">
+<h3 id="orgdf44c7c">Erlang</h3>
 </div>
-<div id="outline-container-orgaa88958" class="outline-3">
-<h3 id="orgaa88958"><span class="todo TODO">TODO</span> <a href="https://github.com/happi/theBeamBook">happi/theBeamBook: A description of the Erlang Runtime System ERTS and the virtual Machine BEAM.</a></h3>
+<div id="outline-container-orge7a447f" class="outline-3">
+<h3 id="orge7a447f"><span class="todo TODO">TODO</span> <a href="https://github.com/happi/theBeamBook">happi/theBeamBook: A description of the Erlang Runtime System ERTS and the virtual Machine BEAM.</a></h3>
 </div>
 </div>
-<div id="outline-container-org9a25ac7" class="outline-2">
-<h2 id="org9a25ac7">Lean</h2>
+<div id="outline-container-org9697e97" class="outline-2">
+<h2 id="org9697e97">Lean</h2>
 </div>
 
-<div id="outline-container-org909ab59" class="outline-2">
-<h2 id="org909ab59">Lisp</h2>
-<div class="outline-text-2" id="text-org909ab59">
+<div id="outline-container-org6be229f" class="outline-2">
+<h2 id="org6be229f">Lisp</h2>
+<div class="outline-text-2" id="text-org6be229f">
 </div>
-<div id="outline-container-org1f376e1" class="outline-3">
-<h3 id="org1f376e1">Closure</h3>
-<div class="outline-text-3" id="text-org1f376e1">
+<div id="outline-container-org2b1651f" class="outline-3">
+<h3 id="org2b1651f">Closure</h3>
+<div class="outline-text-3" id="text-org2b1651f">
 <p>
 Developed in 2000s for the goal of having a modern lisp to run on the
 java virtual machine with emphasis on concurrency.
@@ -459,18 +464,18 @@ java virtual machine with emphasis on concurrency.
 <li>all the data structures are immutable. Supports run time polymorphism</li>
 </ul>
 </div>
-<div id="outline-container-orgbebe077" class="outline-4">
-<h4 id="orgbebe077">Usage</h4>
-<div class="outline-text-4" id="text-orgbebe077">
+<div id="outline-container-org2fb0bb2" class="outline-4">
+<h4 id="org2fb0bb2">Usage</h4>
+<div class="outline-text-4" id="text-org2fb0bb2">
 <ul class="org-ul">
 <li>Atomist a container security and automation company acquired by docker</li>
 </ul>
 </div>
 </div>
 </div>
-<div id="outline-container-org76ce224" class="outline-3">
-<h3 id="org76ce224">Common Lisp</h3>
-<div class="outline-text-3" id="text-org76ce224">
+<div id="outline-container-org89c07cb" class="outline-3">
+<h3 id="org89c07cb">Common Lisp</h3>
+<div class="outline-text-3" id="text-org89c07cb">
 <p>
 Starte in 1981 initiated to develop single community standard
 dialect. The language is standradized, the language has been finalized
@@ -487,9 +492,9 @@ handling to be on three phases: signaling, capture, and restarting.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org7769ac4" class="outline-3">
-<h3 id="org7769ac4">Racket</h3>
-<div class="outline-text-3" id="text-org7769ac4">
+<div id="outline-container-org2abc7e8" class="outline-3">
+<h3 id="org2abc7e8">Racket</h3>
+<div class="outline-text-3" id="text-org2abc7e8">
 <p>
 Developed in 1995 for pedagogical purposes to teach Scheme. It was
 also designed for programming language design and implementation. It
@@ -503,9 +508,9 @@ programming paradigms.
 </ul>
 </div>
 </div>
-<div id="outline-container-org3b6c550" class="outline-3">
-<h3 id="org3b6c550">Scheme</h3>
-<div class="outline-text-3" id="text-org3b6c550">
+<div id="outline-container-org83c5d61" class="outline-3">
+<h3 id="org83c5d61">Scheme</h3>
+<div class="outline-text-3" id="text-org83c5d61">
 <p>
 Created in the 70th at MIT AI lab in attempt to understand the actor
 model. The wrote series of paper AI papers collectvely knows as the
@@ -525,9 +530,9 @@ it Shay scheme, Guile, MIT gnu scheme, and racket.
 </p>
 </div>
 </div>
-<div id="outline-container-org7c733ae" class="outline-3">
-<h3 id="org7c733ae">Emacs Lisp</h3>
-<div class="outline-text-3" id="text-org7c733ae">
+<div id="outline-container-orgbf9af16" class="outline-3">
+<h3 id="orgbf9af16">Emacs Lisp</h3>
+<div class="outline-text-3" id="text-orgbf9af16">
 <p>
 Developed in 1985 as an efficient language for the Emacs text
 editor. Its not standradized, it doesn't have tail recursion as it
@@ -535,25 +540,25 @@ uses a different work around (????), it uses dynamic scoping by
 default but it support lexical scoping.
 </p>
 </div>
-<div id="outline-container-orgf0220ca" class="outline-4">
-<h4 id="orgf0220ca"><span class="todo TODO">TODO</span> <a href="https://github.com/alhassy/emacs.d">alhassy/emacs.d: My Emacs configuration, literately :smile:</a></h4>
+<div id="outline-container-org0491407" class="outline-4">
+<h4 id="org0491407"><span class="todo TODO">TODO</span> <a href="https://github.com/alhassy/emacs.d">alhassy/emacs.d: My Emacs configuration, literately :smile:</a></h4>
 </div>
 </div>
 </div>
-<div id="outline-container-org7449136" class="outline-2">
-<h2 id="org7449136">Nix</h2>
-<div class="outline-text-2" id="text-org7449136">
+<div id="outline-container-orgb44e8f4" class="outline-2">
+<h2 id="orgb44e8f4">Nix</h2>
+<div class="outline-text-2" id="text-orgb44e8f4">
 <p>
 <a href="https://github.com/ryantm/agenix">https://github.com/ryantm/agenix</a>
 <a href="https://talks.nixcon.org/nixcon-2023/talk/BAVND7/">https://talks.nixcon.org/nixcon-2023/talk/BAVND7/</a>
 </p>
 </div>
-<div id="outline-container-org22ae858" class="outline-3">
-<h3 id="org22ae858"><a href="https://mynixos.com/">https://mynixos.com/</a></h3>
+<div id="outline-container-org0113c69" class="outline-3">
+<h3 id="org0113c69"><a href="https://mynixos.com/">https://mynixos.com/</a></h3>
 </div>
-<div id="outline-container-orgede22e0" class="outline-3">
-<h3 id="orgede22e0"><a href="https://talks.nixcon.org/nixcon-2023/talk/BAVND7/">Finding things in nixpkgs and nixos source code</a></h3>
-<div class="outline-text-3" id="text-orgede22e0">
+<div id="outline-container-org8cd7617" class="outline-3">
+<h3 id="org8cd7617"><a href="https://talks.nixcon.org/nixcon-2023/talk/BAVND7/">Finding things in nixpkgs and nixos source code</a></h3>
+<div class="outline-text-3" id="text-org8cd7617">
 <p>
 <a href="https://www.youtube.com/watch?v=mVAzsFfoT5c&amp;ab_channel=NixCon">https://www.youtube.com/watch?v=mVAzsFfoT5c&amp;ab_channel=NixCon</a>
 &lt;[Recording]&gt;
@@ -562,9 +567,9 @@ default but it support lexical scoping.
 </p>
 </div>
 </div>
-<div id="outline-container-orgfa013d5" class="outline-3">
-<h3 id="orgfa013d5">Modules</h3>
-<div class="outline-text-3" id="text-orgfa013d5">
+<div id="outline-container-org2132243" class="outline-3">
+<h3 id="org2132243">Modules</h3>
+<div class="outline-text-3" id="text-org2132243">
 <p>
 <code>imports</code> allow to define other modules as dependecies
 </p>
@@ -579,12 +584,12 @@ default but it support lexical scoping.
 <pre class="src src-bash"><span style="color: #b22222;">#</span><span style="color: #b22222;">!/usr/bin/</span><span style="color: #a020f0;">env</span><span style="color: #b22222;"> bash</span>
 <span style="color: #483d8b;">set</span> -euo pipefail
 
-<span style="color: #a0522d;">SCRIPT_DIR</span>=<span style="color: #8b2252;">"$( cd "$( dirname "${BASH_SOURCE[0]}" )" &amp;&gt; /dev/null &amp;&amp; pwd )"</span>
+<span style="color: #a0522d;">SCRIPT_DIR</span>=<span style="color: #8b2252;">"$(</span><span style="color: #ff00ff;"> cd "$( dirname "${BASH_SOURCE[0]}" </span><span style="color: #8b2252;">)" &amp;&gt; /dev/null &amp;&amp; pwd )"</span>
 
 <span style="color: #0000ff;">update</span>() {
     <span style="color: #b22222;">#</span><span style="color: #b22222;">echo "Updating.."</span>
-    <span style="color: #a020f0;">if</span> <span style="color: #a0522d;">json</span>=$(nix-instantiate --eval --strict --json <span style="color: #8b2252;">"$SCRIPT_DIR/../config.generate.script"</span>); <span style="color: #a020f0;">then</span>
-          <span style="color: #a0522d;">script</span>=$(jq -r . &lt;&lt;&lt; <span style="color: #8b2252;">"$json"</span>)
+    <span style="color: #a020f0;">if</span> <span style="color: #a0522d;">json</span>=$(<span style="color: #ff00ff;">nix-instantiate --eval --strict --json "$SCRIPT_DIR/../config.generate.script"</span>); <span style="color: #a020f0;">then</span>
+          <span style="color: #a0522d;">script</span>=$(<span style="color: #ff00ff;">jq -r . &lt;&lt;&lt; "$json"</span>)
           <span style="color: #483d8b;">eval</span> <span style="color: #8b2252;">"$script"</span>
     <span style="color: #a020f0;">fi</span>
     <span style="color: #b22222;">#</span><span style="color: #b22222;">sleep 3</span>
@@ -621,9 +626,9 @@ update
 </div>
 </div>
 </div>
-<div id="outline-container-org2375de7" class="outline-3">
-<h3 id="org2375de7">Darwin</h3>
-<div class="outline-text-3" id="text-org2375de7">
+<div id="outline-container-org1dfeef3" class="outline-3">
+<h3 id="org1dfeef3">Darwin</h3>
+<div class="outline-text-3" id="text-org1dfeef3">
 <p>
 &lt;[Darwin configuration options]&gt;
 &lt;www-url "<a href="https://daiderd.com/nix-darwin/manual/index.html">https://daiderd.com/nix-darwin/manual/index.html</a>"&gt;
@@ -631,37 +636,37 @@ update
 </p>
 </div>
 </div>
-<div id="outline-container-org2d3528f" class="outline-3">
-<h3 id="org2d3528f">callPackage <a href="https://summer.nixos.org/blog/callpackage-a-tool-for-the-lazy/">https://summer.nixos.org/blog/callpackage-a-tool-for-the-lazy/</a></h3>
+<div id="outline-container-org9e51f82" class="outline-3">
+<h3 id="org9e51f82">callPackage <a href="https://summer.nixos.org/blog/callpackage-a-tool-for-the-lazy/">https://summer.nixos.org/blog/callpackage-a-tool-for-the-lazy/</a></h3>
 </div>
-<div id="outline-container-orgf6037c1" class="outline-3">
-<h3 id="orgf6037c1"><code>breakpoint</code> provide it as native build input allowing us to intercept the packages</h3>
-<div class="outline-text-3" id="text-orgf6037c1">
+<div id="outline-container-org5a9ec45" class="outline-3">
+<h3 id="org5a9ec45"><code>breakpoint</code> provide it as native build input allowing us to intercept the packages</h3>
+<div class="outline-text-3" id="text-org5a9ec45">
 <p>
 <a href="https://github.com/Mic92/cntr">https://github.com/Mic92/cntr</a> you will need this to change the environment
 </p>
 </div>
 </div>
-<div id="outline-container-org399b51f" class="outline-3">
-<h3 id="org399b51f">On nixpkgs repository</h3>
+<div id="outline-container-org0216594" class="outline-3">
+<h3 id="org0216594">On nixpkgs repository</h3>
 </div>
 
 
-<div id="outline-container-orgb4082fb" class="outline-3">
-<h3 id="orgb4082fb">Misc</h3>
-<div class="outline-text-3" id="text-orgb4082fb">
+<div id="outline-container-org70c9263" class="outline-3">
+<h3 id="org70c9263">Misc</h3>
+<div class="outline-text-3" id="text-org70c9263">
 <p>
 <a href="https://github.com/ryantm/agenix">https://github.com/ryantm/agenix</a>
 <a href="https://talks.nixcon.org/nixcon-2023/talk/BAVND7/">https://talks.nixcon.org/nixcon-2023/talk/BAVND7/</a>
 </p>
 </div>
 </div>
-<div id="outline-container-orgb7ca214" class="outline-3">
-<h3 id="orgb7ca214"><a href="https://mynixos.com/">https://mynixos.com/</a></h3>
+<div id="outline-container-org6c58198" class="outline-3">
+<h3 id="org6c58198"><a href="https://mynixos.com/">https://mynixos.com/</a></h3>
 </div>
-<div id="outline-container-org0b9d3f3" class="outline-3">
-<h3 id="org0b9d3f3"><a href="https://talks.nixcon.org/nixcon-2023/talk/BAVND7/">Finding things in nixpkgs and nixos source code</a></h3>
-<div class="outline-text-3" id="text-org0b9d3f3">
+<div id="outline-container-orga71d282" class="outline-3">
+<h3 id="orga71d282"><a href="https://talks.nixcon.org/nixcon-2023/talk/BAVND7/">Finding things in nixpkgs and nixos source code</a></h3>
+<div class="outline-text-3" id="text-orga71d282">
 <p>
 <a href="https://www.youtube.com/watch?v=mVAzsFfoT5c&amp;ab_channel=NixCon">https://www.youtube.com/watch?v=mVAzsFfoT5c&amp;ab_channel=NixCon</a>
 &lt;[Recording]&gt;
@@ -673,35 +678,35 @@ update
 </p>
 </div>
 </div>
-<div id="outline-container-org360a8ab" class="outline-3">
-<h3 id="org360a8ab"><span class="todo TODO">TODO</span> nix debugging unsafeGetAttrPos</h3>
+<div id="outline-container-org0aebf6e" class="outline-3">
+<h3 id="org0aebf6e"><span class="todo TODO">TODO</span> nix debugging unsafeGetAttrPos</h3>
 </div>
-<div id="outline-container-org8b93759" class="outline-3">
-<h3 id="org8b93759">Other people configs</h3>
-<div class="outline-text-3" id="text-org8b93759">
+<div id="outline-container-org2a123fb" class="outline-3">
+<h3 id="org2a123fb">Other people configs</h3>
+<div class="outline-text-3" id="text-org2a123fb">
 </div>
-<div id="outline-container-org83945ec" class="outline-4">
-<h4 id="org83945ec"><span class="todo TODO">TODO</span> <a href="https://github.com/mitchellh/nixos-config/tree/main">mitchellh/nixos-config: My NixOS configurations.</a></h4>
+<div id="outline-container-org829e226" class="outline-4">
+<h4 id="org829e226"><span class="todo TODO">TODO</span> <a href="https://github.com/mitchellh/nixos-config/tree/main">mitchellh/nixos-config: My NixOS configurations.</a></h4>
 </div>
-<div id="outline-container-org869626b" class="outline-4">
-<h4 id="org869626b"><span class="todo TODO">TODO</span> <a href="https://github.com/jwiegley/nix-config/blob/master/config/darwin.nix">nix-config/config/darwin.nix at master · jwiegley/nix-config</a></h4>
+<div id="outline-container-org5585cac" class="outline-4">
+<h4 id="org5585cac"><span class="todo TODO">TODO</span> <a href="https://github.com/jwiegley/nix-config/blob/master/config/darwin.nix">nix-config/config/darwin.nix at master · jwiegley/nix-config</a></h4>
 </div>
-<div id="outline-container-org5ad8aa1" class="outline-4">
-<h4 id="org5ad8aa1"><span class="todo TODO">TODO</span> <a href="https://github.com/MatthiasBenaets/nixos-config/tree/333d151ea784dabfd3260cabff01c090cb275a8e">MatthiasBenaets/nixos-config at 333d151ea784dabfd3260cabff01c090cb275a8e</a></h4>
+<div id="outline-container-orgb840915" class="outline-4">
+<h4 id="orgb840915"><span class="todo TODO">TODO</span> <a href="https://github.com/MatthiasBenaets/nixos-config/tree/333d151ea784dabfd3260cabff01c090cb275a8e">MatthiasBenaets/nixos-config at 333d151ea784dabfd3260cabff01c090cb275a8e</a></h4>
 </div>
-<div id="outline-container-org617d758" class="outline-4">
-<h4 id="org617d758"><span class="todo TODO">TODO</span> <a href="https://github.com/infinisil/system/tree/master">infinisil/system: My system configuration</a></h4>
+<div id="outline-container-orgf620557" class="outline-4">
+<h4 id="orgf620557"><span class="todo TODO">TODO</span> <a href="https://github.com/infinisil/system/tree/master">infinisil/system: My system configuration</a></h4>
 </div>
 </div>
-<div id="outline-container-org8399989" class="outline-3">
-<h3 id="org8399989"><span class="todo TODO">TODO</span> <a href="https://samuel.dionne-riel.com/blog/2023/09/06/flakes-is-an-experiment-that-did-too-much-at-once.html">Nix Flakes is an experiment that did too much at once… — Samuel Dionne-Riel</a></h3>
+<div id="outline-container-org6e6ca07" class="outline-3">
+<h3 id="org6e6ca07"><span class="todo TODO">TODO</span> <a href="https://samuel.dionne-riel.com/blog/2023/09/06/flakes-is-an-experiment-that-did-too-much-at-once.html">Nix Flakes is an experiment that did too much at once… — Samuel Dionne-Riel</a></h3>
 </div>
-<div id="outline-container-org22e0bde" class="outline-3">
-<h3 id="org22e0bde"><span class="todo TODO">TODO</span> <a href="https://zimbatm.com/notes/1000-instances-of-nixpkgs">1000 instances of nixpkgs</a></h3>
+<div id="outline-container-org8831913" class="outline-3">
+<h3 id="org8831913"><span class="todo TODO">TODO</span> <a href="https://zimbatm.com/notes/1000-instances-of-nixpkgs">1000 instances of nixpkgs</a></h3>
 </div>
-<div id="outline-container-orgbe34e9e" class="outline-3">
-<h3 id="orgbe34e9e">Nix remote build</h3>
-<div class="outline-text-3" id="text-orgbe34e9e">
+<div id="outline-container-orgd3bb23a" class="outline-3">
+<h3 id="orgd3bb23a">Nix remote build</h3>
+<div class="outline-text-3" id="text-orgd3bb23a">
 <p>
 Use the following command to run the build on a remote host:
 </p>
@@ -726,17 +731,17 @@ An example to build nix documentation
 </pre>
 </div>
 </div>
-<div id="outline-container-orgca11a62" class="outline-4">
-<h4 id="orgca11a62">Siging</h4>
-<div class="outline-text-4" id="text-orgca11a62">
+<div id="outline-container-orgf76ef01" class="outline-4">
+<h4 id="orgf76ef01">Siging</h4>
+<div class="outline-text-4" id="text-orgf76ef01">
 <p>
 Use the following command to generate keys
 #+begin<sub>src</sub> bash
 </p>
 </div>
-<div id="outline-container-org038df52" class="outline-5">
-<h5 id="org038df52">nix-store &#x2013;generate-binary-cache-key $HOSTNAME $PRIVATE<sub>FILE</sub><sub>NAME</sub> $PUBLIC<sub>FILE</sub><sub>NAME</sub></h5>
-<div class="outline-text-5" id="text-org038df52">
+<div id="outline-container-org929ac01" class="outline-5">
+<h5 id="org929ac01">nix-store &#x2013;generate-binary-cache-key $HOSTNAME $PRIVATE<sub>FILE</sub><sub>NAME</sub> $PUBLIC<sub>FILE</sub><sub>NAME</sub></h5>
+<div class="outline-text-5" id="text-org929ac01">
 <p>
 #+end<sub>src</sub>
 Then sign the path using:
@@ -762,64 +767,80 @@ nix-store(9) - nix store
 </div>
 </div>
 </div>
-<div id="outline-container-orge35cd0c" class="outline-2">
-<h2 id="orge35cd0c">Ocaml</h2>
+<div id="outline-container-orgb450a26" class="outline-2">
+<h2 id="orgb450a26">Ocaml</h2>
 </div>
 
-<div id="outline-container-org7fec295" class="outline-2">
-<h2 id="org7fec295">Python</h2>
+<div id="outline-container-org7b7ea5f" class="outline-2">
+<h2 id="org7b7ea5f">Python</h2>
+<div class="outline-text-2" id="text-org7b7ea5f">
+</div>
+<div id="outline-container-org0e82ec8" class="outline-3">
+<h3 id="org0e82ec8">Conda</h3>
+<div class="outline-text-3" id="text-org0e82ec8">
+<p>
+conda activate
+conda env update &#x2013;file local.yml
+!echo $LD<sub>LIBRARY</sub><sub>PATH</sub>
+grep conda
+conda env remove -n $ENVNAME
+conda env create -f environment.yaml
+from jax.lib import xla<sub>bridge</sub>
+print(xla<sub>bridge.get</sub><sub>backend</sub>().platform)
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd0cfd94" class="outline-2">
+<h2 id="orgd0cfd94">Rust</h2>
 </div>
 
-<div id="outline-container-orgce97815" class="outline-2">
-<h2 id="orgce97815">Rust</h2>
+<div id="outline-container-org63d3fea" class="outline-2">
+<h2 id="org63d3fea">Zig</h2>
 </div>
 
-<div id="outline-container-org85b861b" class="outline-2">
-<h2 id="org85b861b">Zig</h2>
+<div id="outline-container-org0b4e1dc" class="outline-2">
+<h2 id="org0b4e1dc">Books</h2>
 </div>
-
-<div id="outline-container-orgb5849ae" class="outline-2">
-<h2 id="orgb5849ae">Books</h2>
+<div id="outline-container-org06604ce" class="outline-2">
+<h2 id="org06604ce">LLMs</h2>
 </div>
-<div id="outline-container-org96d3743" class="outline-2">
-<h2 id="org96d3743">LLMs</h2>
+<div id="outline-container-org99c0dda" class="outline-2">
+<h2 id="org99c0dda">Games</h2>
 </div>
-<div id="outline-container-org8266c2d" class="outline-2">
-<h2 id="org8266c2d">Games</h2>
+<div id="outline-container-org8acb703" class="outline-2">
+<h2 id="org8acb703">Linux</h2>
+<div class="outline-text-2" id="text-org8acb703">
 </div>
-<div id="outline-container-org8f73d96" class="outline-2">
-<h2 id="org8f73d96">Linux</h2>
-<div class="outline-text-2" id="text-org8f73d96">
-</div>
-<div id="outline-container-org97046d0" class="outline-3">
-<h3 id="org97046d0"><span class="todo TODO">TODO</span> <a href="https://www.youtube.com/watch?v=Y5Fe2y149C4&amp;ab_channel=Tweag">(184) Linux Plumbing — tips and tools for pipes, redirection and network connections - YouTube</a></h3>
+<div id="outline-container-org73ae3d9" class="outline-3">
+<h3 id="org73ae3d9"><span class="todo TODO">TODO</span> <a href="https://www.youtube.com/watch?v=Y5Fe2y149C4&amp;ab_channel=Tweag">(184) Linux Plumbing — tips and tools for pipes, redirection and network connections - YouTube</a></h3>
 </div>
 </div>
-<div id="outline-container-org6829142" class="outline-2">
-<h2 id="org6829142">Emacs</h2>
-<div class="outline-text-2" id="text-org6829142">
+<div id="outline-container-org56776fd" class="outline-2">
+<h2 id="org56776fd">Emacs</h2>
+<div class="outline-text-2" id="text-org56776fd">
 <ul class="org-ul">
 <li>To kill file path use {C-u C-c C-k}, which invokes helm-kill-selection-and-quit.
 From the documentation of "(helm)helm-kill-selection-and-quit"</li>
 </ul>
 </div>
-<div id="outline-container-org8cfe626" class="outline-3">
-<h3 id="org8cfe626">Configs</h3>
-<div class="outline-text-3" id="text-org8cfe626">
+<div id="outline-container-orgff42ce3" class="outline-3">
+<h3 id="orgff42ce3">Configs</h3>
+<div class="outline-text-3" id="text-orgff42ce3">
 <ul class="org-ul">
 <li><a href="https://github.com/jwiegley/dot-emacs/blob/master/init.org">https://github.com/jwiegley/dot-emacs/blob/master/init.org</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgdd8e0bd" class="outline-3">
-<h3 id="orgdd8e0bd"><span class="todo TODO">TODO</span> <a href="https://www.youtube.com/channel/UCNRwswKKpjOlOVfFTS73P9A/videos">https://www.youtube.com/channel/UCNRwswKKpjOlOVfFTS73P9A/videos</a></h3>
+<div id="outline-container-org0e5244a" class="outline-3">
+<h3 id="org0e5244a"><span class="todo TODO">TODO</span> <a href="https://www.youtube.com/channel/UCNRwswKKpjOlOVfFTS73P9A/videos">https://www.youtube.com/channel/UCNRwswKKpjOlOVfFTS73P9A/videos</a></h3>
 </div>
-<div id="outline-container-orgddb96a9" class="outline-3">
-<h3 id="orgddb96a9"><span class="todo TODO">TODO</span> <a href="https://discourse.nixos.org/t/creating-emacsclient-app-on-macos/12689/4">Creating EmacsClient.app on macOS - Help - NixOS Discourse</a></h3>
+<div id="outline-container-org42231f7" class="outline-3">
+<h3 id="org42231f7"><span class="todo TODO">TODO</span> <a href="https://discourse.nixos.org/t/creating-emacsclient-app-on-macos/12689/4">Creating EmacsClient.app on macOS - Help - NixOS Discourse</a></h3>
 </div>
-<div id="outline-container-org4b639cf" class="outline-3">
-<h3 id="org4b639cf">On search</h3>
-<div class="outline-text-3" id="text-org4b639cf">
+<div id="outline-container-org7740b3d" class="outline-3">
+<h3 id="org7740b3d">On search</h3>
+<div class="outline-text-3" id="text-org7740b3d">
 <p>
 Avy is a great package that among other things helps you jump to a
 visible line without needing to know the number. And imenu along with
@@ -829,9 +850,9 @@ are better ways to navigate than line numbers.
 </p>
 </div>
 </div>
-<div id="outline-container-org840b033" class="outline-3">
-<h3 id="org840b033"><span class="todo TODO">TODO</span> &lt;[emacs-rocks]&gt; - &lt;www-url "<a href="https://emacsrocks.com/">https://emacsrocks.com/</a>"&gt;</h3>
-<div class="outline-text-3" id="text-org840b033">
+<div id="outline-container-org96d7372" class="outline-3">
+<h3 id="org96d7372"><span class="todo TODO">TODO</span> &lt;[emacs-rocks]&gt; - &lt;www-url "<a href="https://emacsrocks.com/">https://emacsrocks.com/</a>"&gt;</h3>
+<div class="outline-text-3" id="text-org96d7372">
 <p>
 <a href="https://cestlaz.github.io/post/learning-elisp-16/">https://cestlaz.github.io/post/learning-elisp-16/</a>
 Steve yegge blog post about emacs <a href="https://sites.google.com/site/steveyegge2/effective-emacs?authuser=0">https://sites.google.com/site/steveyegge2/effective-emacs?authuser=0</a>
@@ -839,9 +860,9 @@ Steve yegge blog post about emacs <a href="https://sites.google.com/site/steveye
 </div>
 </div>
 </div>
-<div id="outline-container-orgb60c08f" class="outline-2">
-<h2 id="orgb60c08f">HyperLogLog</h2>
-<div class="outline-text-2" id="text-orgb60c08f">
+<div id="outline-container-org85613f0" class="outline-2">
+<h2 id="org85613f0">HyperLogLog</h2>
+<div class="outline-text-2" id="text-org85613f0">
 <p>
 HyperLogLog (HLL) is a probabilistic data structure used for
 estimating the cardinality of large datasets efficiently.  Linear
@@ -912,9 +933,9 @@ from different sources to be combined seamlessly.
 </p>
 </div>
 </div>
-<div id="outline-container-orge6e088b" class="outline-2">
-<h2 id="orge6e088b">WHEN DO INSIGHTS COME!</h2>
-<div class="outline-text-2" id="text-orge6e088b">
+<div id="outline-container-org7eb1450" class="outline-2">
+<h2 id="org7eb1450">WHEN DO INSIGHTS COME!</h2>
+<div class="outline-text-2" id="text-org7eb1450">
 <p>
 From my trip to the ВДНХ Atom Museum in
 Moscow.
@@ -937,9 +958,9 @@ as it allows us to experience sudden insights and find bright
 solutions.
 </p>
 </div>
-<div id="outline-container-org7fd17a1" class="outline-3">
-<h3 id="org7fd17a1">A FLY IN THE COORDINATE SYSTEM</h3>
-<div class="outline-text-3" id="text-org7fd17a1">
+<div id="outline-container-orgcb050b8" class="outline-3">
+<h3 id="orgcb050b8">A FLY IN THE COORDINATE SYSTEM</h3>
+<div class="outline-text-3" id="text-orgcb050b8">
 <p>
 René Descartes (1596-1650), Mathematician
 </p>
@@ -956,9 +977,9 @@ identify the location of an object in 3D space and in 2D planes.
 </p>
 </div>
 </div>
-<div id="outline-container-org65b3678" class="outline-3">
-<h3 id="org65b3678">PING-PONG FOR THE BRAIN</h3>
-<div class="outline-text-3" id="text-org65b3678">
+<div id="outline-container-org7207c92" class="outline-3">
+<h3 id="org7207c92">PING-PONG FOR THE BRAIN</h3>
+<div class="outline-text-3" id="text-org7207c92">
 <p>
 Igor Kurchatov (1903-1960), Physicist
 </p>
@@ -984,9 +1005,9 @@ or created.
 </p>
 </div>
 </div>
-<div id="outline-container-org4f018a1" class="outline-3">
-<h3 id="org4f018a1">ARCHIMEDES AND THE BATH</h3>
-<div class="outline-text-3" id="text-org4f018a1">
+<div id="outline-container-orgf1d8379" class="outline-3">
+<h3 id="orgf1d8379">ARCHIMEDES AND THE BATH</h3>
+<div class="outline-text-3" id="text-orgf1d8379">
 <p>
 Archimedes (287-212 BC), Scientist
 </p>
@@ -1018,9 +1039,9 @@ ingeniously
 </blockquote>
 </div>
 </div>
-<div id="outline-container-org6ed72e5" class="outline-3">
-<h3 id="org6ed72e5">ONCE UPON A TIME, ON THE TRAIN</h3>
-<div class="outline-text-3" id="text-org6ed72e5">
+<div id="outline-container-org5f753c9" class="outline-3">
+<h3 id="org5f753c9">ONCE UPON A TIME, ON THE TRAIN</h3>
+<div class="outline-text-3" id="text-org5f753c9">
 <p>
 Boris Egorov (1913-1976), Mechanic
 </p>
@@ -1043,9 +1064,9 @@ productivity by 8000 times.
 </p>
 </div>
 </div>
-<div id="outline-container-org5266259" class="outline-3">
-<h3 id="org5266259">FROM THE HIGH HORSE</h3>
-<div class="outline-text-3" id="text-org5266259">
+<div id="outline-container-orgfbc63e8" class="outline-3">
+<h3 id="orgfbc63e8">FROM THE HIGH HORSE</h3>
+<div class="outline-text-3" id="text-orgfbc63e8">
 <p>
 Gavril Ilizarov (1921-1992), Physician
 </p>
@@ -1071,9 +1092,9 @@ healing. This was truly a revolutionary concept in orthopedic surgery.
 </p>
 </div>
 </div>
-<div id="outline-container-org9b629c2" class="outline-3">
-<h3 id="org9b629c2">THE DREAM ABOUT HOOLIGANS</h3>
-<div class="outline-text-3" id="text-org9b629c2">
+<div id="outline-container-org3692c89" class="outline-3">
+<h3 id="org3692c89">THE DREAM ABOUT HOOLIGANS</h3>
+<div class="outline-text-3" id="text-org3692c89">
 <p>
 Laszlo Josef Biro (1899-1985), Inventor
 </p>
@@ -1092,9 +1113,9 @@ and named "biro" in honor of Laszlo.
 </p>
 </div>
 </div>
-<div id="outline-container-org707e238" class="outline-3">
-<h3 id="org707e238">THE DREAM ABOUT DOGS</h3>
-<div class="outline-text-3" id="text-org707e238">
+<div id="outline-container-orgb7cf922" class="outline-3">
+<h3 id="orgb7cf922">THE DREAM ABOUT DOGS</h3>
+<div class="outline-text-3" id="text-orgb7cf922">
 <p>
 Frederick Grant Banting (1891-1941), Medical Scientist
 </p>
@@ -1120,9 +1141,9 @@ youngest Nobel Prize winner in physiology or medicine.
 </p>
 </div>
 </div>
-<div id="outline-container-org0024472" class="outline-3">
-<h3 id="org0024472">THE DREAM ABOUT SAVAGES</h3>
-<div class="outline-text-3" id="text-org0024472">
+<div id="outline-container-orgebd7aab" class="outline-3">
+<h3 id="orgebd7aab">THE DREAM ABOUT SAVAGES</h3>
+<div class="outline-text-3" id="text-orgebd7aab">
 <p>
 Elias Howe (1819-1867), Mechanic
 </p>
@@ -1146,9 +1167,9 @@ machines.
 </p>
 </div>
 </div>
-<div id="outline-container-org4b28a6a" class="outline-3">
-<h3 id="org4b28a6a">THE DREAM ABOUT SNAKES</h3>
-<div class="outline-text-3" id="text-org4b28a6a">
+<div id="outline-container-org8ae370d" class="outline-3">
+<h3 id="org8ae370d">THE DREAM ABOUT SNAKES</h3>
+<div class="outline-text-3" id="text-org8ae370d">
 <p>
 August Kekule (1829-1896), Chemist
 </p>
@@ -1173,9 +1194,9 @@ more attention to their own visions.
 </p>
 </div>
 </div>
-<div id="outline-container-org02d8414" class="outline-3">
-<h3 id="org02d8414">SLEEPING LIKE LEONARDO</h3>
-<div class="outline-text-3" id="text-org02d8414">
+<div id="outline-container-orgbf7de74" class="outline-3">
+<h3 id="orgbf7de74">SLEEPING LIKE LEONARDO</h3>
+<div class="outline-text-3" id="text-orgbf7de74">
 <p>
 Leonardo da Vinci (1452-1519), Inventor
 </p>
@@ -1199,9 +1220,9 @@ edge between dream and reality.
 </p>
 </div>
 </div>
-<div id="outline-container-org76e7090" class="outline-3">
-<h3 id="org76e7090">THE POMODORO TECHNIQUE</h3>
-<div class="outline-text-3" id="text-org76e7090">
+<div id="outline-container-orga30ae89" class="outline-3">
+<h3 id="orga30ae89">THE POMODORO TECHNIQUE</h3>
+<div class="outline-text-3" id="text-orga30ae89">
 <p>
 In the 1980s, Francesco Cirillo, an Italian student, had difficulties
 focusing on his studies. To avoid distractions, he set a tomato-shaped
@@ -1221,9 +1242,9 @@ are the key to getting into the flow.
 </p>
 </div>
 </div>
-<div id="outline-container-org0f93ece" class="outline-3">
-<h3 id="org0f93ece">THE PLUM PUDDING MODEL OF THE ATOM</h3>
-<div class="outline-text-3" id="text-org0f93ece">
+<div id="outline-container-org6ccc353" class="outline-3">
+<h3 id="org6ccc353">THE PLUM PUDDING MODEL OF THE ATOM</h3>
+<div class="outline-text-3" id="text-org6ccc353">
 <p>
 Joseph John Thomson (1856-1940), Physicist
 </p>

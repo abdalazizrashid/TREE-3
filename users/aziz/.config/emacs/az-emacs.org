@@ -952,7 +952,7 @@ Org is the main component of knowledge management
   ;; (load "other_importers.el")
 #+end_src
 
-*** Publishing
+*** COMMENT Publishing
 #+begin_src emacs-lisp :tangle "init.el"
   (require 'ox-publish)
   (require 'ox-html)
@@ -986,7 +986,7 @@ Org is the main component of knowledge management
 
 
   (defvar site-dir "~/Documents/org/")
-  (defvar publish-dir "~/Sources/tree-3/users/aziz/blog/")
+  (defvar publish-dir "~/Sources/tree-3/users/aziz/www/")
 
   (setq org-publish-project-alist
         `(("blog-org-files"
@@ -997,9 +997,9 @@ Org is the main component of knowledge management
   	 :publishing-function org-html-publish-to-html
   	 :headline-levels 4
   	 :auto-preamble t
-  	 :auto-sitemap t
+  	 :auto-sitemap nil
   	 :exclude ".*.org"
-  	 :include ("pkg.org" "az-emacs.org", "dft.org" "infra.org" "SIP.org")
+  	 :include ("pkg.org" "az-emacs.org", "dft.org" "infra/infra.org" "SIP.org")
   	 :html-postamble nil
   	 :section-numbers nil
   	 :sitemap-filename "index.org"
@@ -1020,8 +1020,6 @@ Org is the main component of knowledge management
   	 :publishing-function org-publish-attachment)
 
   	("blog" :components ("blog-org-files" "blog-static"))))
-
-
 #+end_src
 ** Bibliography
 #+begin_src emacs-lisp :tangle "init.el"

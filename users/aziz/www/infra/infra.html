@@ -1,0 +1,898 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2024-09-23 Mon 12:08 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>infra Modern Congruent Infrastructure</title>
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+<script>
+// @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&amp;dn=gpl-3.0.txt GPL-v3-or-Later
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+// @license-end
+</script>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">infra Modern Congruent Infrastructure</h1>
+<head>
+    <meta charset="utf-8" />
+    <title>Modern Congruent Infrastructure</title>
+    <script
+      src="https://www.w3.org/Tools/respec/respec-w3c"
+      class="remove"
+      defer
+    ></script>
+    <script class="remove">
+      // All config options at https://respec.org/docs/
+      var respecConfig = {
+	  license: "bean",
+	  highlightVars: true,
+          specStatus: "unofficial",
+	  xref: "kek",
+	authors: [
+	    {
+		name: "Abdalaziz Al-Maeeni",
+		url: "https://aziz.fyi/",
+		orcid: "0000-0002-3299-7293",
+		company: "Probabilistic Solutions, PyMC Labs, Higher School of Economics",
+		monetization: "wallet.example.com/my-wallet",
+	    },
+	],
+        github: "abdalazizrashid/tree-3",
+        shortName: "Aziz",
+      };
+    </script>
+    <meta content="dark light" name="color-scheme">
+    <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
+</head>
+
+<p>
+A <dfn>car</dfn> has a <dfn data-dfn-for="car">engine</dfn>, which burns petroleum.
+A &lt;dfn&gt;browser&lt;/dfn&gt; has a &lt;dfn data-dfn-for=&ldquo;browser&rdquo;&gt;engine&lt;/dfn&gt;, which burns
+democracy.
+</p>
+
+<p>
+<a href="https://github.com/speced/respec">https://github.com/speced/respec</a>
+<a href="https://www.gnu.org/software/emacs/manual/html_node/org/HTML-doctypes.html">https://www.gnu.org/software/emacs/manual/html_node/org/HTML-doctypes.html</a>
+<a href="https://orgmode.org/manual/Publishing-options.html#HTML-specific-properties-1">https://orgmode.org/manual/Publishing-options.html#HTML-specific-properties-1</a>
+<a href="https://github.com/jwiegley/org-mode/blob/master/lisp/ox-html.el#L1826">https://github.com/jwiegley/org-mode/blob/master/lisp/ox-html.el#L1826</a>
+</p>
+
+<p>
+<section id="abstract">
+This [WIP] book aims to be a reference for implementing modern cost
+effective enterprise grade computer infrastructure, with emphasis on
+reproducibility and determinisim.
+</p>
+
+<p>
+A <dfn>car</dfn> has a <dfn data-dfn-for="car">engine</dfn>,
+which burns petroleum.  A <dfn>browser</dfn> has a <dfn
+data-dfn-for="browser">engine</dfn>, which burns democracy. |value:DOMString| tells Respec that the variable value is of type {{DOMString}}.  |value:DOMString| 
+</p>
+
+<p>
+</section>
+</p>
+<section id="outline-container-org0d8f69c" class="outline-2">
+<h2 id="org0d8f69c">Introduction</h2>
+<div class="outline-text-2" id="text-org0d8f69c">
+<ul class="org-ul">
+<li>Software and timelessness</li>
+</ul>
+</div>
+<div id="outline-container-orgbb79161" class="outline-3">
+<h3 id="orgbb79161">How does the internet work?</h3>
+<div class="outline-text-3" id="text-orgbb79161">
+<ul class="org-ul">
+<li>IETF</li>
+<li>IANA</li>
+<li>ICANN</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge253f33" class="outline-3">
+<h3 id="orge253f33">Infrastructure taxonomy</h3>
+<div class="outline-text-3" id="text-orge253f33">
+</div>
+<div id="outline-container-orgc1de30b" class="outline-4">
+<h4 id="orgc1de30b">Divergent</h4>
+</div>
+
+<div id="outline-container-org34cc68c" class="outline-4">
+<h4 id="org34cc68c">Convergent</h4>
+</div>
+
+<div id="outline-container-org81e8751" class="outline-4">
+<h4 id="org81e8751">Congruent</h4>
+</div>
+</div>
+</section>
+<section id="outline-container-orgd5c337f" class="outline-2">
+<h2 id="orgd5c337f">Visualization</h2>
+<div class="outline-text-2" id="text-orgd5c337f">
+<p>
+<a href="https://c4model.com/">https://c4model.com/</a>
+</p>
+</div>
+</section>
+<section id="outline-container-org0be94fc" class="outline-2">
+<h2 id="org0be94fc">Nix</h2>
+<div class="outline-text-2" id="text-org0be94fc">
+<p>
+<p class="ednote" title="This section will be reformatted"> We are aware that the formatting of this section isn't great. We will fix it in the next revision!</p>
+</p>
+</div>
+<div id="outline-container-org18ee593" class="outline-3">
+<h3 id="org18ee593">Debugging</h3>
+<div class="outline-text-3" id="text-org18ee593">
+<p>
+Naively, builtins.break is not very easy to use. Because of laziness,
+writing break a often will not expose the value of a, or any of the
+things you might want to look at that are in scope where you put the
+call to break. This happens because break a gets triggered only when
+when it actually needs to be evaluated, which often times is inside
+the body of some function, not in the scope you actually wanted to
+inspect. Recently, I have discovered a trick that makes debugging so
+much nicer:
+</p>
+
+<p>
+Instead of using
+</p>
+
+<p>
+break &lt;expr&gt;
+</p>
+
+<p>
+use
+</p>
+
+<p>
+(_: break _) &lt;expr&gt;
+</p>
+
+<p>
+(the _ is an arbitrary argument name and can be replaced with whatever
+you like)
+</p>
+
+<p>
+Because Nix uses closures, this little lambda exposes everything that
+was in scope in the place it was defined, no matter where it’s being
+evaluated, and _ will give you the value of &lt;expr&gt;.
+</p>
+
+<p>
+{ inputs.nixpkgs.url = &ldquo;github:NixOS/nixpkgs/nixpkgs-unstable&rdquo;;
+</p>
+
+<p>
+outputs = { nixpkgs, &#x2026; }@inputs:
+  with builtins;
+  let pkgs = nixpkgs.legacyPackages.x86<sub>64</sub>-linux; in
+  { packages.x86<sub>64</sub>-linux.a =
+      let a = 1; in
+      pkgs.writeText &ldquo;foo&rdquo; (break &ldquo;bar&rdquo;);
+</p>
+
+<p>
+      packages.x86<sub>64</sub>-linux.b =
+        let a = 1; in
+        pkgs.writeText &ldquo;foo&rdquo; ((_: break _) &ldquo;bar&rdquo;);
+    };
+}
+</p>
+</div>
+</div>
+<div id="outline-container-org85b7ae7" class="outline-3">
+<h3 id="org85b7ae7">Module system</h3>
+<div class="outline-text-3" id="text-org85b7ae7">
+<p>
+Passing individual arguments to modules is generally an anti-pattern
+because those arguments can’t be overridden anymore and aren’t type
+checked.
+</p>
+
+<p>
+Instead it’s better for modules to expose options to customise their
+behavior, e.g.
+</p>
+
+<p>
+{
+  imports = [ ./myModule.nix ];
+</p>
+
+<p>
+  myModule.argA = 1;
+  myModule.argB = 2;
+}
+</p>
+
+<p>
+where in module.nix you have
+</p>
+
+<p>
+{ lib, config, &#x2026; }: {
+  options.myModule.argA = lib.mkOption {
+    type = lib.types.int;
+  };
+  options.myModule.argB = lib.mkOption {
+    type = lib.types.int;
+  };
+</p>
+
+<p>
+  config = {
+    environment.etc.a.text = toString config.myModule.argA;
+    environment.etc.b.text = toString config.myModule.argB;
+  };
+}
+</p>
+</div>
+</div>
+<div id="outline-container-orge485246" class="outline-3">
+<h3 id="orge485246">Tutorials</h3>
+<div class="outline-text-3" id="text-orge485246">
+<ul class="org-ul">
+<li><a href="https://nix.dev/tutorials/nixos/nixos-configuration-on-vm">https://nix.dev/tutorials/nixos/nixos-configuration-on-vm</a></li>
+<li><a href="https://github.com/spacekookie/learning-nix">https://github.com/spacekookie/learning-nix</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org1acbe02" class="outline-3">
+<h3 id="org1acbe02">Software</h3>
+<div class="outline-text-3" id="text-org1acbe02">
+<ul class="org-ul">
+<li><a href="https://github.com/serokell/deploy-rs">https://github.com/serokell/deploy-rs</a></li>
+<li><a href="https://github.com/nix-community/nix-melt">Nix flake lock file viewer</a></li>
+<li><a href="https://github.com/nix-community/nurl">Generate Nix fetcher calls from repository</a></li>
+<li><a href="https://github.com/NixOS/nixos-hardware">NixOS profiles to optimize settings for different hardware</a></li>
+<li></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgad5845a" class="outline-3">
+<h3 id="orgad5845a">Recipes</h3>
+<div class="outline-text-3" id="text-orgad5845a">
+</div>
+<div id="outline-container-org566a897" class="outline-4">
+<h4 id="org566a897">Construct an attrset from a list of keys and values</h4>
+<div class="outline-text-4" id="text-org566a897">
+<div class="org-src-container">
+<pre class="src src-nix"><span style="color: #a0522d;">keys</span> = [ <span style="color: #8b2252;">"a"</span> <span style="color: #8b2252;">"b"</span> <span style="color: #8b2252;">"c"</span> ];
+<span style="color: #a0522d;">values</span> = [ 1 2 3 ];
+pkgs.lib.listToAttrs (pkgs.lib.zipListsWith (name: value:{ <span style="color: #8b2252;">"name"</span> = name; <span style="color: #8b2252;">"value"</span> = value; } ) key values);
+</pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="outline-container-orga950870" class="outline-2">
+<h2 id="orga950870">Scheduling and timers</h2>
+<div class="outline-text-2" id="text-orga950870">
+<ul class="org-ul">
+<li>systemd timers</li>
+<li>cron</li>
+</ul>
+</div>
+</section>
+<section id="outline-container-orgd79dd23" class="outline-2">
+<h2 id="orgd79dd23">Data</h2>
+<div class="outline-text-2" id="text-orgd79dd23">
+<p>
+Data warehouse a thrid genenration of data management utilizing
+metadata layer on top of typical open data formats such as Apache
+Parquet. cf. <a href="https://www.cidrdb.org/cidr2021/papers/cidr2021_paper17.pdf">https://www.cidrdb.org/cidr2021/papers/cidr2021_paper17.pdf</a>
+<a href="https://dzone.com/articles/what-goes-around-comes-around-a-brief-history-of-d">https://dzone.com/articles/what-goes-around-comes-around-a-brief-history-of-d</a>
+</p>
+<table id="org5461cc3" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">key</th>
+<th scope="col" class="org-left">abbreviation</th>
+<th scope="col" class="org-left">full form</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">CODASYL</td>
+<td class="org-left">CODASYL</td>
+<td class="org-left">Conference on Data Systems Languages</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="outline-container-org183d051" class="outline-2">
+<h2 id="org183d051">Tunning and optimization</h2>
+<div class="outline-text-2" id="text-org183d051">
+</div>
+<div id="outline-container-orge96b49c" class="outline-3">
+<h3 id="orge96b49c">Measuring</h3>
+<div class="outline-text-3" id="text-orge96b49c">
+<p>
+Fast and efficient way to calculate percentiles
+Graham Cormode, Vladislav Shkapenyuk, Divesh Srivastava, and Bojian Xu:
+“Forward Decay: A Practical Time Decay Model for Streaming Systems,” at 25th
+IEEE International Conference on Data Engineering (ICDE), March 2009.
+Ted Dunning and Otmar Ertl: “Computing Extremely Accurate Quantiles Using
+t-Digests,” github.com, March 2014.
+Gil Tene: “HdrHistogram,” hdrhistogram.org.
+</p>
+</div>
+</div>
+</section>
+<section id="outline-container-orgfd6001f" class="outline-2">
+<h2 id="orgfd6001f">Security and secrets management</h2>
+<div class="outline-text-2" id="text-orgfd6001f">
+<p>
+Files are the safest method of delivering a secret to a
+process. Almost every other method (cli args, env vars, …) will leak
+the key somewhere easily read by processes that shouldn’t have access
+to it.
+</p>
+
+<p>
+systemd’s LoadCredential
+<a href="https://systemd.io/CREDENTIALS/">https://systemd.io/CREDENTIALS/</a>
+<a href="https://systemd.io/HOME_DIRECTORY/">https://systemd.io/HOME_DIRECTORY/</a>
+</p>
+
+<p>
+TODO: need to check creds for user units
+</p>
+
+<p>
+IDEA: It kind of needs a good
+nix module to help deploy the encrypted keys to the host. Wouldn’t be
+very complicated, but someone needs to work out a nice workflow and
+publish something to make it easy to use.
+</p>
+
+<ul class="org-ul">
+<li>secrets added to the repo in plain text</li>
+<li>secrets not commited to the repo but fetched from a local or remote
+store during build time making them globally readable in nix-store</li>
+<li>fetched from a private store using systemd service</li>
+<li><p>
+secrets are encrypted and store in the repo
+</p>
+
+<p>
+<a href="https://github.com/ryantm/agenix">https://github.com/ryantm/agenix</a>
+</p></li>
+</ul>
+</div>
+<div id="outline-container-orga7a9228" class="outline-3">
+<h3 id="orga7a9228">Hardware security modules</h3>
+</div>
+<div id="outline-container-org805cfcd" class="outline-3">
+<h3 id="org805cfcd">Secure shell</h3>
+<div class="outline-text-3" id="text-org805cfcd">
+<p>
+ssh-keyscan is a utility for gathering the public SSH host keys of a
+number of hosts.  It was designed to aid in building and
+verifying ssh<sub>known</sub><sub>hosts</sub> files, the format of which is
+documented in sshd(8).  ssh-keyscan provides a minimal
+interface suitable for use by shell and perl scripts.
+</p>
+</div>
+</div>
+<div id="outline-container-orgfc68b39" class="outline-3">
+<h3 id="orgfc68b39">SOPS</h3>
+</div>
+<div id="outline-container-orgdc5ae79" class="outline-3">
+<h3 id="orgdc5ae79">Clevis and Tang</h3>
+<div class="outline-text-3" id="text-orgdc5ae79">
+<p>
+<a href="https://wiki.archlinux.org/title/Clevis">https://wiki.archlinux.org/title/Clevis</a>
+</p>
+</div>
+</div>
+<div id="outline-container-orgbb0f3a8" class="outline-3">
+<h3 id="orgbb0f3a8">Shamir&rsquo;s secret sharing</h3>
+</div>
+<div id="outline-container-orga7f2816" class="outline-3">
+<h3 id="orga7f2816">Public key infrastructure</h3>
+<div class="outline-text-3" id="text-orga7f2816">
+<p>
+Resource Public Key Infrastructure
+<a href="https://en.wikipedia.org/wiki/Resource_Public_Key_Infrastructure">https://en.wikipedia.org/wiki/Resource_Public_Key_Infrastructure</a>
+</p>
+</div>
+</div>
+</section>
+<section id="outline-container-org19adade" class="outline-2">
+<h2 id="org19adade">Privacy</h2>
+<div class="outline-text-2" id="text-org19adade">
+</div>
+<div id="outline-container-org3381cd0" class="outline-3">
+<h3 id="org3381cd0">Homomorphic encryption</h3>
+<div class="outline-text-3" id="text-org3381cd0">
+<p>
+A cryptographic method enables computation on encrypted data without
+the need to decrypt or reveal the raw data.  Brakerski-Fan-Vercauteren
+(BFV) HE scheme (<a href="https://eprint.iacr.org/2012/078">https://eprint.iacr.org/2012/078</a>,
+<a href="https://eprint.iacr.org/2012/144">https://eprint.iacr.org/2012/144</a>). BFV is based on the ring learning
+with errors (RLWE) hardness problem, which is quantum resistant.
+<a href="https://security.apple.com/blog/imessage-pq3/">https://security.apple.com/blog/imessage-pq3/</a>
+<a href="https://security.apple.com/">https://security.apple.com/</a>
+<a href="https://eprint.iacr.org/2012/144.pdf">https://eprint.iacr.org/2012/144.pdf</a>
+</p>
+</div>
+</div>
+</section>
+<section id="outline-container-org4c884dc" class="outline-2">
+<h2 id="org4c884dc">Domain name servers (DNS)</h2>
+<div class="outline-text-2" id="text-org4c884dc">
+</div>
+<div id="outline-container-orga8785a6" class="outline-3">
+<h3 id="orga8785a6">The Registrant/Registrar/Registry model</h3>
+</div>
+<div id="outline-container-org4b8125e" class="outline-3">
+<h3 id="org4b8125e"><span class="todo TODO">TODO</span> Importance of DNSSEC</h3>
+<div class="outline-text-3" id="text-org4b8125e">
+<ul class="org-ul">
+<li>dnsec sign your zone with signature with a TTL</li>
+<li>keys and propegating keys to parent zone</li>
+<li>Most softwares handle signiature updates</li>
+<li>DNSSE maintenance keys is the problem due to multiple parties, you
+the owner of the zone and zone operator webhosting and the registry
+(no contractal relationship between registry and the zone owner)
+Standards introduced
+<ul class="org-ul">
+<li>RFC 7433 autmating DNSSES delegation trust maintennance</li>
+<li>RFC 8078 Managing DS Records from the parent via CDS/CDNSKEY</li>
+<li>draft ietf regext dnsoperator to rrr protocol thir party DNS
+operator to registars/registries protocol
+<a href="https://datatracker.ietf.org/doc/draft-ietf-regext-dnsoperator-to-rrr-protocol/">https://datatracker.ietf.org/doc/draft-ietf-regext-dnsoperator-to-rrr-protocol/</a>
+<a href="https://datatracker.ietf.org/wg/regext/about/">https://datatracker.ietf.org/wg/regext/about/</a></li>
+</ul></li>
+</ul>
+</div>
+<div id="outline-container-org6d94286" class="outline-4">
+<h4 id="org6d94286"><span class="todo TODO">TODO</span> insert standard to the rescue image in notes</h4>
+<div class="outline-text-4" id="text-org6d94286">
+<p>
+<a href="https://archive.fosdem.org/2019/schedule/event/dns_dnssec_security_without_maintenance/attachments/slides/3141/export/events/attachments/dns_dnssec_security_without_maintenance/slides/3141/DNSSEC_20190203_PS_FOSDEM_automated_key_management.pdf">https://archive.fosdem.org/2019/schedule/event/dns_dnssec_security_without_maintenance/attachments/slides/3141/export/events/attachments/dns_dnssec_security_without_maintenance/slides/3141/DNSSEC_20190203_PS_FOSDEM_automated_key_management.pdf</a>
+</p>
+
+
+<p>
+FYI
+IDN Supported ??
+</p>
+
+<p>
+DNSSEC supported
+</p>
+
+
+<p>
+How registries operate since the first key is not signed step number
+3 in figure (check for CDS for domain) in the case is done (.cz) with
+TCP request for one week and if its there then its good enough.
+</p>
+
+
+
+
+
+
+<p>
+<a href="https://fred.nic.cz/en/try-out/">https://fred.nic.cz/en/try-out/</a>
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org8f5ae46" class="outline-3">
+<h3 id="org8f5ae46"><span class="todo TODO">TODO</span> <a href="https://datatracker.ietf.org/doc/html/rfc1034">https://datatracker.ietf.org/doc/html/rfc1034</a></h3>
+<div class="outline-text-3" id="text-org8f5ae46">
+<p>
+Using DNS SSHFP record to provide out-of-band verification by SSHFP
+DNS record lookup C.f.<a href="eww:https://datatracker.ietf.org/doc/html/rfc4255">RFC 4255</a>.
+</p>
+
+<p>
+Resource record types A, NS, CNAME, SOA, PTR, HINFO,
+MINFO, MX, TXT, RP, AFSDB, RT, KEY, AAAA, LOC, SRV, NAPTR, KX, CERT,
+DNAME, APL, DS, SSHFP, IPSECKEY, RRSIG, NSEC, DNSKEY, DHCID, NSEC3,
+NSEC3PARAM, TLSA, SMIMEA, CDS, CDNSKEY, OPENPGPKEY, CSYNC, ZONEMD,
+SVCB, HTTPS, SPF, NID, L32, L64, LP, EUI48, EUI64, URI, CAA, WALLET
+</p>
+</div>
+</div>
+</section>
+<section id="outline-container-orgbc92e2e" class="outline-2">
+<h2 id="orgbc92e2e">Dynamic Host Configuration Protocol (DHCP)</h2>
+</section>
+
+
+<section id="outline-container-org94b85c9" class="outline-2">
+<h2 id="org94b85c9">Connectivity</h2>
+<div class="outline-text-2" id="text-org94b85c9">
+</div>
+<div id="outline-container-org4d4e2ed" class="outline-3">
+<h3 id="org4d4e2ed">Introduction</h3>
+<div class="outline-text-3" id="text-org4d4e2ed">
+</div>
+<div id="outline-container-org662844c" class="outline-4">
+<h4 id="org662844c">Open Systems Interconnection model</h4>
+</div>
+</div>
+<div id="outline-container-org378a790" class="outline-3">
+<h3 id="org378a790">ipsec</h3>
+</div>
+
+<div id="outline-container-orgcb69c15" class="outline-3">
+<h3 id="orgcb69c15">wireguard</h3>
+</div>
+</section>
+<section id="outline-container-orge0ef043" class="outline-2">
+<h2 id="orge0ef043">Compartmentalization</h2>
+<div class="outline-text-2" id="text-orge0ef043">
+</div>
+<div id="outline-container-org43e83e3" class="outline-3">
+<h3 id="org43e83e3">Containerization</h3>
+</div>
+
+<div id="outline-container-orgadfc6e3" class="outline-3">
+<h3 id="orgadfc6e3">Virtulization</h3>
+</div>
+</section>
+<section id="outline-container-orgc45eebe" class="outline-2">
+<h2 id="orgc45eebe">Compliance and Standards</h2>
+<div class="outline-text-2" id="text-orgc45eebe">
+<p>
+Automatic update of W3C, WICG, WHATWG, WG21, IETF, and Unicode references. 
+Compliance, Auditing, Reliability
+</p>
+
+
+<p>
+Why do we depend on $X?
+Why did build of $Y fail?
+</p>
+
+<p>
+nix why-depends /run/current-system /nix/store/fdj4b4jp0p2b45djgwj2gwv37va67zrz-perl-5.34.1/bin/perl
+/nix/store/0g0k2j6k0jnpyc5m7qx2vra0vhkm50wk-nixos-system-hyperion-22.11pre-git
+└───/nix/store/30ljg6zlkp9gkvqjnd4b2s1p2z5kkzcn-perl-5.34.1-env
+    └───/nix/store/fdj4b4jp0p2b45djgwj2gwv37va67zrz-perl-5.34.1
+</p>
+</div>
+<div id="outline-container-org5d4378d" class="outline-3">
+<h3 id="org5d4378d">SOC</h3>
+</div>
+<div id="outline-container-org12ee9b1" class="outline-3">
+<h3 id="org12ee9b1">ISO</h3>
+</div>
+<div id="outline-container-org15fe009" class="outline-3">
+<h3 id="org15fe009">FIPS</h3>
+</div>
+<div id="outline-container-orgafaa347" class="outline-3">
+<h3 id="orgafaa347">FAPI</h3>
+</div>
+<div id="outline-container-org77c81ab" class="outline-3">
+<h3 id="org77c81ab">Industry Data Security Standards (PCI-DSS)</h3>
+<div class="outline-text-3" id="text-org77c81ab">
+<p>
+General Data Protection Regulation (GDPR), California Consumer Privacy
+Act (CCPA), California Privacy Rights Act (CPRA), Colorado Privacy Act
+(CPA), Connecticut Data Privacy Act (CDPA), Virginia Consumer Data
+Protection Act (VCDPA), Utah Consumer Privacy Act (UCPA), Illinois
+Biometric Information Privacy Act (BIPA), ISO/IEC 27001, ISO/IEC
+27002, ISO/IEC 27701, ISO/IEC 27032, ISO/IEC 27017, ISO/IEC 27018,
+NIST SP 800-53, Rev. 5 and other applicable NIST SP 800 series
+publications, the National Institute of Technology (NIST)
+Cybersecurity Framework (CSF)
+</p>
+
+
+<p>
+Cloud Security Alliance (CSA) Consensus
+Assessments Initiative Questionnaire (CAIQ) registry reports for
+Software as a Service (SaaS) products and/or applications as
+applicable.
+</p>
+
+<p>
+Contractors utilizing the AWS hosting platform to provide services to
+Amtrak must comply with AWS Foundational Security Best Practices
+standard as well as CIS AWS Foundations v1.4.0 security standard, or
+most recent version, and/or any upgrades released by the CIS AWS
+Foundations Benchmark.
+</p>
+
+<p>
+Contractors utilizing the Microsoft Azure hosting platform to provide
+services to Amtrak must comply with Microsoft Azure Foundational
+Security Best Practices standard as well as CIS Microsoft Azure
+Foundations Benchmark v1.4.0 Controls, or most recent version, and/or
+any upgrades released by the CIS Microsoft Azure Foundations Benchmark
+Security Standard.
+</p>
+
+<p>
+Right to Inspection.  Upon request, Contractor shall provide to Amtrak
+the opportunity to review copies of the Contractor’s policies,
+procedures, controls catalog, and independent audit report summaries
+for the implementation of required technical, physical, and
+administrative safeguards or controls derived from applicable
+cybersecurity frameworks relating to, and without limitation, the
+Program (e.g. ISO/IEC 27001, ISO/IEC 27002, ISO/IEC 27701, ISO/IEC
+27032, ISO/IEC 27017, ISO/IEC 27018, NIST CSF, NIST SP 800-53, Rev. 5,
+SOC 2 Type 2).
+</p>
+
+
+
+<p>
+Data Aggregation and Anonymization.  In the event that Contractor
+inadvertently collects any Personal Information through or as a result
+of Amtrak’s, Amtrak Employees’, or Amtrak Customers’ usage of the
+Services, including without limitation Internet Protocol Addresses,
+Contractor must sanitize the data through Anonymization or Aggregation
+unless retention of Personal Information in an identifiable format is
+strictly necessary for the performance of the Services, for compliance
+with applicable law, or for compliance with the Agreement and this
+Attachment.
+</p>
+
+<p>
+For the purposes of this Attachment, “Anonymization” refers to removal
+of Personal Information and any information reasonably likely to
+identify an individual person or household; provided such revised data
+does not include and is not subject to any key, code, or other
+mechanism that could be used to re-identify such information, and
+“Aggregation” refers to information that relates to a group or
+category of persons, households, or entities from which identifying
+information has been removed, that is not linked or reasonably
+linkable to any individual person, household, or entity, such as via a
+device; provided such revised data does not include and is not subject
+to any key, code, or other mechanism that could be used to re-identify
+such information.
+</p>
+
+<p>
+Without limiting the generality of the requirements for Anonymized or
+Aggregated data, Contractor shall:
+</p>
+
+<p>
+Implement technical safeguards that prohibit reversal of Anonymization
+or Aggregation of Personal Information collected through the Services;
+Implement business processes that specifically prohibit such a
+reversal or recreation; Make no attempt to achieve such reversal; and
+Implement reasonable business processes to prevent inadvertent release
+of Anonymized or Aggregated Personal Information.
+</p>
+</div>
+</div>
+</section>
+</div>
+</body>
+</html>
