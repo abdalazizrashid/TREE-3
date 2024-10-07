@@ -20,5 +20,14 @@
     };
     modules = [ ./nodes/m1-linux/configuration.nix ];
   };
+  nodes.nl = nixosSystem {
+    system = [ "x86_64-linux" ];
+    specialArgs = {
+      inputs = npins;
+    };
+    modules = [ ./nodes/nl/configuration.nix ];
+  };
   inherit pkgs;
 }
+
+  

@@ -13,11 +13,13 @@
     ../modules/bind.nix
     ../modules/knot-dns.nix
     #../modules/kea.nix
-    #./tailscale.nix
+    ../modules/tailscale.nix
     #./acme.nix
     #./gnome.nix
     #./misc.nix
-    ./probabilistic.ru.nix
+    ../modules/znc.nix
+#    ./probabilistic.ru.nix
+    ./l2tp.nix
     ];
 
     sops.defaultSopsFile = ./secrets/default.yaml;
@@ -75,6 +77,7 @@
     };	
     users.users.root.openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICX8KUmbAs2AcWar9cji61/+6R8m4aqoHaTKW1kcqg9D aziz@w375262.staff.corp.local"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM8oas+5PADHvsYSEYq2Dy9jPHe6KOeL2q3KVr6gwXU8 someone/prob solutions"
     ];
 
     # Disable the GNOME3/GDM auto-suspend feature that cannot be disabled in GUI!
@@ -141,8 +144,6 @@
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICX8KUmbAs2AcWar9cji61/+6R8m4aqoHaTKW1kcqg9D aziz@w375262.staff.corp.local"
       ];
     };
-    # Install firefox.
-    programs.firefox.enable = true;
     programs.neovim = {
         enable = true;
         defaultEditor = true;
@@ -168,6 +169,11 @@
             pain-control
             gruvbox
         ];
+    };
+    users.users.serge = {
+      isNormalUser = true;
+      extraGroups = [ "wheel" ];
+      openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM8oas+5PADHvsYSEYq2Dy9jPHe6KOeL2q3KVr6gwXU8 someone/prob solutions" ];
     };
     programs.mosh.enable = true;
     programs.mosh.openFirewall = true;

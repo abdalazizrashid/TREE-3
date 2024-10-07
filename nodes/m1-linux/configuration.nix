@@ -164,6 +164,7 @@ in
 
     locate.enable = true;
 
+    fail2ban.enable = true;
   };
 
   # Configure keymap in X11
