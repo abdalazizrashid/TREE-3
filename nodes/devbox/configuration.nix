@@ -10,15 +10,15 @@
     (inputs.sops-nix + "/modules/sops")
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ../modules/bind.nix
-    ../modules/knot-dns.nix
+    # ../modules/bind.nix
+    # ../modules/knot-dns.nix
     #../modules/kea.nix
     ../modules/tailscale.nix
     #./acme.nix
     #./gnome.nix
     #./misc.nix
     ../modules/znc.nix
-#    ./probabilistic.ru.nix
+    # ./probabilistic.ru.nix
     ./l2tp.nix
     ];
 
@@ -50,6 +50,10 @@
 
     # Enable networking
     networking.networkmanager.enable = true;
+    networking.networkmanager.dns = "systemd-resolved";
+    networking.nameservers = [
+        "1.1.1.1" # FIXME: DO NOT USE CLOUDFLARE
+    ];
 
     # Set your time zone.
     time.timeZone = "Europe/Moscow";
@@ -205,7 +209,6 @@
     nix.trustedUsers = [ "root" "@wheel" ];
 
     systemd.network.enable = true;
-    services.resolved.enable = false; # FIXME
 
     # These have been handled by networkmanager so far, let's not touch them yet
     systemd.network.networks."20-unmanaged" = {

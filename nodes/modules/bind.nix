@@ -36,8 +36,9 @@ in
 {
  
   services.bind = {
-    enable = true;
+    enable = false; # FIXME:
     zones = [aziz hosts];
+    listenOn = [ "!127.0.0.1" "!127.0.0.53" ]; # TODO: Make this more transparent/debuggable
     extraConfig = ''
       logging {
           channel query_log {
