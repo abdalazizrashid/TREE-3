@@ -13,7 +13,7 @@
     # ../modules/bind.nix
     # ../modules/knot-dns.nix
     #../modules/kea.nix
-    ../modules/tailscale.nix
+    ../modules/tailscale.nix # headscale coordinating server
     #./acme.nix
     #./gnome.nix
     #./misc.nix
@@ -206,7 +206,7 @@
     ] ++ [
       config.services.headscale.package 
     ] ++ [ pkgs.dnsutils ];
-    nix.trustedUsers = [ "root" "@wheel" ];
+    nix.trustedUsers = [ "root" "@wheel" ]; # NOTE(@SomeoneSerge): this is dangerous, might let a program escape sandbox and escalate without the sudo password!
 
     systemd.network.enable = true;
 
@@ -216,6 +216,8 @@
       linkConfig.Unmanaged = true;
     };
     systemd.network.wait-online.enable = false; # Enable when migrating from NM
+
+    services.tailscale.enable = true; # NOTE(@SomeoneSerge): this the tailscale client, unlike ../modules/tailscale.nix
 
     # # Activation script to set permissions and ownership
     # system.activationScripts.nixosEditorsPermissions = ''
