@@ -28,6 +28,7 @@
     modules = [ ./nodes/nl/configuration.nix ];
   };
   inherit pkgs;
+  inherit npins;
 }
 
   
