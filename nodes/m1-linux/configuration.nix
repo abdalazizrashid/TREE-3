@@ -9,8 +9,16 @@
   inputs,
   ...
 }:
-
-{
+let
+  encryption = with pkgs; [
+    gnupg
+    pcsc-tools
+  ];
+  networking = with pkgs; [
+    openvpn
+  ];
+in
+{  
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -41,6 +49,9 @@
       size = 32 * 1024;
     }
   ];
+
+  nix.settings.experimental-features = "nix-command flakes";
+
   networking.hostName = "afdee1c"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -60,6 +71,11 @@
   #   keyMap = "us";
   #   useXkbConfig = true; # use xkb.options in tty.
   # };
+  networking.useNetworkd = true;
+  services.resolved.enable = true;
+
+  networking.nameservers = [ "172.16.101.101" ];
+  systemd.network.enable = true;
 
   hardware = {
     asahi = {
@@ -115,19 +131,19 @@
       wireplumber = {
         enable = true;
         configPackages = [
-                         (pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/10-bluez.conf" ''
-                           monitor.bluez.properties = {
-                             bluez5.roles = [ a2dp_sink a2dp_source bap_sink bap_source hsp_hs hsp_ag hfp_hf hfp_ag ]
-                             bluez5.codecs = [ sbc sbc_xq aac ]
-                             bluez5.enable-sbc-xq = true
-                             bluez5.hfphsp-backend = "native"
-                           }
-                         '')
-                       ];
+          (pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/10-bluez.conf" ''
+            monitor.bluez.properties = {
+              bluez5.roles = [ a2dp_sink a2dp_source bap_sink bap_source hsp_hs hsp_ag hfp_hf hfp_ag ]
+              bluez5.codecs = [ sbc sbc_xq aac ]
+              bluez5.enable-sbc-xq = true
+              bluez5.hfphsp-backend = "native"
+            }
+          '')
+        ];
 
       };
     };
-    
+
     yggdrasil = {
       enable = true;
       group = "wheel";
@@ -139,13 +155,19 @@
         ];
       };
     };
-   
+
+    locate.enable = true;
 
   };
 
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
+
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+  };
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
@@ -154,6 +176,9 @@
     enable = true;
     loadInNixShell = true;
   };
+
+  programs.noisetorch.enable = true;
+
   environment = {
     shellAliases = {
       "nixos-build" = "cd ~/Sources/tree-3/ && nix-build -A nodes.m1-linux.config.system.build.toplevel";
@@ -161,45 +186,71 @@
     };
     etc = {
       "libinput/local-overrides.quirks".text = ''
-        [Apple Keyboard]
+        [Apple Internal Keyboard / Trackpad]
+        MatchName=Apple Internal Keyboard / Trackpad
         MatchUdevType=touchpad
-        MatchDeviceTree=*apple*
-        AttrPressureRange=1100:1000'';
+        ModelAppleTouchpad=1
+      '';
     };
   };
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    firefox
-    neovim
-    cmake
-    gnumake
-    git
-    vim
-    wget
-    grim # screenshot functionality
-    slurp # screenshot functionality
-    wl-clipboard # wl-copy and wl-paste for copy/paste from stdin / stdout
-    mako # notification system developed by swaywm maintainer
-    dict
-    libtool
-    libvterm
-    alsa-utils
-    mpv
-    qrscan
-    yggdrasil
-    dnsutils
-    htop
-    tree
-    bc # using it to calculate battery
-    kitty
-    zathura
-    jq
-    rustup
-  ];
+  environment.systemPackages =
+    with pkgs;
+    [
+      firefox
+      neovim
+      cmake
+      gnumake
+      git
+      vim
+      wget
+      grim # screenshot functionality
+      slurp # screenshot functionality
+      wl-clipboard # wl-copy and wl-paste for copy/paste from stdin / stdout
+      mako # notification system developed by swaywm maintainer
+      dict
+      libtool
+      libvterm
+      alsa-utils
+      mpv
+      qrscan
+      yggdrasil
+      dnsutils
+      htop
+      tree
+      bc # using it to calculate battery
+      kitty
+      zathura
+      jq
+      rustup
+      openssl
+      openssl_3_3
+      pkg-config
+      rnnoise-plugin
+
+      pavucontrol
+      coppwr
+
+      gnucash
+      gcc
+
+      guile
+      recutils
+      sioyek
+      ktorrent
+
+      thunderbird
+      ispell
+
+      mattermost-desktop
+    ]
+    ++ encryption
+    ++ networking;
 
   networking.hosts = {
     "100.64.24.3" = [ "calibre.xps13.ts.someonex.net" ];
+    "95.165.26.135" = [ "d1.hosts.aziz.fyi" ];
   };
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -213,6 +264,7 @@
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
+  networking.resolvconf.enable = false;
   networking.wireless.iwd = {
     enable = true;
     settings.General.EnableNetworkConfiguration = true;
