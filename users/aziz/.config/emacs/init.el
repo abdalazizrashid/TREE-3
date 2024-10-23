@@ -271,6 +271,67 @@
 
 )
 
+;;;; eglot
+(use-package project
+  :ensure t)
+(use-package eglot
+  :commands eglot
+  :defer t
+  :custom
+  (eglot-autoshutdown t)
+  :bind (:map eglot-mode-map
+              ("C-c C-d" . eldoc))
+;;              ("C-c C-e" . eglot-rename)
+;;              ("C-c C-o" . python-sort-imports)
+;;              ("C-c C-f" . eglot-format-buffer))
+  :hook ((python-ts-mode . eglot-ensure)
+         (python-ts-mode . flyspell-prog-mode)
+         (python-ts-mode . superword-mode)
+         (python-ts-mode . hs-minor-mode)
+         (python-ts-mode . (lambda () (set-fill-column 88)))
+         (nix-ts-mode . eglot-ensure)
+         (tex-mode . eglot-ensure)
+         ;; (prog-mode . (lambda ()
+         ;;               (add-hook 'before-save-hook 'eglot-format nil t)))
+         )
+
+  :config
+  (add-to-list
+   'eglot-server-programs
+   '(nix-ts-mode
+     . ("nix-shell" "-p" "nixd" "--run" "nixd")))
+  (add-to-list
+   'eglot-server-programs
+   '((elixir-ts-mode heex-ts-mode)
+     ;; TODO remove elixir package from runtime shell
+     . ("nix-shell" "-p" "elixir-ls" "elixir" "--run" "elixir-ls")))
+
+  (setq read-process-output-max (* 1024 1024))
+  ;; (with-eval-after-load 'eglot
+  ;;   (dolist (mode '((nix-mode . ("nixd"))))
+  ;;     (add-to-list 'eglot-server-programs mode)))
+
+
+  (add-hook 'eglot-managed-mode-hook
+          #'(lambda ()
+              ;; Show flymake diagnostics first.
+              (setq eldoc-documentation-functions
+                    (cons #'flymake-eldoc-function
+                          (remove #'flymake-eldoc-function
+                                  eldoc-documentation-functions)))))
+  (setq-default eglot-workspace-configuration '(
+      (:pylsp . (:configurationSources ["flake8"] :plugins (
+                 :pycodestyle (:enabled t) :mccabe (:enabled t)
+                 :pyflakes (:enabled t) :flake8 (:enabled t
+                 :maxLineLength 88) :ruff (:enabled t :lineLength 88)
+                 :pydocstyle (:enabled t :convention "numpy") :yapf
+                 (:enabled t) :autopep8 (:enabled :json-false) :black
+                 (:enabled t :line_length 88 :cache_config t))))
+
+      (:nixd
+       (:nixpkgs
+        (:expr "import <nixpkgs> { }"))))))
+
 ;; Enable vertico
 (use-package vertico
   :init
@@ -426,7 +487,22 @@
   ;; package.
   (marginalia-mode))
 
-;; Example configuration for Consult
+(defun my/consult-ripgrep-nixpkgs ()
+  "Search Nixpkgs repository using `rg` via `consult-ripgrep`."
+  (interactive)
+  (let ((default-directory "~/Sources/nixpkgs/"))  ;; Change this to your nixpkgs path
+    (consult-ripgrep default-directory)))
+
+(defun my/consult-ripgrep-symbol-at-point-nixpkgs ()
+  "Search the symbol at point in the Nixpkgs repository using `rg` via `consult-ripgrep`."
+  (interactive)
+  (let ((symbol (thing-at-point 'symbol t)) ;; Get the symbol at point
+        (default-directory "~/Sources/nixpkgs/")) ;; Replace with your nixpkgs path
+    (if symbol
+        (consult-ripgrep default-directory symbol) ;; Use the symbol for search
+      (message "No symbol at point")))) ;; Error message if no symbol is found
+
+;; Configuration for Consult
 (use-package consult
   ;; Replace bindings. Lazily loaded due by `use-package'.
   :bind (;; C-c bindings in `mode-specific-map'
@@ -472,6 +548,9 @@
          ("M-s u" . consult-focus-lines)
          ;; Isearch integration
          ("M-s e" . consult-isearch-history)
+	 ;; Custom bindings
+	 ("C-c n" . my/consult-ripgrep-nixpkgs)
+         ("C-c s" . my/consult-ripgrep-symbol-at-point-nixpkgs)
          :map isearch-mode-map
          ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
          ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
@@ -481,6 +560,8 @@
          :map minibuffer-local-map
          ("M-s" . consult-history)                 ;; orig. next-matching-history-element
          ("M-r" . consult-history))                ;; orig. previous-matching-history-element
+  :commands (my/consult-ripgrep-nixpkgs
+              my/consult-ripgrep-symbol-at-point-nixpkgs)
 
   ;; Enable automatic preview at point in the *Completions* buffer. This is
   ;; relevant when you use the default completion UI.
@@ -533,16 +614,16 @@
 
   ;; By default `consult-project-function' uses `project-root' from project.el.
   ;; Optionally configure a different project root function.
-  ;;;; 1. project.el (the default)
+    ;;;; 1. project.el (the default)
   ;; (setq consult-project-function #'consult--default-project--function)
-  ;;;; 2. vc.el (vc-root-dir)
+    ;;;; 2. vc.el (vc-root-dir)
   ;; (setq consult-project-function (lambda (_) (vc-root-dir)))
-  ;;;; 3. locate-dominating-file
+    ;;;; 3. locate-dominating-file
   ;; (setq consult-project-function (lambda (_) (locate-dominating-file "." ".git")))
-  ;;;; 4. projectile.el (projectile-project-root)
+    ;;;; 4. projectile.el (projectile-project-root)
   ;; (autoload 'projectile-project-root "projectile")
   ;; (setq consult-project-function (lambda (_) (projectile-project-root)))
-  ;;;; 5. No project support
+    ;;;; 5. No project support
   ;; (setq consult-project-function nil)
 
   (add-to-list 'consult-fd-args "--hidden" t)
@@ -670,73 +751,6 @@
 
 ;; (load "other_importers.el")
 
-(require 'ox-publish)
-(require 'ox-html)
-
-(setq org-global-properties
-      '(("PUBLISH" . "yes no")))
-
-;; (defun blog/org-publish-headline-filter (backend)
-;;   "Filter headlines based on the PUBLISH property before publishing.
-;; Only publish headlines with the property :PUBLISH: set to 'yes'."
-;;   (org-map-entries
-;;    (lambda ()
-;;      (let ((publish (org-entry-get (point) "PUBLISH")))
-;;        (unless (and publish (string= publish "yes"))
-;;          (org-cut-subtree))))
-;;    nil 'file))
-;; (remove-hook 'org-export-before-processing-hook #'blog/org-publish-headline-filter)
-
-(defun blog/org-publish-after-publish (plist)
-  "Open the browser to the published site after publishing."
-  (browse-url (concat "file://" (expand-file-name "public/index.html" site-dir))))
-
-(setq org-html-head
-      "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\" />")
-(setq org-html-validation-link nil)
-(setq org-html-head-include-scripts "<script data-goatcounter=\"https://aziz.goatcounter.com/count\" async src=\"//gc.zgo.at/count.js\"> </script>")
-;; Use our own scripts
-;; org-html-head-include-default-style nil ;; Use our own styles
-;;  org-html-head "<link rel=\"stylesheet\" href=\"https://cdn.simplecss.org/simple.min.css\" />"
-
-
-
-(defvar site-dir "~/Documents/org/")
-(defvar publish-dir "~/Sources/tree-3/users/aziz/blog/")
-
-(setq org-publish-project-alist
-      `(("blog-org-files"
-	 :base-directory ,site-dir
-	 :base-extension "org"
-	 :publishing-directory ,publish-dir
-	 :recursive t
-	 :publishing-function org-html-publish-to-html
-	 :headline-levels 4
-	 :auto-preamble t
-	 :auto-sitemap t
-	 :exclude ".*.org"
-	 :include ("pkg.org" "az-emacs.org", "dft.org" "infra.org" "SIP.org")
-	 :html-postamble nil
-	 :section-numbers nil
-	 :sitemap-filename "index.org"
-	 ;;:sitemap-sort-files 'anti-chronologically
-	 :sitemap-title "Site map"
-	 :with-author t
-	 :with-date t
-	 :with-title t
-	 :with-toc t
-	 :makeindex t
-	 :completion-function blog/org-publish-after-publish)
-
-	("blog-static"
-	 :base-directory ,site-dir
-	 :base-extension "css\\|js\\|png\\|jpg\\|gif"
-	 :publishing-directory ,publish-dir ;;,(concat publish-dir "html/")
-	 :recursive t
-	 :publishing-function org-publish-attachment)
-
-	("blog" :components ("blog-org-files" "blog-static"))))
-
 (use-package bibtex
   :straight t
   :custom
@@ -759,6 +773,195 @@
  (setq ebib-bibtex-dialect 'biblatex) 
  (setq ebib-preload-bib-files '("../research/bibliography.bib" "~/Documents/bibliography.bib")))
 
+(defun retrieve-crossref-metadata (&optional doi)
+  "Retrieve metadata from CrossRef using DOI and populate rec database."
+  (interactive)
+  (unless doi
+    (setq doi (read-string "Enter DOI: ")))
+  (let ((url (format "https://api.crossref.org/works/%s" doi)))
+    (with-current-buffer (url-retrieve-synchronously url)
+      (goto-char url-http-end-of-headers)
+      (let* ((json-object (json-read))
+             (message (cdr (assoc 'message json-object)))
+             (title-list (cdr (assoc 'title message)))
+             (title (if (and (sequencep title-list) (> (length title-list) 0))
+                        (elt title-list 0)
+                      ""))
+             (authors-list (cdr (assoc 'author message)))
+             (authors (if authors-list
+                          (mapconcat (lambda (author)
+                                       (concat (cdr (assoc 'given author)) " " (cdr (assoc 'family author))))
+                                     authors-list
+                                     "; ")
+                        ""))
+             (journal-list (cdr (assoc 'container-title message)))
+             (journal (if (and journal-list (sequencep journal-list) (> (length journal-list) 0))
+                          (elt journal-list 0)
+                        ""))
+             (year (or
+                    (let ((published-print (cdr (assoc 'published-print message))))
+                      (if published-print
+                          (let ((date-parts (cdr (assoc 'date-parts published-print))))
+                            (if date-parts
+                                (aref (aref date-parts 0) 0)
+                              nil))
+                        nil))
+                    (let ((published-online (cdr (assoc 'published-online message))))
+                      (if published-online
+                          (let ((date-parts (cdr (assoc 'date-parts published-online))))
+                            (if date-parts
+                                (aref (aref date-parts 0) 0)
+                              nil))
+                        nil))))
+             (volume (or (cdr (assoc 'volume message)) ""))
+             (number (or (cdr (assoc 'issue message)) ""))
+             (pages (or (cdr (assoc 'page message)) ""))
+             (doi (cdr (assoc 'DOI message)))
+             (url (cdr (assoc 'URL message)))
+             (abstract (or (cdr (assoc 'abstract message)) ""))
+             (tags-list (cdr (assoc 'subject message)))
+             (tags (if tags-list
+                       (mapconcat 'identity tags-list "; ")
+                     ""))
+             )
+        ;; Now, create the rec record
+        (let ((rec-entry (format "ID: %d\nTitle: %s\nAuthors: %s\nJournal: %s\nYear: %s\nVolume: %s\nNumber: %s\nPages: %s\nDOI: %s\nTags: %s\nURL: %s\nAbstract: %s\nTopics: \n\n"
+                                 id
+                                 title
+                                 authors
+                                 journal
+                                 (if year (number-to-string year) "")
+                                 volume
+                                 number
+                                 pages
+                                 doi
+                                 tags
+                                 url
+                                 (replace-regexp-in-string "<[^>]*>" "" abstract))))
+          ;; Append to the rec to clipboard
+	  (kill-new rec-entry)
+	  (message "Rec record copied to clipboard")
+	  )))))
+
+
+(defun retrieve-crossref-metadata-by-isbn (&optional isbn)
+  "Retrieve metadata from CrossRef using ISBN and populate rec database."
+  (interactive)
+  (unless isbn
+    (setq isbn (read-string "Enter ISBN: ")))
+  (let ((url (format "https://api.crossref.org/works?filter=isbn:%s" isbn)))
+    (with-current-buffer (url-retrieve-synchronously url)
+      (goto-char url-http-end-of-headers)
+      (let* ((json-object (json-read))
+             (message (cdr (assoc 'message json-object)))
+             (items (cdr (assoc 'items message)))
+             ;; We take the first item in the list as the matching work
+             (work (if (and (sequencep items) (> (length items) 0))
+                       (elt items 0)
+                     nil)))
+        (if work
+            (let* ((title-list (cdr (assoc 'title work)))
+                   (title (if (and (sequencep title-list) (> (length title-list) 0))
+                              (elt title-list 0)
+                            ""))
+                   (authors-list (cdr (assoc 'author work)))
+                   (authors (if authors-list
+                                (mapconcat (lambda (author)
+                                             (concat (cdr (assoc 'given author)) " " (cdr (assoc 'family author))))
+                                           authors-list
+                                           "; ")
+                              ""))
+                   (journal-list (cdr (assoc 'container-title work)))
+                   (journal (if (and journal-list (sequencep journal-list) (> (length journal-list) 0))
+                                (elt journal-list 0)
+                              ""))
+                   (year (or
+                          (let ((published-print (cdr (assoc 'published-print work))))
+                            (if published-print
+                                (let ((date-parts (cdr (assoc 'date-parts published-print))))
+                                  (if date-parts
+                                      (aref (aref date-parts 0) 0)
+                                    nil))
+                              nil))
+                          (let ((published-online (cdr (assoc 'published-online work))))
+                            (if published-online
+                                (let ((date-parts (cdr (assoc 'date-parts published-online))))
+                                  (if date-parts
+                                      (aref (aref date-parts 0) 0)
+                                    nil))
+                              nil))))
+                   (volume (or (cdr (assoc 'volume work)) ""))
+                   (number (or (cdr (assoc 'issue work)) ""))
+                   (pages (or (cdr (assoc 'page work)) ""))
+                   (doi (cdr (assoc 'DOI work)))
+                   (url (cdr (assoc 'URL work)))
+                   (abstract (or (cdr (assoc 'abstract work)) ""))
+                   (tags-list (cdr (assoc 'subject work)))
+                   (tags (if tags-list
+                             (mapconcat 'identity tags-list "; ")
+                           ""))
+                   (id (retrieve-rec-next-id "database.rec")))
+              ;; Create the rec record
+              (let ((rec-entry (format "ID: %d\nTitle: %s\nAuthors: %s\nJournal: %s\nYear: %s\nVolume: %s\nNumber: %s\nPages: %s\nDOI: %s\nTags: %s\nURL: %s\nAbstract: %s\nTopics: \n\n"
+                                       id
+                                       title
+                                       authors
+                                       journal
+                                       (if year (number-to-string year) "")
+                                       volume
+                                       number
+                                       pages
+                                       doi
+                                       tags
+                                       url
+                                       (replace-regexp-in-string "<[^>]*>" "" abstract))))
+                ;; Append to the rec database file
+                (kill-new rec-entry)
+		(message "Rec record copied to clipboard")))
+          (message "No metadata found for ISBN: %s" isbn))))))
+
+
+(defun retrieve-openlibrary-metadata-by-isbn (&optional isbn)
+  "Retrieve metadata from Open Library using ISBN and populate rec database."
+  (interactive)
+  (unless isbn
+    (setq isbn (read-string "Enter ISBN: ")))
+  (let ((url (format "https://openlibrary.org/api/books?bibkeys=ISBN:%s&format=json&jscmd=data" isbn)))
+    (with-current-buffer (url-retrieve-synchronously url)
+      (goto-char url-http-end-of-headers)
+      (let* ((json-object (json-read))
+             (book-data (cdr (assoc (concat "ISBN:" isbn) json-object))))
+        (if book-data
+            (let* ((title (or (cdr (assoc 'title book-data)) ""))
+                   (authors-list (cdr (assoc 'authors book-data)))
+                   (authors (if authors-list
+                                (mapconcat (lambda (author)
+                                             (cdr (assoc 'name author)))
+                                           authors-list
+                                           "; ")
+                              ""))
+                   (publish-date (or (cdr (assoc 'publish_date book-data)) ""))
+                   (publish-year (if (string-match "\\([0-9]\\{4\\}\\)" publish-date)
+                                     (match-string 1 publish-date)
+                                   ""))
+                   (pages (or (cdr (assoc 'number_of_pages book-data)) ""))
+                   (tags ""))
+              ;; Create the rec record
+              (let ((rec-entry (format "ID: %d\nTitle: %s\nAuthors: %s\nJournal: \nYear: %s\nVolume: \nNumber: \nPages: %s\nDOI: \nTags: %s\nURL: \nAbstract: \nTopics: \n\n"
+                                       (retrieve-rec-next-id "database.rec")
+                                       title
+                                       authors
+                                       publish-year
+                                       (if (numberp pages) (number-to-string pages) "")
+                                       tags)))
+                ;; Append to the rec database file
+                (with-temp-buffer
+                  (insert rec-entry)
+                  (write-region (point-min) (point-max) "database.rec" t))))
+          (message "No metadata found for ISBN: %s" isbn))))))
+
+(use-package rec-mode)
+
 (use-package pdf-tools)
 
 (use-package djvu)
@@ -766,6 +969,12 @@
 (use-package markdown-mode
   :mode ("README\\.md\\'" . gfm-mode)
   :init (setq markdown-command "multimarkdown"))
+
+(use-package man
+  :config
+  ;; Color the man page
+  (set-face-attribute 'Man-overstrike nil :inherit font-lock-type-face :bold t)
+  (set-face-attribute 'Man-underline nil :inherit font-lock-keyword-face :underline t))
 
 (use-package treesit-auto
   :config
@@ -824,65 +1033,6 @@
   :custom
   (magit-define-global-key-bindings 'recommended))
 
-;;;; eglot
-(use-package eglot
-  :commands eglot
-  :defer t
-  :custom
-  (eglot-autoshutdown t)
-  :bind (:map eglot-mode-map
-              ("C-c C-d" . eldoc))
-;;              ("C-c C-e" . eglot-rename)
-;;              ("C-c C-o" . python-sort-imports)
-;;              ("C-c C-f" . eglot-format-buffer))
-  :hook ((python-ts-mode . eglot-ensure)
-         (python-ts-mode . flyspell-prog-mode)
-         (python-ts-mode . superword-mode)
-         (python-ts-mode . hs-minor-mode)
-         (python-ts-mode . (lambda () (set-fill-column 88)))
-         (nix-ts-mode . eglot-ensure)
-         (tex-mode . eglot-ensure)
-         ;; (prog-mode . (lambda ()
-         ;;               (add-hook 'before-save-hook 'eglot-format nil t)))
-         )
-
-  :config
-  (add-to-list
-   'eglot-server-programs
-   '(nix-ts-mode
-     . ("nix-shell" "-p" "nixd" "--run" "nixd")))
-  (add-to-list
-   'eglot-server-programs
-   '((elixir-ts-mode heex-ts-mode)
-     ;; TODO remove elixir package from runtime shell
-     . ("nix-shell" "-p" "elixir-ls" "elixir" "--run" "elixir-ls")))
-
-  (setq read-process-output-max (* 1024 1024))
-  ;; (with-eval-after-load 'eglot
-  ;;   (dolist (mode '((nix-mode . ("nixd"))))
-  ;;     (add-to-list 'eglot-server-programs mode)))
-
-
-  (add-hook 'eglot-managed-mode-hook
-          #'(lambda ()
-              ;; Show flymake diagnostics first.
-              (setq eldoc-documentation-functions
-                    (cons #'flymake-eldoc-function
-                          (remove #'flymake-eldoc-function
-                                  eldoc-documentation-functions)))))
-  (setq-default eglot-workspace-configuration '(
-      (:pylsp . (:configurationSources ["flake8"] :plugins (
-                 :pycodestyle (:enabled t) :mccabe (:enabled t)
-                 :pyflakes (:enabled t) :flake8 (:enabled t
-                 :maxLineLength 88) :ruff (:enabled t :lineLength 88)
-                 :pydocstyle (:enabled t :convention "numpy") :yapf
-                 (:enabled t) :autopep8 (:enabled :json-false) :black
-                 (:enabled t :line_length 88 :cache_config t))))
-
-      (:nixd
-       (:nixpkgs
-        (:expr "import <nixpkgs> { }"))))))
-
 (use-package dumb-jump
   :straight t
   ;; :hook
@@ -895,6 +1045,7 @@
   )
 
 ;; projectile
+(use-package project)
 (use-package projectile
 :init
 (projectile-mode t)
@@ -952,13 +1103,15 @@
       :straight t
       :defer t)
 
+(use-package geiser-mit)
+
 (use-package yasnippet
   :config
-  (yas-global-mode 1)
   ;; get more snippets from here
   ;; https://github.com/AndreaCrotti/yasnippet-snippets/tree/master/snippets
   (setq yas-snippet-dirs
-	'("./snippets")))
+      '("./snippets"))
+  (yas-global-mode 1))
 
 ;; Auctex
 (use-package auctex)
@@ -1047,3 +1200,5 @@
   (require 'slurm-script-mode))
 
 (use-package writeroom-mode)
+
+(use-package ement)
