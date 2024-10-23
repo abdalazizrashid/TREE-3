@@ -58,6 +58,7 @@ in
       eaglemode
       signal-desktop
       libreoffice
+      quassel
     ]
   );
   # programs.emacs = {
