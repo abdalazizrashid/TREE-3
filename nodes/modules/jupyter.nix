@@ -18,7 +18,7 @@ let
             scikit-learn
             jax
             jaxlib
-          ]
+          ] ++ [ pkgs.gcc ]
         )
       );
     in
