@@ -20,7 +20,11 @@
     ./../modules/sway.nix
     ./../modules/jupyter.nix
     ./../modules/users.nix
+    ./../modules/desktop
+    #    ./../modules/private.nix
+    #./configuration.nix
   ];
+  T.desktop.enable = true;  
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
