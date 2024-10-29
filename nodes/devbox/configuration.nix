@@ -293,6 +293,7 @@
 
   # FIXME: enable; also use nftables
   networking.firewall.enable = false;
+  networking.firewall.allowedTCPPorts = [ 12345 ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
