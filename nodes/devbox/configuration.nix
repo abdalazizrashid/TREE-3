@@ -295,6 +295,12 @@
   networking.firewall.enable = false;
   networking.firewall.allowedTCPPorts = [ 12345 ];
 
+  services.tang.enable = true;
+  services.tang.ipAddressAllow = [
+      "10.23.4.0/24"
+      "10.231.1.0/24"
+  ];
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
