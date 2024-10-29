@@ -212,6 +212,15 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM8oas+5PADHvsYSEYq2Dy9jPHe6KOeL2q3KVr6gwXU8 someone/prob solutions"
     ];
   };
+  users.users.ferres = {
+    shell = pkgs.zsh;
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFX6gkS2Xd7NN+aIC2kFT0cmCgaWiuyqu3BUbSiKoxTq ferres@ferres-laptop"
+    ];
+  };
+
   programs.mosh.enable = true;
   programs.mosh.openFirewall = true;
 
