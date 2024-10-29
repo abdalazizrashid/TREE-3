@@ -221,6 +221,7 @@
     ];
   };
 
+  programs.zsh.enable = true;
   programs.mosh.enable = true;
   programs.mosh.openFirewall = true;
 
