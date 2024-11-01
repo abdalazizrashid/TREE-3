@@ -18,7 +18,7 @@ let
     openvpn
   ];
 in
-{  
+{
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -29,11 +29,12 @@ in
     ./../modules/jupyter.nix
     ./../modules/users.nix
     ./../modules/desktop
+    ./../modules/eris.nix
     #    ./../modules/private.nix
     #./configuration.nix
   ];
-  T.desktop.enable = true;  
-
+  T.desktop.enable = true;
+  T.eris.enable = true;
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = false;
@@ -42,6 +43,7 @@ in
     "resume_offset=13465600"
     "mem_sleep_default=deep"
   ];
+
   security.protectKernelImage = false;
   swapDevices = [
     {
@@ -50,6 +52,7 @@ in
     }
   ];
 
+  
   nix.settings.experimental-features = "nix-command flakes";
 
   networking.hostName = "afdee1c"; # Define your hostname.
@@ -74,7 +77,10 @@ in
   networking.useNetworkd = true;
   services.resolved.enable = true;
 
-  networking.nameservers = [ "172.16.101.101" ];
+  networking.nameservers = [
+    "1.1.1.1"
+    "172.16.101.101"
+  ];
   systemd.network.enable = true;
 
   hardware = {
@@ -178,6 +184,13 @@ in
   };
 
   programs.noisetorch.enable = true;
+  services.udev.packages = [ pkgs.yubikey-personalization ];
+  services.pcscd.enable = true;
+
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
 
   environment = {
     shellAliases = {
@@ -244,12 +257,21 @@ in
       ispell
 
       mattermost-desktop
+
+      yubioath-flutter
+      yubikey-manager
+
+      btrfs-progs
+      cryptsetup
+      plan9port
+      eris-go
     ]
     ++ encryption
     ++ networking;
 
   networking.hosts = {
     "100.64.24.3" = [ "calibre.xps13.ts.someonex.net" ];
+    "100.64.24.12" = [ "hv0.ts.probabilistic.ru" ];
     "95.165.26.135" = [ "d1.hosts.aziz.fyi" ];
   };
   # Some programs need SUID wrappers, can be configured further or are
@@ -259,16 +281,95 @@ in
   #   enable = true;
   #   enableSSHSupport = true;
   # };
+  systemd.mounts =
+    let
+      mkBtrfsVol =
+        {
+          mountPath,
+          options ? "compress=zstd,noatime",
+          isRoot ? false,
+        }:
+        let
+          ## this is required as per systemd.mount (1) the name of the
+          ## units should refelect is actual path and escaped properly
+          # mountPath = lib.normalizePath mountPath;
+          # name = lib.concatStringsSep "-" (lib.splitString "/" mountPath);
+          # we assume the is the last dir of the path
+          subvolName = lib.pipe mountPath [
+            (lib.splitString "/")
+            (lib.remove "")
+            lib.last
+          ];
 
+          subvol = if isRoot then "" else "subvol=${subvolName}s,";
+        in
+        {
+          enable = true;
+          mountConfig = {
+            DirectoryMode = 775;
+          };
+          # no need to do this since its handled by nix
+          #name = "${name}.mount";
+          options = "${subvol}${options}";
+          type = "btrfs";
+          what = "/dev/mapper/enc";
+          where = mountPath;
+        };
+    in
+    [
+      (mkBtrfsVol {
+        mountPath = "/tank";
+        options = "noatime";
+        isRoot = true;
+      })
+      (mkBtrfsVol { mountPath = "/tank/src/"; })
+      (mkBtrfsVol { mountPath = "/tank/docs/"; })
+      (mkBtrfsVol { mountPath = "/tank/eris/"; })
+    ];
   # List services that you want to enable:
+  systemd.network.networks."10-wlan" = {
+    matchConfig.Name = "wlan0";
+    DHCP = "yes";
+    dhcpV4Config = {
+      # UseHostname = false;
+      UseDNS = "no";
+      UseRoutes = "yes";
+      # UseDomains = false;
+      # UseNTP = false;
+    };
+    # dhcpV6Config = {
+    #   UseHostname = false;
+    #   UseDNS = false;
+    #   UseNTP = false;
+    # };
+  };
+  # systemd.network.config.dhcpV4Config = {
+  #     UseHostname = "no";
+  #     UseDNS = "no";
+  #     UseDomains = "no";
+  #     UseNTP = "no";
+  #   };
+
+  # systemd.network.config.dhcpV6Config = {
+  #     UseHostname = false;
+  #     UseDNS = false;
+  #     UseNTP = false;
+  #   };
 
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh.enable = true;
+  services.openssh = {
+	settings.PasswordAuthentication = false;
+	settings.KbdInteractiveAuthentication = false;
+  };
+
   networking.resolvconf.enable = false;
   networking.wireless.iwd = {
     enable = true;
     settings.General.EnableNetworkConfiguration = true;
+    settings.General.AlwaysRandomizeAddress = true;
   };
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
