@@ -24,9 +24,14 @@
     #./misc.nix
     ../modules/znc.nix
     # ./probabilistic.ru.nix
-    ./l2tp.nix
+#    ./l2tp.nix
+    ../modules/sway.nix
+    ../modules/emacs.nix
+    ../modules/gonic.nix
+    ../modules/router
   ];
 
+  T.router.enable = true;
   sops.defaultSopsFile = ./secrets/default.yaml;
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
@@ -45,7 +50,23 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernel.sysctl = {
+  # if you use ipv4, this is all you need
+  "net.ipv4.conf.all.forwarding" = true;
 
+  # If you want to use it for ipv6
+  "net.ipv6.conf.all.forwarding" = true;
+
+  # source: https://github.com/mdlayher/homelab/blob/master/nixos/routnerr-2/configuration.nix#L52
+  # By default, not automatically configure any IPv6 addresses.
+  "net.ipv6.conf.all.accept_ra" = 0;
+  "net.ipv6.conf.all.autoconf" = 0;
+  "net.ipv6.conf.all.use_tempaddr" = 0;
+
+  # On WAN, allow IPv6 autoconfiguration and tempory address use.
+  #"net.ipv6.conf.${name}.accept_ra" = 2;
+  #"net.ipv6.conf.${name}.autoconf" = 1;
+  };
   networking.hostName = "d1"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -54,7 +75,7 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
-  networking.networkmanager.enable = true;
+  networking.networkmanager.enable = false;
   networking.networkmanager.dns = "systemd-resolved";
   networking.nameservers = [
     "1.1.1.1" # FIXME: DO NOT USE CLOUDFLARE
@@ -96,9 +117,6 @@
   systemd.targets.hibernate.enable = false;
   systemd.targets.hybrid-sleep.enable = false;
 
-  services.emacs = {
-    enable = true;
-  };
   # Enable the X11 windowing system.
   services.xserver.enable = false;
 
@@ -112,6 +130,25 @@
     xkbVariant = "";
   };
 
+
+  
+  # Ensure the Nouveau module is loaded
+  boot.kernelModules = [ "nouveau" ];
+
+  # Blacklist the proprietary NVIDIA driver, if needed
+  boot.blacklistedKernelModules = [ "nvidia" "nvidia_uvm" "nvidia_drm" "nvidia_modeset" ];
+
+
+  # Enable hardware acceleration for Nouveau
+  hardware.opengl = {
+    enable = true;
+    extraPackages = with pkgs; [
+      # Add packages needed for Nouveau acceleration here
+      # For example, Mesa for OpenGL:
+      mesa
+      mesa.drivers
+    ];
+  };
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
@@ -235,7 +272,6 @@
     [
       #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
       #  wget
-      emacs
       vim
       headscale
       git
@@ -250,7 +286,10 @@
 
       lazygit
       bat
-
+      kitty
+      firefox
+      pulseaudio
+      libvterm
     ]
     ++ [ config.services.headscale.package ]
     ++ [ pkgs.dnsutils ];
@@ -264,8 +303,8 @@
   # These have been handled by networkmanager so far, let's not touch them yet
   systemd.network.networks."20-unmanaged" = {
     matchConfig.Name = [
-      "enp6s0"
-      "enp4s0"
+  #    "enp6s0"
+  #   "enp4s0"
     ];
     linkConfig.Unmanaged = true;
   };
@@ -290,11 +329,6 @@
   # };
 
   # List services that you want to enable:
-
-  # FIXME: enable; also use nftables
-  networking.firewall.enable = false;
-  networking.firewall.allowedTCPPorts = [ 12345 ];
-
   services.tang.enable = true;
   services.tang.ipAddressAllow = [
       "10.23.4.0/24"
