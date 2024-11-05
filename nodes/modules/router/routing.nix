@@ -1,12 +1,12 @@
-{ config, ... }:
+{ config, lib, ... }:
 {
   networking = {
     useDHCP = false;
 
     # No local firewall.
      nat.enable = false;
-     firewall.enable = true;
-
+     firewall.enable = lib.mkForce false;
+     firewall.allowedTCPPorts = [ 22 ]; # TODO: open this on ygg only 
     nftables = {
       enable = true;
       ruleset = ''
@@ -14,8 +14,8 @@
           chain input {
             type filter hook input priority 0; policy drop;
 
-            iifname { "br-lan" } accept comment "Allow local network to access the router"
-            iifname "enp6s0" ct state { established, related } accept comment "Allow established traffic"
+            iifname { "br-lan" } counter accept comment "Allow local network to access the router"
+            iifname "enp6s0" ct state { established, related } counter accept comment "Allow established traffic"
             iifname "enp6s0" icmp type { echo-request, destination-unreachable, time-exceeded } counter accept comment "Allow select ICMP"
             iifname "enp6s0" counter drop comment "Drop all other unsolicited traffic from enp6s0"
             iifname "lo" accept comment "Accept everything from loopback interface"
@@ -30,8 +30,8 @@
 
         table ip nat {
           chain postrouting {
-            type nat hook postrouting priority 100; policy accept;
-            oifname "enp6s0" masquerade
+            type nat hook postrouting priority 10; policy accept;
+            oifname "enp6s0" counter masquerade
           }
         }
       '';

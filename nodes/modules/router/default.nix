@@ -21,7 +21,7 @@ in
     };
 
     networking.firewall.enable = true;
-    networking.firewall.allowedTCPPorts = [ ];
+    networking.firewall.allowedTCPPorts = [ 22 ];
 
     networking.useNetworkd = true;
     systemd.network = {
@@ -76,7 +76,7 @@ in
     };
     services.kea = {
       dhcp4 = {
-        enable = true;
+        enable = false;
         settings = {
           interfaces-config = {
             interfaces = [
@@ -95,7 +95,7 @@ in
               id = 1;
               pools = [
                 {
-                  pool = "192.168.10.50 - 192.168.10.254";
+                  pool = "192.168.10.50 - 192.168.10.253";
 
                 }
               ];
@@ -103,19 +103,39 @@ in
             }
           ];
           valid-lifetime = 4000;
+          option-data = [
+            {
+              name = "routers";
+              data = "192.168.10.254";
+            }
+          ];
+          loggers = [
+            {
+              name = "kea-dhcp4";
+              output_options = [
+                {
+                  output = "/tmp/kea-dhcp4.log";
+                  maxver = 10;
+                }
+              ];
+              severity = "INFO";
+            }
+          ];
         };
       };
       dhcp6 = {
-        enable = true;
+        enable = false;
         settings = {
           interfaces-config.interfaces = [ "br-lan" ];
         };
       };
       dhcp-ddns.enable = false;
     };
-
+    services.resolved.extraConfig = ''
+      DNSStubListener=no
+    '';
     services.dnsmasq = {
-      enable = false;
+      enable = true;
       settings = {
         # upstream DNS servers
         server = [
