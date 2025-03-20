@@ -1,16 +1,16 @@
 {
   imports = [
-    ./uvm # microvms
+    # ./uvm # microvms
     ./blackhole-links.nix # wireguard
 
     # netboot options
-    ./ipxe.nix
-    ./ssh-iso-boot.nix
+    # ./ipxe.nix
+    # ./ssh-iso-boot.nix
   ];
   networking.firewall.interfaces.wgbh0.allowedTCPPort = [ 7654 ];
-  services.tang.enable = true;
-  services.tang.ipAddressAllow = [ "10.23.4.0/24" ];
-  services.tailscale.enable = true;
+  # services.tang.enable = true;
+  # services.tang.ipAddressAllow = [ "10.23.4.0/24" ];
+  # services.tailscale.enable = true;
   users.users.serge = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];

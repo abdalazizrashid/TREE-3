@@ -27,6 +27,13 @@
     };
     modules = [ ./nodes/nl/configuration.nix ];
   };
+  nodes.libertas = nixosSystem {
+    system = [ "x86_64-linux" ];
+    specialArgs = {
+      inputs = npins;
+    };
+    modules = [ ./nodes/libertas/configuration.nix ];
+  };
   inherit pkgs;
   inherit npins;
 }

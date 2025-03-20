@@ -23,15 +23,17 @@
     #./gnome.nix
     #./misc.nix
     ../modules/znc.nix
-    # ./probabilistic.ru.nix
-#    ./l2tp.nix
-    ../modules/sway.nix
+    ./probabilistic.ru.nix
+    #    ./l2tp.nix
+    # ../modules/sway.nix
+    ../modules/stumpwm.nix
     ../modules/emacs.nix
     ../modules/gonic.nix
     ../modules/router
   ];
-
+  
   T.router.enable = true;
+  T.stumpwm.enable = true;
   sops.defaultSopsFile = ./secrets/default.yaml;
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
@@ -51,21 +53,21 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernel.sysctl = {
-  # if you use ipv4, this is all you need
-  "net.ipv4.conf.all.forwarding" = true;
+    # if you use ipv4, this is all you need
+    "net.ipv4.conf.all.forwarding" = true;
 
-  # If you want to use it for ipv6
-  "net.ipv6.conf.all.forwarding" = true;
+    # If you want to use it for ipv6
+    "net.ipv6.conf.all.forwarding" = true;
 
-  # source: https://github.com/mdlayher/homelab/blob/master/nixos/routnerr-2/configuration.nix#L52
-  # By default, not automatically configure any IPv6 addresses.
-  "net.ipv6.conf.all.accept_ra" = 0;
-  "net.ipv6.conf.all.autoconf" = 0;
-  "net.ipv6.conf.all.use_tempaddr" = 0;
+    # source: https://github.com/mdlayher/homelab/blob/master/nixos/routnerr-2/configuration.nix#L52
+    # By default, not automatically configure any IPv6 addresses.
+    "net.ipv6.conf.all.accept_ra" = 0;
+    "net.ipv6.conf.all.autoconf" = 0;
+    "net.ipv6.conf.all.use_tempaddr" = 0;
 
-  # On WAN, allow IPv6 autoconfiguration and tempory address use.
-  #"net.ipv6.conf.${name}.accept_ra" = 2;
-  #"net.ipv6.conf.${name}.autoconf" = 1;
+    # On WAN, allow IPv6 autoconfiguration and tempory address use.
+    #"net.ipv6.conf.${name}.accept_ra" = 2;
+    #"net.ipv6.conf.${name}.autoconf" = 1;
   };
   networking.hostName = "d1"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -118,10 +120,10 @@
   systemd.targets.hybrid-sleep.enable = false;
 
   # Enable the X11 windowing system.
-  services.xserver.enable = false;
+  services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = false;
+  services.xserver.displayManager.startx.enable = true;
   services.xserver.desktopManager.gnome.enable = false;
 
   # Configure keymap in X11
@@ -130,14 +132,30 @@
     xkbVariant = "";
   };
 
-
   
+  services.yggdrasil = {
+    enable = true;
+    configFile = ./yggdrasil.conf;
+    openMulticastPort = true;
+    persistentKeys = true;
+    settings = {
+      Listen = [
+        "tls://[::]:9842"
+        "tls://0.0.0.0:0:9842"
+      ];
+    };
+  };
+
   # Ensure the Nouveau module is loaded
-  boot.kernelModules = [ "nouveau" ];
+ # boot.kernelModules = [ "nouveau" ];
 
   # Blacklist the proprietary NVIDIA driver, if needed
-  boot.blacklistedKernelModules = [ "nvidia" "nvidia_uvm" "nvidia_drm" "nvidia_modeset" ];
-
+ # boot.blacklistedKernelModules = [
+ #   "nvidia"
+ #   "nvidia_uvm"
+ #   "nvidia_drm"
+ #   "nvidia_modeset"
+ # ];
 
   # Enable hardware acceleration for Nouveau
   hardware.opengl = {
@@ -290,6 +308,7 @@
       firefox
       pulseaudio
       libvterm
+      cmake
     ]
     ++ [ config.services.headscale.package ]
     ++ [ pkgs.dnsutils ];
@@ -303,8 +322,8 @@
   # These have been handled by networkmanager so far, let's not touch them yet
   systemd.network.networks."20-unmanaged" = {
     matchConfig.Name = [
-  #    "enp6s0"
-  #   "enp4s0"
+      #    "enp6s0"
+      #   "enp4s0"
     ];
     linkConfig.Unmanaged = true;
   };
@@ -331,8 +350,8 @@
   # List services that you want to enable:
   services.tang.enable = true;
   services.tang.ipAddressAllow = [
-      "10.23.4.0/24"
-      "10.231.1.0/24"
+    "10.23.4.0/24"
+    "10.231.1.0/24"
   ];
 
   # This value determines the NixOS release from which the default
